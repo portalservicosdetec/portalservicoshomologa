@@ -1,0 +1,9 @@
+Erro: Código: 42S22 Mensagem: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'includes' in 'where clause' em: 29-10-2021, 15:12:28
+Erro: Código: 42S22 Mensagem: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'includes' in 'where clause' em: 29-10-2021, 15:15:24
+Erro: Código: 42S22 Mensagem: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'includes' in 'where clause' em: 29-10-2021, 15:19:37
+Erro: Código: 42S22 Mensagem: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'includes' in 'where clause' em: 29-10-2021, 15:24:23
+Erro: Código: 42S22 Mensagem: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'includes' in 'where clause' em: 29-10-2021, 15:28:52
+Erro: Código: 42S22 Mensagem: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'includes' in 'where clause' em: 29-10-2021, 16:32:35
+Erro: Código: 42S22 Mensagem: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'includes' in 'where clause' em: 29-10-2021, 16:35:43
+Erro: Código: 42S22 Mensagem: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'includes' in 'where clause' em: 29-10-2021, 17:17:42
+Erro: Código: 42S22 Mensagem: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'includes' in 'where clause' em: 29-10-2021, 18:34:26

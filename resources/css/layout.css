@@ -1,0 +1,43 @@
+header{
+    height: 70px;
+    width: 100%;
+    background-color: var(--primary);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+header > div:nth-child(2){
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+
+.logo_emerj{
+    position: absolute;
+    box-shadow: 0px -5px 0px 0px #b99663 inset;
+    width: 100px;
+}
+
+div > .logo_emerj{
+    background-color: var(--primary);
+    padding: 20px;
+    border-radius: 15px;
+    top: 5px;
+    left: 116px;
+}
+
+@media only screen and (max-width: 900px) {
+    .logo_emerj {
+      position: static;
+      width: 50px;
+    }
+
+    div > .logo_emerj{
+        background-color: var(--primary);
+        padding: 0px;
+        border-radius: 0px;
+        top: 0px;
+        left: 10px;
+    }
+  }

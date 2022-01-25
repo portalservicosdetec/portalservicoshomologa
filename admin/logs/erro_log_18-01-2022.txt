@@ -1,0 +1,1 @@
+Erro: Código: 22001 Mensagem: SQLSTATE[22001]: String data, right truncated: 1406 Data too long for column 'decom_nm' at row 1 em: 18-01-2022, 15:24:49
