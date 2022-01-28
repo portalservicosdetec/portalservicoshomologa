@@ -665,9 +665,12 @@ class Cursos extends Page{
 
       }
 
-      if (isset($_FILES['cursoUploadTraseira'])) {
-
-        //INSTÂNCIAS DO UPLOAD
+      if (!file_exists($_FILES['cursoUploadTraseira']['tmp_name']) || !is_uploaded_file($_FILES['cursoUploadTraseira']['tmp_name']))
+      {
+          echo 'No upload';
+      }
+      else
+      {
         $obUploadT = new Upload($_FILES['cursoUploadTraseira']);
 
         $strNomeImgT = $obCurso->curso_img_tras;
@@ -683,9 +686,9 @@ class Cursos extends Page{
         //MOVE OS ARQUIVOS DE UPLOAD
         $sucessoT = $obUploadT->upload(__DIR__.'/../../../files/'.ROTA_CURSO.'/originais',true);
         $obUploadT->getBasename();
-
       }
-      echo "<pre>"; print_r('$strNomeImgT = '.$strNomeImgT); echo "<pre>";
+
+      //echo "<pre>"; print_r('$strNomeImgT = '.$strNomeImgT); echo "<pre>";
 
       if (isset($_FILES['cursoUploadEditalPDF'])) {
 

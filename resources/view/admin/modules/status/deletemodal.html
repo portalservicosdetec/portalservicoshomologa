@@ -12,7 +12,7 @@
       <div id="texto_exluir" class="modal-body"></div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
-        <a href="" type="button" id="ModalDeleteBt" role="button" class="btn btn-danger" onClick="selector()" name="button"></a>
+        <a href="" type="button" id="ModalDeleteBt" role="button" class="btn btn-danger" name="button"></a>
       </div>
       </form>
     </div>
@@ -22,14 +22,11 @@
     var deleteModal = document.getElementById('deleteModal')
     deleteModal.addEventListener('show.bs.modal', function (event) {
     // Button that triggered the modal
-    
     var button = event.relatedTarget
     // Informação extraída dos atributos do data-bs-* no botão (item.html)
     var recipientURL = button.getAttribute('data-bs-whatever-url')
-    var recipientURI = button.getAttribute('data-bs-whatever-uri')
     var recipientId = button.getAttribute('data-bs-whatever-id')
-    var recipientTicket = button.getAttribute('data-bs-whatever-ticket')
-    var recipientTitulo = button.getAttribute('data-bs-whatever-titulo')
+    var recipientNome = button.getAttribute('data-bs-whatever-nome')
     var recipientDIR = button.getAttribute('data-bs-whatever-dir')
     var recipientTitle = button.getAttribute('data-bs-whatever-title')
     var recipientTitlelow = button.getAttribute('data-bs-whatever-titlelow')
@@ -40,9 +37,9 @@
     var modalDescricaoInput = deleteModal.querySelector('#texto_exluir')
 
     modalTituloModalCentralizado.textContent = 'Confirmar exclusão d'+recipientTitlelow
-    modalDescricaoInput.textContent = 'Você deseja realmente excluir '+recipientTitlelow+' ' + recipientTitulo + '?'
+    modalDescricaoInput.textContent = 'Você deseja realmente excluir '+recipientTitlelow+' ' + recipientNome + '?'
     modalURL.textContent = 'Exluir '+recipientTitlelow
-    modalURL.href = recipientURL+'/admin/'+recipientDIR+'/'+recipientId+'/delete'+recipientURI
+    modalURL.href = recipientURL+'/admin/'+recipientDIR+'/'+recipientId+'/delete'
 
   })
 </script>

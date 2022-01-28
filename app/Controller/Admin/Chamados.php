@@ -24,6 +24,7 @@ use \App\Controller\Admin\Categoriadeics as AdminCategoriadeics;
 use \App\Controller\Admin\Atendimentos as AdminAtendimento;
 use \App\Controller\Admin\Itensconfs as AdminItensconfs;
 use \App\Controller\Admin\Usuarios as AdminUsuario;
+use \App\Controller\Admin\Status as AdminStatus;
 use \App\File\Upload;
 use \App\Db\Pagination;
 use \App\Communication\Email;
@@ -63,8 +64,6 @@ class Chamados extends Page{
     );
     echo(json_encode($itens));
   }
-
-
 
   /**
    * Método responsável pela renderização da view de listagem de Chamados
@@ -333,6 +332,9 @@ class Chamados extends Page{
     $id_tipodeic = filter_input(INPUT_GET, 'tipodeic', FILTER_SANITIZE_STRING);
     $id_departamento = filter_input(INPUT_GET, 'departamento', FILTER_SANITIZE_STRING);
     $id_categoria_ic = filter_input(INPUT_GET, 'categoriadeic', FILTER_SANITIZE_STRING);
+    $id_atendimento = filter_input(INPUT_GET, 'atendimento', FILTER_SANITIZE_STRING);
+    $id_usuario = filter_input(INPUT_GET, 'usuario', FILTER_SANITIZE_STRING);
+    $id_status = filter_input(INPUT_GET, 'status', FILTER_SANITIZE_STRING);
 
     $itemdeconfiguracaoSelecionado = AdminItensconfs::getItensconfItensSelect($request,$id_itemdeconfiguracao);
     $tipoDeServicoSelecionado = AdminTipodeServico::getTipodeservicoItensSelect($request,$id_tipodeservico);
@@ -340,6 +342,9 @@ class Chamados extends Page{
     $categoriadeicSelecionado = AdminCategoriadeics::getCategoriadeicItensRadio($request,$id_categoria_ic);
     $servicoSelecionado = AdminServico::getServicoItensSelect($request,$id_servico);
     $departamentoSelecionado = PagesDepartamento::getDepartamentoItensSelect($request,$id_departamento);
+    $usuarioSelecionado = AdminUsuario::getUsuarioItensSelect($request,$id_usuario);
+    $atendimentoSelecionado  = AdminAtendimento::getAtendimentoItensSelect($request,$id_atendimento);
+    $statusSelecionado = AdminStatus::getStatusItensSelect($request,$id_status);
 
     //PÁGINA ATUAL
     $queryParams = $request->getQueryParams();
@@ -354,6 +359,13 @@ class Chamados extends Page{
       'itens' => self::getChamadoItens($request,$obPagination),
       'pagination' => parent::getPagination($request,$obPagination),
       'status' => self::getStatus($request),
+      'optionsBuscaTipoDeServico' => $tipoDeServicoSelecionado,
+      'optionsBuscaTipodeic' => $tipodeicSelecionado,
+      'optionsBuscaServico' => $servicoSelecionado,
+      'optionsBuscaAtendimento' => $atendimentoSelecionado,
+      'optionsBuscaUsuario' => $usuarioSelecionado,
+      'optionsBuscaStatus' => $statusSelecionado,
+      //'optionsBuscaUsuario' => $usuarioSelecionado,
       'paginaAtual' => $paginaAtual,
       'busca' => $busca,
       'uri' => strstr(".$_SERVER[REQUEST_URI].", '?')
@@ -411,7 +423,7 @@ class Chamados extends Page{
     $strAtivaModal = View::render('admin/modules/'.DIR_CHAMADO.'/ativamodal',[]);
     $strDeleteModal = View::render('admin/modules/'.DIR_CHAMADO.'/deletemodal',[]);
     $strDetailModal = View::render('admin/modules/'.DIR_CHAMADO.'/detailmodal',[]);
-    $strRequerimentoModal = View::render('admin/modules/'.DIR_CHAMADO.'/requerimentomodal',[]);
+    $strAddRequerimentoModal = View::render('admin/modules/'.DIR_CHAMADO.'/addrequerimentomodal',[]);
 
     //RESULTADO DA PAGINA
     $results = EntityChamado::getChamados($where,'chamado_id DESC',$obPagination->getLimit());
@@ -483,7 +495,7 @@ class Chamados extends Page{
         'ticket' => $obChamado->nr_solicitacao,
         'titulo' => $obChamado->chamado_nm,
         'descricao' => $obChamado->chamado_des,
-        'data_abertuta' => $obChamado->data_add,
+        'data_abertura' => $obChamado->data_add,
 
         "UsuarioContatoId" => $obChamado->id_usuario ?? '-',
         "UsuarioContatoNome" => $obUsuarioContato->usuario_nm ?? '-',
@@ -537,13 +549,14 @@ class Chamados extends Page{
         'paginaAtual' => $paginaAtual,
         'uri' => $uri
       ]);
+
     }
     $itens .= $strDeleteModal;
     $itens .= $strAtivaModal;
     $itens .= $strEditModal;
     $itens .= $strAddModal;
     $itens .= $strDetailModal;
-    $itens .= $strRequerimentoModal;
+    $itens .= $strAddRequerimentoModal;
     return $itens;
   }
 

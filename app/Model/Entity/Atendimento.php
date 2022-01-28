@@ -16,6 +16,12 @@ class Atendimento{
   public $atendimento_id;
 
   /**
+   * Identificador único da atendimento
+   * @var string
+   */
+  public $atendimento_nm;
+
+  /**
    * Serviço relacionado
    * @var integer
    */
@@ -71,6 +77,7 @@ class Atendimento{
      // echo "<pre>"; print_r($obDatabase); echo "</pre>"; exit;
 
     $this->atendimento_id = $obDatabase->insert([
+                                      'atendimento_nm' => $this->atendimento_nm,
                                       'id_servico' => $this->id_servico,
                                       'id_tipodeic' => $this->id_tipodeic,
                                       'id_departamento' => $this->id_departamento,
@@ -92,6 +99,7 @@ class Atendimento{
     $this->data_up = date('Y-m-d H:i:s');
 
     return (new Database('tb_atendimento'))->update('atendimento_id = '.$this->atendimento_id,[
+                                                                  'atendimento_nm' => $this->atendimento_nm,
                                                                   'id_servico' => $this->id_servico,
                                                                   'id_tipodeic' => $this->id_tipodeic,
                                                                   'id_departamento' => $this->id_departamento,
@@ -112,6 +120,7 @@ class Atendimento{
    * Método responsável por obter os IC's do banco de dados
    * @param  string $where
    * @param  string $order
+   * @param  string $limit
    * @param  string $fields
    * @return PDOStatement
    */

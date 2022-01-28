@@ -194,19 +194,24 @@ class Atendimentos extends Page{
     public static function getAtendimentoItensSelect($request,$id){
 
       $where = '';
-      $order = 'id_atendimento';
+      $order = 'atendimento_id';
+      $itensSelect = '';
 
       //PODE SER UTILIZADO MAIS TARDE PARA CONSTRUIR UMA CLAUSULA where
       $departamento = '';
       $servico = '';
 
-      $resultsSelect = EntityAtendimento::getAtendimentos(null,$order,null,null);
+      //echo "<pre>"; print_r('PQP!!!!!!!!!!'); echo "<pre>";
 
-      while($obTipodeservico = $resultsSelect->fetchObject(EntityAtendimento::class)){
+      $resultsSelect = EntityAtendimento::getAtendimentos(null,$order,null);
+
+      //echo "<pre>where="; print_r($resultsSelect); echo "<pre>";
+
+      while($obAtendimento = $resultsSelect->fetchObject(EntityAtendimento::class)){
         $itensSelect .= View::render('admin/modules/tipodeservico/itemselect',[
-          'idSelect' => $obTipodeservico->id_tipodeservico,
-          'selecionado' => ($id_tipodeservico == $obTipodeservico->id_tipodeservico) ? 'selected' : '',
-          'nomeSelect' => EntityTipodeservico::getTipodeservicoPorId($obTipodeservico->id_tipodeservico)->tipodeservico_nm
+          'idSelect' => $obAtendimento->atendimento_id,
+          'selecionado' => ($id == $obAtendimento->atendimento_id) ? 'selected' : '',
+          'nomeSelect' => EntityServico::getServicoPorId($obAtendimento->id_servico)->servico_nm.' - '.EntityTipodeic::getTipodeicPorId($obAtendimento->id_tipodeic)->tipodeic_nm
         ]);
       }
       return $itensSelect;

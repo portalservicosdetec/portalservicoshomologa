@@ -1,6 +1,6 @@
 <!--Modal para para editar Localizacao -->
 <div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="addModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered" role="document">
+  <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header alert-primary">
         <i class="bi-pencil-square" style="font-size: 1.5rem; margin-right: 8px; vertical-align: bootom; padding-bootom: 0px; color: firebrike;"></i>
@@ -11,15 +11,24 @@
         <div class="modal-body">
           <div class="form-row">
             <div class="form-group col-md-12">
+              <label for="recipient-categoriadeic" id="edit-label-categoriadeic" class="col-form-label col-md-12 mb-0 p-0"></label>
+              <select name="categoriadeic" value="" class="form-select form-select-sm" id="recipient-categoriadeic-add" required>
+                <option value=''>Selecione o Tipo de Item</option>
+                {{optionsCategoriadeic}}
+              </select>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group col-md-12">
               <label for="recipient-name" id="add-label-nome" class="col-form-label col-md-12 mb-0 p-0">Nome {{title}}: </label>
-              <input type="hidden" class="form-control" name="id" value="" id="recipient-id">
-              <input type="text" class="form-control" name="nome" value="" id="recipient-name">
+              <input type="hidden" class="form-control" name="id" value="" id="recipient-id-add">
+              <input type="text" class="form-control" name="nome" value="" id="recipient-name-add" required>
             </div>
           </div>
           <div class="form-row">
             <div class="form-group col-md-12">
               <label for="recipient-descricao" id="add-label-descricao" class="col-form-label col-md-12 mb-0 p-0">Descrição de : </label>
-              <textarea class="form-control" name="descricao" value="" id="recipient-descricao"></textarea>
+              <textarea class="form-control" name="descricao" value="" id="recipient-descricao-add" required></textarea>
             </div>
           </div>
           <div class="modal-footer col-mb-12">
@@ -38,7 +47,6 @@
     var button = event.relatedTarget
     // Informação extraída dos atributos do data-bs-* no botão (item.html)
     var recipientURL = button.getAttribute('data-bs-whatever-url')
-    var recipientURI = button.getAttribute('data-bs-whatever-uri')
     var recipientDIR = button.getAttribute('data-bs-whatever-dir')
     var recipientTitle = button.getAttribute('data-bs-whatever-title')
     var recipientTitlelow = button.getAttribute('data-bs-whatever-titlelow')
@@ -54,8 +62,7 @@
     modalDescricao.textContent = 'Descrição d'+recipientTitlelow+':'
     modalButton.textContent = 'Cadastrar '+recipientTitle
 
-    
-    modalURL.action = recipientURL+'/admin/'+recipientDIR+'/novo'+recipientURI
+    modalURL.action = recipientURL+'/admin/'+recipientDIR+'/novo'
 
   })
 </script>
