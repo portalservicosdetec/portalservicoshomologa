@@ -1,0 +1,1 @@
+Erro: Código: 42S22 Mensagem: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'includes' in 'where clause' em: 23-11-2021, 11:56:20
