@@ -7,7 +7,6 @@ use \DateTime;
 use \App\Utils\View;
 use \App\Model\Entity\Decom as EntityDecom;
 use \App\Controller\Admin\Servicos as AdminServico;
-use \App\Controller\Admin\Itensconfs as AdminItensconfs;
 use \App\Db\Pagination;
 
 const DIR_DECOM = 'decom';
@@ -226,6 +225,8 @@ class Decoms extends Page{
     * @return string
     */
     public static function setEditDecom($request,$id){
+
+date_default_timezone_set('America/Sao_Paulo');
 
       //DADOS DO POST
       $posVars = $request->getPostVars();

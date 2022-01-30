@@ -75,7 +75,6 @@ class Page{
     return $itens;
   }
 
-
   /**
    * Método responsável por retornar o conteúdo (view) da estrutura genérica de página do painel
    * @param string $title
@@ -89,10 +88,10 @@ class Page{
       'header' => self::getHeader(),
       'content' => $content,
       'footer' => self::getFooter(),
-      'menu' => self::getMenu($currentModule)
+      'menu' => $currentModule ? self::getMenu($currentModule) : ''
     ]);
   }
-
+  
 
   /**
    * Método responsável por retornar o conteúdo (view) da estrutura genérica de página do painel

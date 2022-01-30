@@ -2,3 +2,17 @@ Erro: Código: 42S02 Mensagem: SQLSTATE[42S02]: Base table or view not found: 11
 Erro: Código: 42S02 Mensagem: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'emerjco_portalservicos.tb_pagina' doesn't exist em: 30-01-2022, 09:26:41
 Erro: Código: 42S02 Mensagem: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'emerjco_portalservicos.tb_pagina' doesn't exist em: 30-01-2022, 09:26:55
 Erro: Código: 42S02 Mensagem: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'emerjco_portalservicos.tb_pagina' doesn't exist em: 30-01-2022, 09:26:59
+Erro: Código: 42S02 Mensagem: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'emerjco_portalservicos.tb_pagina' doesn't exist em: 30-01-2022, 15:26:39
+Erro: Código: 42S02 Mensagem: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'emerjco_portalservicos.tb_pagina' doesn't exist em: 30-01-2022, 15:27:05
+Erro: Código: 42S02 Mensagem: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'emerjco_portalservicos.tb_pagina' doesn't exist em: 30-01-2022, 15:29:25
+Erro: Código: 42S02 Mensagem: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'emerjco_portalservicos.tb_pagina' doesn't exist em: 30-01-2022, 15:30:25
+Erro: Código: 42S02 Mensagem: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'emerjco_portalservicos.tb_pagina' doesn't exist em: 30-01-2022, 15:49:43
+Erro: Código: 42S02 Mensagem: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'emerjco_portalservicos.tb_pagina' doesn't exist em: 30-01-2022, 16:00:10
+Erro: Código: 42S02 Mensagem: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'emerjco_portalservicos.tb_pagina' doesn't exist em: 30-01-2022, 16:00:26
+Erro: Código: 42S02 Mensagem: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'emerjco_portalservicos.tb_pagina' doesn't exist em: 30-01-2022, 16:00:28
+Erro: Código: 42S02 Mensagem: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'emerjco_portalservicos.tb_pagina' doesn't exist em: 30-01-2022, 16:00:30
+Erro: Código: 42S02 Mensagem: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'emerjco_portalservicos.tb_pagina' doesn't exist em: 30-01-2022, 16:00:41
+Erro: Código: 42S02 Mensagem: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'emerjco_portalservicos.tb_sessao' doesn't exist em: 30-01-2022, 16:11:18
+Erro: Código: 42S02 Mensagem: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'emerjco_portalservicos.tb_sessao' doesn't exist em: 30-01-2022, 16:15:42
+Erro: Código: 42S02 Mensagem: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'emerjco_portalservicos.tb_sessao' doesn't exist em: 30-01-2022, 16:20:58
+Erro: Código: 42S02 Mensagem: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'emerjco_portalservicos.tb_sessao' doesn't exist em: 30-01-2022, 16:23:55

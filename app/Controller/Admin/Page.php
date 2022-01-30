@@ -125,14 +125,6 @@ class Page{
             'dropdown-toggle' => '',
             'navbarMenuLink' => '',
             'data-toggle' => ''
-          ],
-          'novosite' => [
-            'label' => 'Novo Site',
-            'link' => URL.'/admin/localizacoes',
-            'dropdown' => 'dropdown',
-            'dropdown-toggle' => 'dropdown-toggle',
-            'navbarMenuLink' => 'navbarDropdownMenuLinkNovoSite',
-            'data-toggle' => 'data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"'
           ]
         ];
       } elseif ($currentDepartamento == 'DECOM') {
@@ -255,41 +247,6 @@ class Page{
           'dropdownlabel' => 'Categorias de ICs',
           'dropdownlink' => URL.'/admin/categoriadeics',
           'navbarDropdownMenuLink' => 'navbarDropdownMenuLinkICs',
-        ],
-        'noticias' => [
-          'dropdownlabel' => 'Notícias',
-          'dropdownlink' => URL.'/admin/noticias',
-          'navbarDropdownMenuLink' => 'navbarDropdownMenuLinkNovoSite',
-        ],
-        'cursos' => [
-          'dropdownlabel' => 'Cursos',
-          'dropdownlink' => URL.'/admin/cursos',
-          'navbarDropdownMenuLink' => 'navbarDropdownMenuLinkNovoSite',
-        ],
-        'tipodecursos' => [
-          'dropdownlabel' => 'Tipo de Cursos',
-          'dropdownlink' => URL.'/admin/tipodecursos',
-          'navbarDropdownMenuLink' => 'navbarDropdownMenuLinkNovoSite',
-        ],
-        'subtipodecursos' => [
-          'dropdownlabel' => 'SubTipo de Cursos',
-          'dropdownlink' => URL.'/admin/subtipodecursos',
-          'navbarDropdownMenuLink' => 'navbarDropdownMenuLinkNovoSite',
-        ],
-        'paginas' => [
-          'dropdownlabel' => 'Páginas',
-          'dropdownlink' => URL.'/admin/paginas',
-          'navbarDropdownMenuLink' => 'navbarDropdownMenuLinkNovoSite',
-        ],
-        'sessoes' => [
-          'dropdownlabel' => 'Sessões',
-          'dropdownlink' => URL.'/admin/sessoes',
-          'navbarDropdownMenuLink' => 'navbarDropdownMenuLinkNovoSite',
-        ],
-        'subsessoes' => [
-          'dropdownlabel' => 'Subsessões',
-          'dropdownlink' => URL.'/admin/subsessoes',
-          'navbarDropdownMenuLink' => 'navbarDropdownMenuLinkNovoSite',
         ]
       ];
     } elseif ($currentDepartamento == 'DECOM') {
