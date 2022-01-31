@@ -103,7 +103,7 @@ class Requerimentos extends Page{
     //MONTA E RENDERIZA OS ITENS DE Requerimento
     while($obRequerimento = $results->fetchObject(EntityRequerimento::class)){
       $itens .= View::render('admin/modules/requerimento/item',[
-        'id_chamado' => $obRequerimento->id_chamado,
+        'id_requerimento' => $obRequerimento->id_requerimento,
         'id_atendimento' => $obRequerimento->id_atendimento,
         'id_itemdeconf' => $obRequerimento->id_itemdeconf,
         'texto_ativo' => ('s' == $obRequerimento->ativo_fl) ? 'Desativar' : 'Ativar',
@@ -133,9 +133,124 @@ class Requerimentos extends Page{
     * @param Request $request
     * @return string
     */
-    public static function setNovoRequerimento($request){
+    public static function setNovoRequerimento($request,$id_requerimento){
+
+      //PÁGINA ATUAL
+       $queryParams = $request->getQueryParams();
+       $paginaAtual = $queryParams['pagina'] ?? 1;
+
+      //echo "<pre>"; print_r($request); echo "<pre>";
+      $emailusuario = filter_input(INPUT_POST, 'email_usuario', FILTER_SANITIZE_STRING) ?? '';
+      $emailatendimento = filter_input(INPUT_POST, 'email_atendimento', FILTER_SANITIZE_STRING) ?? '';
+      $requerimento_nm = filter_input(INPUT_POST, 'requerimento_nm', FILTER_SANITIZE_STRING) ?? '';
+
+      //DADOS DO POST
+      $posVars = $request->getPostVars();
+      $id_chamado = filter_input(INPUT_POST, 'chamado', FILTER_SANITIZE_NUMBER_INT) ?? '';
+      $atendimento = filter_input(INPUT_POST, 'atendimento', FILTER_SANITIZE_NUMBER_INT) ?? '';
+
+      $descricao = filter_input(INPUT_POST, 'descricao', FILTER_SANITIZE_STRING) ?? '';
+      $usuario_atendente = filter_input(INPUT_POST, 'atendente', FILTER_SANITIZE_NUMBER_INT) ?? '';
+      $usuario_atendido = filter_input(INPUT_POST, 'usuario-atendido', FILTER_SANITIZE_NUMBER_INT) ?? '';
+      $usuario_autorizador = filter_input(INPUT_POST, 'usuario-autorizador', FILTER_SANITIZE_NUMBER_INT) ?? '';
+      $urgencia = filter_input(INPUT_POST, 'urgencia', FILTER_SANITIZE_NUMBER_INT) ?? '';
+      $criticidade = filter_input(INPUT_POST, 'criticidade', FILTER_SANITIZE_NUMBER_INT) ?? '';
+      $nr_dgtec = filter_input(INPUT_POST, 'nrdgtec', FILTER_SANITIZE_STRING) ?? '';
+      $status = filter_input(INPUT_POST, 'status', FILTER_SANITIZE_NUMBER_INT) ?? '';
+
+      try {
+        //NOVA ISNTANCIA DE CHAMADO
+        $obRequerimento = new EntityRequerimento;
+
+        $obRequerimento->requerimento_desc = $descricao;
+        $obRequerimento->nrdgtec = $nr_dgtec;
+        $obRequerimento->id_chamado = $id_chamado;
+        $obRequerimento->id_atendimento = $atendimento;
+        $obRequerimento->id_criticidade = $criticidade;
+        $obRequerimento->id_urgencia = $urgencia;
+        $obRequerimento->id_status = $status;
+        $obRequerimento->id_atendente = $usuario_atendente;
+        $obRequerimento->id_atendido = $usuario_atendido;
+        $obRequerimento->id_autorizador = $usuario_autorizador;
+
+        $sucessoInsert = $obRequerimento->cadastrar();
+
+        if (!$sucessoInsert) {
+          throw new \Exception(' Erro na gravação do requerimento.');
+        }
+
+          /*
+        $idRequerimento = $obRequerimento->requerimento_id;
+        $dataRequerimento = date("d/m/Y H:i:s");
+
+        $corpoEmail = '';
+
+        $assuntoEmail = 'Solicitação de atendimento criada -'.$ticket;
+
+        //echo "<pre>"; print_r($emailcc); echo "<pre>"; exit;
+
+        $corpoEmail = $corpoEmail.'<h1>Escola da Magistratura do Estado do Rio de Janeiro</h1>';
+        $corpoEmail = $corpoEmail.'<h2>Departamento de Tecnologia de Informação - DETEC</h2><hr>';
+        $corpoEmail = $corpoEmail.'<h3>Prezado(a) ANDRE RODRIGUES RIBEIRO ({NOME_USUARIO}),</h3><BR>';
+        $corpoEmail = $corpoEmail.'<p>Recebemos a solicitação de número '.$ticket.'</p><BR>';
+        $corpoEmail = $corpoEmail.'Data Abertura: '.$dataRequerimento.'<BR>';
+        $corpoEmail = $corpoEmail.'Descrição do requerimento: '.$descricao.'<BR><BR>';
+        $corpoEmail = $corpoEmail.'E-mail: '.$emailusuario.'<BR><BR>';
+        $corpoEmail = $corpoEmail.'<p>Acompanhe o andamento da solicitação pela web, <a href="{{URL}}">clicando aqui</a>.</p><BR>';
+        $corpoEmail = $corpoEmail.'<p>Atenciosamente,</p>';
+        $corpoEmail = $corpoEmail.'<p><strong>DETEC – Departamento de Tecnologia de Informação</strong></p><BR>';
+        $corpoEmail = $corpoEmail.'<p>Enviado em: '.$dataRequerimento.' pelo Portal de Serviços DETEC. Não responda a este e-mail.</p>';
+
+        $obEmail = new Email;
+
+        $email = 'a.tangy@gmail.com';
+        $emailcc = 'andrerribeiro@tjrj.jus.br';
+
+        $dirTemp = __DIR__.'/../../../files/requerimentos/tmp';
+        $dirRequerimento = __DIR__.'/../../../files/requerimentos/'.$idRequerimento;
+
+        $whereArq = ' id_sessao = "'.$_SESSION['admin']['usuario']['filesrequerimento'].'"';
+
+        $results = EntityArquivo::getArquivos($whereArq,'arquivo_id ASC');
+
+        while($obArquivo = $results->fetchObject(EntityArquivo::class)){
+          if(!is_dir($dirRequerimento)){
+            mkdir($dirRequerimento,0777);
+          }
+          $nm = $obArquivo->arquivo_temp;
+          rename($dirTemp.'/'.$nm, $dirRequerimento.'/'.$nm);
+          $obArquivo->id_requerimento = $idRequerimento;
+          $obArquivo->atualizar();
+        }
+
+        if(isset($_SESSION['admin']['usuario']['filesrequerimento'])){
+            unset($_SESSION['admin']['usuario']['filesrequerimento']);
+            session_start();
+            $_SESSION['admin']['usuario']['filesrequerimento'] = uniqid();
+        } else {
+          session_start();
+          $_SESSION['admin']['usuario']['filesrequerimento'] = uniqid();
+        }
 
 
+
+        $sucessoEmail = $obEmail->sendEmail($email,$assuntoEmail,$corpoEmail,$emailcc);
+
+        if(!$sucessoEmail){
+          throw new \Exception(' Falha no envio do e-mail. '.$obEmail->getError());
+        }
+
+          */
+
+      } catch (\Exception $e) {
+
+        $strmsn = $e->getMessage();
+
+      } finally {
+
+        $request->getRouter()->redirect('/admin/chamados?pagina='.$paginaAtual.'&status=gravado&nm='.$nome.'&strMsn='.$strmsn.'&acao=alter');
+
+      }
     }
 
 

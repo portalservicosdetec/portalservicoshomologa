@@ -13,22 +13,12 @@ $obRouter->get('/admin/requerimentos',[
 ]);
 
 //ROTA DE CADASTRO DE UM NOVO REQUERIMENTO
-$obRouter->get('/admin/requerimentos/novo/{{chamado_id}}',[
-  'middlewares' => [
-    'require-admin-login'
-  ],
-  function($request,$chamado_id){
-    return new Response(200,Admin\Requerimentos::getNovoRequerimento($request,$chamado_id));
-  }
-]);
-
-//ROTA DE CADASTRO DE UM NOVO REQUERIMENTO (POST)
 $obRouter->post('/admin/requerimentos/novo',[
   'middlewares' => [
     'require-admin-login'
   ],
-  function($request){
-    return new Response(200,Admin\Requerimentos::setNovoRequerimento($request));
+  function($request,$chamado_id){
+    return new Response(200,Admin\Requerimentos::setNovoRequerimento($request,$chamado_id));
   }
 ]);
 

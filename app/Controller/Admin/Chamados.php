@@ -25,6 +25,8 @@ use \App\Controller\Admin\Atendimentos as AdminAtendimento;
 use \App\Controller\Admin\Itensconfs as AdminItensconfs;
 use \App\Controller\Admin\Usuarios as AdminUsuario;
 use \App\Controller\Admin\Status as AdminStatus;
+use \App\Controller\Admin\Criticidades as AdminCriticidade;
+use \App\Controller\Admin\Urgencias as AdminUrgencia;
 use \App\File\Upload;
 use \App\Db\Pagination;
 use \App\Communication\Email;
@@ -295,6 +297,7 @@ class Chamados extends Page{
 
     $currentDepartamento = $_SESSION['admin']['usuario']['departamento'];
     $currentPerfil = $_SESSION['admin']['usuario']['id_perfil'];
+    $idUsuarioLogado = $_SESSION['admin']['usuario']['usuario_id'];
 
     //STATUS
     if(!isset($currentDepartamento)) return $permissao = false;
@@ -335,6 +338,8 @@ class Chamados extends Page{
     $id_atendimento = filter_input(INPUT_GET, 'atendimento', FILTER_SANITIZE_STRING);
     $id_usuario = filter_input(INPUT_GET, 'usuario', FILTER_SANITIZE_STRING);
     $id_status = filter_input(INPUT_GET, 'status', FILTER_SANITIZE_STRING);
+    $id_criticidade = filter_input(INPUT_GET, 'criticidade', FILTER_SANITIZE_STRING);
+    $id_urgencia = filter_input(INPUT_GET, 'urgencia', FILTER_SANITIZE_STRING);
 
     $itemdeconfiguracaoSelecionado = AdminItensconfs::getItensconfItensSelect($request,$id_itemdeconfiguracao);
     $tipoDeServicoSelecionado = AdminTipodeServico::getTipodeservicoItensSelect($request,$id_tipodeservico);
@@ -345,6 +350,9 @@ class Chamados extends Page{
     $usuarioSelecionado = AdminUsuario::getUsuarioItensSelect($request,$id_usuario);
     $atendimentoSelecionado  = AdminAtendimento::getAtendimentoItensSelect($request,$id_atendimento);
     $statusSelecionado = AdminStatus::getStatusItensSelect($request,$id_status);
+
+    $criticidadeSelecionado = AdminCriticidade::getCriticidadeItensSelect($request,$id_criticidade);
+    $urgenciaSelecionado = AdminUrgencia::getUrgenciaItensSelect($request,$id_urgencia);
 
     //PÁGINA ATUAL
     $queryParams = $request->getQueryParams();
@@ -359,12 +367,15 @@ class Chamados extends Page{
       'itens' => self::getChamadoItens($request,$obPagination),
       'pagination' => parent::getPagination($request,$obPagination),
       'status' => self::getStatus($request),
-      'optionsBuscaTipoDeServico' => $tipoDeServicoSelecionado,
-      'optionsBuscaTipodeic' => $tipodeicSelecionado,
+      'idUsuarioLogado' => $idUsuarioLogado,
+      //'optionsBuscaTipoDeServico' => $tipoDeServicoSelecionado,
+      //'optionsBuscaTipodeic' => $tipodeicSelecionado,
       'optionsBuscaServico' => $servicoSelecionado,
       'optionsBuscaAtendimento' => $atendimentoSelecionado,
       'optionsBuscaUsuario' => $usuarioSelecionado,
       'optionsBuscaStatus' => $statusSelecionado,
+      'optionsBuscaCriticidade' => $criticidadeSelecionado,
+      'optionsBuscaUrgencia' => $urgenciaSelecionado,
       //'optionsBuscaUsuario' => $usuarioSelecionado,
       'paginaAtual' => $paginaAtual,
       'busca' => $busca,

@@ -1,4 +1,4 @@
-<!--Modal para para editar Localizacao -->
+<!--Modal para para cadastrar requerimento -->
 <div class="modal fade" id="addRequerimentoModal" tabindex="-1" aria-labelledby="addRequerimentoModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
     <div class="modal-content">
@@ -31,6 +31,8 @@
                 <option value=''>Selecione o Atendimento</option>
                 {{optionsBuscaAtendimento}}
               </select>
+              <input type="hidden" name="atendente" value="{{idUsuarioLogado}}" id="recipient-atendente">
+              <input type="hidden" name="chamado" value="" id="recipient-chamado">
             </div>
             <div class="form-group col-md-6">
               <label for="recipient-usuario-atendido" class="small-label col-form-label col-md-12 mb-0 p-0">Usuário para o qual se destina o atendimento: </label>
@@ -50,7 +52,7 @@
             </div>
             <div class="form-group col-md-6">
               <label for="recipient-criticidade" class="small-label col-form-label col-md-12 mb-0 p-0">Criticidade: </label>
-              <select name="usuario-criticidade" required value="" class="form-select form-select-sm" id="recipient-criticidade">
+              <select name="criticidade" required value="" class="form-select form-select-sm" id="recipient-criticidade">
                 <option value=''>Selecione a Criticidade</option>
                 {{optionsBuscaCriticidade}}
               </select>
@@ -96,12 +98,12 @@
               </select>
             </div>
             <div class="form-group col-md-3">
-              <label for="recipient-nrgtec" class="small-label col-form-label col-md-12 mb-0 p-0">Número da DGTEC: </label>
-              <input type="text" class="form-control form-control-sm" name="nrgtec" maxlength="12" value="" id="recipient-nrgtec">
+              <label for="recipient-nrdgtec" class="small-label col-form-label col-md-12 mb-0 p-0">Número da DGTEC: </label>
+              <input type="text" class="form-control form-control-sm" name="nrdgtec" maxlength="12" value="" id="recipient-nrdgtec">
             </div>
             <div class="form-group col-md-6">
-              <label for="recipient-usuario-atendido" class="small-label col-form-label col-md-12 mb-0 p-0">Usuário Autorizador: </label>
-              <select name="usuario-atendido" required value="" class="form-select form-select-sm" id="recipient-usuario-atendido">
+              <label for="recipient-usuario-autorizador" class="small-label col-form-label col-md-12 mb-0 p-0">Usuário Autorizador: </label>
+              <select name="usuario-autorizador" value="" class="form-select form-select-sm" id="recipient-usuario-autorizador">
                 <option value=''>Selecione o Usuário Autorizador</option>
                 {{optionsBuscaUsuario}}
               </select>
@@ -113,7 +115,7 @@
               <textarea class="form-control" name="descricao" value="" rows="5" maxlength="5000" id="recipient-desc"></textarea>
             </div>
           </div>
-      </form>
+
 
       <!--
       <div class="container">
@@ -180,10 +182,13 @@
 
       </div>
         -->
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+      <div class="modal-footer col-mb-12">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button type="submit" class="btn btn-primary" id="add-button" name="button">Cadastrar Requisição</button>
       </div>
     </div>
+  </form>
+
   </div>
 </div>
 <script type="text/javascript">
@@ -203,6 +208,7 @@
     // Informação extraída dos atributos do data-bs-* no botão (item.html)
     var recipientURL = button.getAttribute('data-bs-whatever-url')
     var recipientURI = button.getAttribute('data-bs-whatever-uri')
+    var recipientDIR = button.getAttribute('data-bs-whatever-dir')
     var recipientId = button.getAttribute('data-bs-whatever-id')
     var recipientDescricao = button.getAttribute('data-bs-whatever-descricao')
     var recipientTitle = button.getAttribute('data-bs-whatever-title')
@@ -232,6 +238,9 @@
     var modalUsuarioContatoSiglaDep = addRequerimentoModal.querySelector('#delail_UsuarioContatoSiglaDep')
     var modalUsuarioContatoSala = addRequerimentoModal.querySelector('#delail_UsuarioContatoSala')
 
+    var modalChamado= addRequerimentoModal.querySelector('#recipient-chamado')
+    var modalAtendente = addRequerimentoModal.querySelector('#recipient-atendente')
+
     var modalstatusdoatendimento = addRequerimentoModal.querySelector('#delail_statusdoatendimento')
 
 
@@ -246,9 +255,11 @@
     modalUsuarioContatoSiglaDep.textContent = recipientUsuarioContatoSiglaDep
     modalUsuarioContatoSala.textContent = recipientUsuarioContatoSala
 
+    modalChamado.value = recipientId
+
     modalstatusdoatendimento.textContent = 'Status do Atendimento: '+recipientstatusdoatendimento
 
-  //  modalURL.action = recipientURL+'/admin/'+recipientDIR+'/novo'+recipientURI
+    modalURL.action = recipientURL+'/admin/'+recipientDIR+'/novo'
 
   })
 </script>
