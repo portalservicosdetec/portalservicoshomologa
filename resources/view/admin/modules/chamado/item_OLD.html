@@ -41,6 +41,20 @@
           data-bs-whatever-UsuarioAtendidoSiglaDep="{{UsuarioAtendidoSiglaDep}}"
           data-bs-whatever-UsuarioAtendidoSala="{{UsuarioAtendidoSala}}"
 
+          data-bs-whatever-UsuarioAutorizadorId="{{UsuarioAutorizadorId}}"
+          data-bs-whatever-UsuarioAutorizadorNome="{{UsuarioAutorizadorNome}}"
+          data-bs-whatever-UsuarioAutorizadorEmail="{{UsuarioAutorizadorEmail}}"
+          data-bs-whatever-UsuarioAutorizadorTelefone="{{UsuarioAutorizadorTelefone}}"
+          data-bs-whatever-UsuarioAutorizadorSiglaDep="{{UsuarioAutorizadorSiglaDep}}"
+          data-bs-whatever-UsuarioAutorizadorSala="{{UsuarioAutorizadorSala}}"
+
+          data-bs-whatever-UsuarioAtendenteId="{{UsuarioAtendenteId}}"
+          data-bs-whatever-UsuarioAtendenteNome="{{UsuarioAtendenteNome}}"
+          data-bs-whatever-UsuarioAtendenteEmail="{{UsuarioAtendenteEmail}}"
+          data-bs-whatever-UsuarioAtendenteTelefone="{{UsuarioAtendenteTelefone}}"
+          data-bs-whatever-UsuarioAtendenteSiglaDep="{{UsuarioAtendenteSiglaDep}}"
+          data-bs-whatever-UsuarioAtendenteSala="{{UsuarioAtendenteSala}}"
+
           data-bs-whatever-dataAtendimento="{{dataAtendimento}}"
           data-bs-whatever-nrSolicitacao="{{nrSolicitacao}}"
           data-bs-whatever-nrRequisicao="{{nrRequisicao}}"
@@ -53,6 +67,8 @@
           data-bs-whatever-title="{{title}}"
           data-bs-whatever-titlelow="{{titlelow}}">
           <i class="bi-zoom-in" style="font-size: 1rem; margin-right: 3px; color: cornflowerblue;"></i>Ver Detalhes</a>
+
+          <a class="dropdown-item" href="{{URL}}/admin/{{direntity}}/andamentos?id={{id}}" type="button" role="button" class="btn btn-danger btn-sm" name="button" data-bs-toggle="modal" data-bs-target="#andamentosModal" data-bs-whatever-url="{{URL}}" data-bs-whatever-uri="{{uri}}" data-bs-whatever-id="{{id}}" data-bs-whatever-nome="{{nome}}" ><i class="bi-layers-half" style="font-size: 1rem; margin-right: 3px; color: cornflowerblue;"></i>Ver Andamentos</a>
 
           <a class="dropdown-item" href="{{URL}}/admin/requerimentos/novo/{{id}}" type="button" role="button" class="btn btn-danger btn-sm" name="button" data-bs-toggle="modal" data-bs-target="#addRequerimentoModal"
           data-bs-whatever-url="{{URL}}"
@@ -72,6 +88,20 @@
           data-bs-whatever-UsuarioContatoSala="{{UsuarioContatoSala}}"
           data-bs-whatever-statusdoatendimento="{{statusdoatendimento}}">
           <i class="bi-ticket" style="font-size: 1rem; margin-right: 3px; color: lightseagreen;"></i>Cadastrar Requisição</a>
+
+          <a class="dropdown-item" href="{{URL}}/admin/{{direntity}}/{{id}}/edit" type="button" role="button" class="btn btn-primary btn-sm" name="button" data-bs-toggle="modal" data-bs-target="#editModal" data-bs-whatever-url="{{URL}}" data-bs-whatever-uri="{{uri}}" data-bs-whatever-id="{{id}}" data-bs-whatever-nome="{{nome}}" data-bs-whatever-descricao="{{descricao}}" data-bs-whatever-dir="{{direntity}}"  data-bs-whatever-title="{{title}}" data-bs-whatever-titlelow="{{titlelow}}"><i class="bi-pencil-square" style="font-size: 1rem; margin-right: 3px; color: cornflowerblue;"></i>Editar</a>
+
+          <a class="dropdown-item" href="{{URL}}/admin/{{direntity}}/{{id}}/alterastatus" type="button" role="button" class="btn {{class_ativo}} btn-sm" name="button" data-bs-toggle="modal" data-bs-target="#ativaModal" data-bs-whatever-url="{{URL}}" data-bs-whatever-uri="{{uri}}" data-bs-whatever-id="{{id}}" data-bs-whatever-nome="{{nome}}" data-bs-whatever-descricao="{{texto_ativo}}" data-bs-whatever-dir="{{direntity}}"  data-bs-whatever-title="{{title}}" data-bs-whatever-titlelow="{{titlelow}}"><i class="bi-exclamation-diamond" style="font-size: 1rem; margin-right: 3px; color: darkorange;"></i>{{texto_ativo}}</a>
+
+          <a class="dropdown-item" href="{{URL}}/admin/{{direntity}}/{{id}}/delete" type="button" role="button" class="btn btn-danger btn-sm" name="button" data-bs-toggle="modal" data-bs-target="#deletettttModal"
+          data-bs-whatever-url="{{URL}}"
+          data-bs-whatever-uri="{{uri}}"
+          data-bs-whatever-id="{{id}}"
+          data-bs-whatever-titulo="{{titulo}}"
+          data-bs-whatever-dir="{{direntity}}"
+          data-bs-whatever-title="{{title}}"
+          data-bs-whatever-titlelow="{{titlelow}}">
+          <i class="bi-x-circle" style="font-size: 1rem; margin-right: 3px; color: red;"></i>Excluir</a>
         </div>
       </div>
     </div>

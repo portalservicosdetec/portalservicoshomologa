@@ -445,6 +445,7 @@ class Chamados extends Page{
       if ($obChamado->id_usuario > 0) {
         $obUsuarioContato = EntityUsuario::getUsuarioPorId($obChamado->id_usuario);
         if($obUsuarioContato instanceof EntityUsuario){
+          $UsuarioContatoId = $obUsuarioContato->usuario_id;
           $UsuarioContatoNome = $obUsuarioContato->usuario_nm;
           $UsuarioContatoEmail = $obUsuarioContato->email;
           $UsuarioContatoTelefone = $obUsuarioContato->usuario_fone;
@@ -456,6 +457,7 @@ class Chamados extends Page{
       if ($obChamado->solicitado_por > 0) {
         $obUsuarioSolicitante = EntityUsuario::getUsuarioPorId($obChamado->solicitado_por);
         if($obUsuarioSolicitante instanceof EntityUsuario){
+          $UsuarioSolicitanteId = $obUsuarioSolicitante->usuario_id;
           $UsuarioSolicitanteNome = $obUsuarioSolicitante->usuario_nm;
           $UsuarioSolicitanteEmail = $obUsuarioSolicitante->email;
           $UsuarioSolicitanteTelefone = $obUsuarioSolicitante->usuario_fone;
@@ -467,6 +469,7 @@ class Chamados extends Page{
       if ($obChamado->aberto_para > 0) {
         $obUsuarioAtendido = EntityUsuario::getUsuarioPorId($obChamado->aberto_para) ?? '';
         if($obUsuarioAtendido instanceof EntityUsuario){
+          $UsuarioAtendidoId = $obUsuarioAtendido->usuario_id;
           $UsuarioAtendidoNome = $obUsuarioAtendido->usuario_nm;
           $UsuarioAtendidoEmail = $obUsuarioAtendido->email;
           $UsuarioAtendidoTelefone = $obUsuarioAtendido->usuario_fone;
@@ -475,20 +478,10 @@ class Chamados extends Page{
         }
       }
 
-      if ($obChamado->autorizado_por > 0) {
-        $obUsuarioAutorizador = EntityUsuario::getUsuarioPorId($obChamado->autorizado_por) ?? '';
-        if($obUsuarioAutorizador instanceof EntityUsuario){
-          $UsuarioAutorizadorNome = $obUsuarioAutorizador->usuario_nm ?? '-';
-          $UsuarioAutorizadorEmail = $obUsuarioAutorizador->email ?? '-';
-          $UsuarioAutorizadorTelefone = $obUsuarioAutorizador->usuario_fone ?? '-';
-          $UsuarioAutorizadorSiglaDep = EntityDepartamento::getDepartamentoPorId($obUsuarioAutorizador->id_departamento)->departamento_sg ?? '-';
-          $UsuarioAutorizadorSala = EntityLocalizacao::getLocalizacaoPorId($obUsuarioAutorizador->sala)->localizacao_nm ?? '-';
-        }
-      }
-
       if ($obChamado->atendido_por > 0) {
         $obUsuarioAtendente = EntityUsuario::getUsuarioPorId($obChamado->atendido_por) ?? '';
         if($obUsuarioAtendente instanceof EntityUsuario){
+          $UsuarioAtendenteId = $obUsuarioAtendente->usuario_id ?? '-';
           $UsuarioAtendenteNome = $obUsuarioAtendente->usuario_nm ?? '-';
           $UsuarioAtendenteEmail = $obUsuarioAtendente->email ?? '-';
           $UsuarioAtendenteTelefone = $obUsuarioAtendente->usuario_fone ?? '-';
@@ -508,40 +501,26 @@ class Chamados extends Page{
         'descricao' => $obChamado->chamado_des,
         'data_abertura' => $obChamado->data_add,
 
-        "UsuarioContatoId" => $obChamado->id_usuario ?? '-',
-        "UsuarioContatoNome" => $obUsuarioContato->usuario_nm ?? '-',
-        "UsuarioContatoEmail" => $obUsuarioContato->email ?? '-',
-        "UsuarioContatoTelefone" => $obUsuarioContato->usuario_fone ?? '-',
+        "UsuarioContatoId" => $UsuarioContatoId ?? '-',
+        "UsuarioContatoNome" => $UsuarioContatoNome ?? '-',
+        "UsuarioContatoEmail" => $UsuarioContatoEmail ?? '-',
+        "UsuarioContatoTelefone" => $UsuarioContatoTelefone ?? '-',
         "UsuarioContatoSiglaDep" =>$UsuarioContatoSiglaDep ?? '-',
         "UsuarioContatoSala" => $UsuarioContatoSala ?? '-',
 
-        "UsuarioSolicitanteId" => $obChamado->solicitado_por ?? '-',
-        "UsuarioSolicitanteNome" => $obUsuarioSolicitante->usuario_nm ?? '-',
-        "UsuarioSolicitanteEmail" => $obUsuarioSolicitante->email ?? '-',
-        "UsuarioSolicitanteTelefone" => $obUsuarioSolicitante->usuario_fone ?? '-',
+        "UsuarioSolicitanteId" => $UsuarioSolicitanteId ?? '-',
+        "UsuarioSolicitanteNome" => $UsuarioSolicitanteNome ?? '-',
+        "UsuarioSolicitanteEmail" => $UsuarioSolicitanteEmail ?? '-',
+        "UsuarioSolicitanteTelefone" => $UsuarioSolicitanteTelefone ?? '-',
         "UsuarioSolicitanteSiglaDep" => $UsuarioSolicitanteSiglaDep ?? '-',
         "UsuarioSolicitanteSala" => $UsuarioSolicitanteSala ?? '-',
 
-        "UsuarioAtendidoId" => $obChamado->aberto_para ?? '-',
-        "UsuarioAtendidoNome" => $obUsuarioAtendido->usuario_nm ?? '-',
-        "UsuarioAtendidoEmail" => $obUsuarioAtendido->email ?? '-',
-        "UsuarioAtendidoTelefone" => $obUsuarioAtendido->usuario_fone ?? '-',
+        "UsuarioAtendidoId" => $UsuarioAtendidoId ?? '-',
+        "UsuarioAtendidoNome" => $UsuarioAtendidoNome ?? '-',
+        "UsuarioAtendidoEmail" => $UsuarioAtendidoEmail ?? '-',
+        "UsuarioAtendidoTelefone" => $UsuarioAtendidoTelefone ?? '-',
         "UsuarioAtendidoSiglaDep" => $UsuarioAtendidoSiglaDep ?? '-',
         "UsuarioAtendidoSala" => $UsuarioAtendidoSala ?? '-',
-
-        "UsuarioAutorizadorId" => $obChamado->autorizado_por ?? '-',
-        "UsuarioAutorizadorNome" => $obUsuarioAutorizador->usuario_nm ?? '-',
-        "UsuarioAutorizadorEmail" => $obUsuarioAutorizador->email ?? '-',
-        "UsuarioAutorizadorTelefone" => $obUsuarioAutorizador->usuario_fone ?? '-',
-        "UsuarioAutorizadorSiglaDep" => $UsuarioAutorizadorSiglaDep ?? '-',
-        "UsuarioAutorizadorSala" => $UsuarioAutorizadorSala ?? '-',
-
-        "UsuarioAtendenteId" => $obChamado->atendido_por ?? '-',
-        "UsuarioAtendenteNome" => $obUsuarioAtendente->usuario_nm ?? '-',
-        "UsuarioAtendenteEmail" => $obUsuarioAtendente->email ?? '-',
-        "UsuarioAtendenteTelefone" => $obUsuarioAtendente->usuario_fone ?? '-',
-        "UsuarioAtendenteSiglaDep" => $UsuarioAtendenteSiglaDep ?? '-',
-        "UsuarioAtendenteSala" => $UsuarioAtendenteSala ?? '-',
 
         "Requisitante" => (($UsuarioAtendidoNome ?? $UsuarioSolicitanteNome) ?? $UsuarioContatoNome) ?? '-',
 
@@ -592,8 +571,6 @@ class Chamados extends Page{
      $obUsuarioContato = EntityUsuario::getUsuarioPorId($obChamado->id_usuario) ?? '';
      $obUsuarioSolicitante = EntityUsuario::getUsuarioPorId($obChamado->solicitado_por) ?? '';
      $obUsuarioAtendido = EntityUsuario::getUsuarioPorId($obChamado->aberto_para) ?? '';
-     $obUsuarioAutorizador = EntityUsuario::getUsuarioPorId($obChamado->altorizado_por) ?? '';
-     $obUsuarioAtendente = EntityUsuario::getUsuarioPorId($obChamado->atendido_por) ?? '';
 
      //CONTEÚDO DO FORMULÁRIO
      $content = View::render('admin/modules/chamado/item',[
@@ -611,10 +588,6 @@ class Chamados extends Page{
        'aberto_para' => $obUsuarioAtendido->usuario_nm ?? '-',
        'id_aberto_para' => $obUsuarioAtendido->usuario_id ?? '-',
        'dep_aberto_para' => EntityDepartamento::getDepartamentoPorId($obUsuarioAtendido->id_departamento)->departamento_sg ?? '-',
-       'autorizado_por' => $obUsuarioAutorizador->usuario_nm ?? '-',
-       'id_autorizado_por' => $obUsuarioAutorizador->usuario_id ?? '-',
-       'atendido_por' => $obUsuarioAtendente->usuario_nm ?? '-',
-       'id_atendido_por' => $obUsuarioAtendente->usuario_id ?? '-',
        'data_atendimento' => $obChamado->dt_atendimento ?? '-',
        'nr_solicitacao' => $obChamado->nr_solicitacao ?? '-',
        'nr_requisicao' => $obChamado->nr_requisicao ?? '-',
