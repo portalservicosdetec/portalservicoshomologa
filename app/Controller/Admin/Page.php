@@ -16,6 +16,22 @@ class Page{
     return View::render('admin/header');
   }
 
+
+  /**
+   * Método responsável por renderizar o topo da nossa página genérica
+   * @param string
+   */
+  public static function getUserProfile(){
+    //return 'Olá Mundo';
+    return View::render('admin/user/profile',[
+      'departamentoUser' => $_SESSION['admin']['usuario']['departamento'],
+      'perfilIdUser' => $_SESSION['admin']['usuario']['id_perfil'],
+      'idUser' => $_SESSION['admin']['usuario']['usuario_id'],
+      'nomeUser' => $_SESSION['admin']['usuario']['usuario_nm'],
+      'emailUser' => $_SESSION['admin']['usuario']['email']
+    ]);
+  }
+
   /**
    * Método responsável por renderizar o rodapé da nossa página genérica
    * @param string
@@ -316,6 +332,7 @@ class Page{
       'header' => self::getHeader(),
       'content' => $content,
       'footer' => self::getFooter(),
+      'userprofile' => self::getUserProfile(),
       'menu' => self::getMenu($currentModule,$currentDepartamento,$currentPerfil)
     ]);
   }
@@ -390,6 +407,7 @@ class Page{
     'header' => self::getHeader(),
     'footer' => self::getFooter(),
     'content' => $content,
+    //'userprofile' => self::getUserProfile(),
     'menu' => self::getMenu($currentModule,$currentDepartamento,$currentPerfil)
     ]);
 

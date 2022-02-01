@@ -177,9 +177,6 @@ class Login extends PageLogin{
 
     $acao = filter_input(INPUT_POST, 'acao', FILTER_SANITIZE_STRING) ?? '';
 
-
-
-
     //RETORNA A PÁGINA COMPLETA
     return parent::getPage('LOGIN - Nova senha',$content,$currentModule,$currentDepartamento,$currentPerfil);
     //REDIRECIONA O USUÁRIO PARA A HOME DO ADMIN
