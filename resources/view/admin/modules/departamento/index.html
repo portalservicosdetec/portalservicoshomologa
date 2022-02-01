@@ -17,7 +17,7 @@
         <th scope="col">Nome</th>
         <th scope="col">Sigla</th>
         <th scope="col">Departamento Pai</th>
-        <th scope="col"><span class="float-sm-right"></span></th>
+        <th scope="col" class="noExport"><span class="float-sm-right"></span></th>
       </tr>
   </thead>
   <tbody>
@@ -27,6 +27,55 @@
 <script type="text/javascript">
   $(document).ready(function() {
     var table = $('#data-table-departamentos').DataTable({
+      responsive: true,
+      lengthMenu: [
+          [ 10, 25, 50, -1 ],
+          [ 'Mostrar 10 registros', 'Mostrar 25 registros', 'Mostrar 50 registros', 'Exibir Todos' ]
+      ],
+      dom: 'Bfrtip',
+      buttons: [
+        {
+            extend: 'pageLength'
+        },
+        {
+            extend: 'colvis',
+            text: 'Visibilidade das Colunas',
+            postfixButtons: [ 'colvisRestore' ],
+            columns: ':not(.noVis)'
+        },
+        {
+            extend: 'excelHtml5',
+            text: '<i class="bi-file-excel"></i> Excel',
+            titleAttr: 'Exportar para Excel',
+            //className: 'btn-primary',
+            exportOptions: {
+                columns: [ ':visible' ],
+                columns: 'thead th:not(.noExport)'
+            }
+        },
+        {
+            extend: 'pdfHtml5',
+            text: '<i class="bi-file-pdf"></i> PDF',
+            titleAttr: 'Exportar para PDF',
+            exportOptions: {
+                columns: [ ':visible' ],
+                columns: 'thead th:not(.noExport)'
+            },
+            orientation: 'landscape',
+            pageSize: 'LEGAL',
+            footer: true
+        },
+      ],
+      columnDefs: [
+            {
+                targets: [-1],
+                className: 'noVis'
+            },
+            {
+                visible: false,
+                className: 'noVis'
+            }
+        ],
       "bStateSave": true,
       "fnStateSave": function (oSettings, oData) {
         localStorage.setItem('offersDataTables', JSON.stringify(oData));
