@@ -28,29 +28,7 @@
 </table>
 <script type="text/javascript">
   $(document).ready(function() {
-    var groupColumn = 2; //Apagar esta linha e as linhas de 33 a 52 e 64 a 73.
     var table = $('#data-table-chamados').DataTable({
-      "columnDefs": [
-            { "visible": false, "targets": groupColumn }
-        ],
-        "order": [[ groupColumn, 'asc' ]],
-        "displayLength": 25,
-        "drawCallback": function ( settings ) {
-            var api = this.api();
-            var rows = api.rows( {page:'current'} ).nodes();
-            var last=null;
-
-            api.column(groupColumn, {page:'current'} ).data().each( function ( group, i ) {
-                if ( last !== group ) {
-                    $(rows).eq( i ).before(
-                        '<tr class="group"><td colspan="5">'+group+'</td></tr>'
-                    );
-
-                    last = group;
-                }
-            } );
-          },
-
       "bStateSave": true,
       "fnStateSave": function (oSettings, oData) {
         localStorage.setItem('offersDataTables', JSON.stringify(oData));
@@ -59,17 +37,6 @@
         return JSON.parse(localStorage.getItem('offersDataTables'));
       },
       "language": { "url": "//cdn.datatables.net/plug-ins/1.11.1/i18n/pt_br.json" },
-    });
-
-    // Order by the grouping
-    $('#data-table-chamados tbody').on( 'click', 'tr.group', function () {
-        var currentOrder = table.order()[0];
-        if ( currentOrder[0] === groupColumn && currentOrder[1] === 'asc' ) {
-            table.order( [ groupColumn, 'desc' ] ).draw();
-        }
-        else {
-            table.order( [ groupColumn, 'asc' ] ).draw();
-        }
     });
   });
 </script>
