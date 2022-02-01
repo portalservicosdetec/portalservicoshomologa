@@ -4,14 +4,27 @@ namespace App\Controller\Admin;
 
 use \App\Utils\View;
 use \App\Model\Entity\Requerimento as EntityRequerimento;
+use \App\Model\Entity\Chamado as EntityChamado;
+use \App\Model\Entity\Atendimento as EntityAtendimento;
 use \App\Model\Entity\Servico as EntityServico;
+use \App\Model\Entity\Tipodeic as EntityTipodeic;
 use \App\Model\Entity\Itensconf as EntityItensconf;
 use \App\Model\Entity\Departamento as EntityDepartamento;
+use \App\Model\Entity\Criticidade as EntityCriticidade;
+use \App\Model\Entity\Urgencia as EntityUrgencia;
+use \App\Model\Entity\Status as EntityStatus;
+use \App\Model\Entity\Usuario as EntityUsuario;
 use \App\Controller\Pages\Departamento as PagesDepartamento;
 use \App\Controller\Admin\Servicos as AdminServico;
 use \App\Controller\Admin\Tipodeics as AdminTipodeics;
 use \App\Controller\Admin\Usuarios as AdminUsuarios;
 use \App\Db\Pagination;
+
+const DIR_REQUERIMENTO = 'requerimento';
+const ROTA_REQUERIMENTO = 'requerimentos';
+const ICON_REQUERIMENTO = 'telephone-inbound';
+const TITLE_REQUERIMENTO = 'Requisições';
+const TITLELOW_REQUERIMENTO = 'a requisição';
 
 class Requerimentos extends Page{
 
@@ -64,23 +77,14 @@ class Requerimentos extends Page{
 
     $status = self::getStatus($request);
 
-    $tipodeicSelecionado = AdminTipodeics::getTipodeicItensSelect($request,$id);
-    $servicoSelecionado = AdminServicos::getServicoItensSelect($request,$id);
-    $usuarioSelecionado = AdminUsuarios::getUsuarioItensSelect($request,$id);
-    $statusSelecionado = AdminStatus::getStatusItensSelect($request,$id);
-
-    //CONTEÚDO DA HOME
+   //CONTEÚDO DA HOME
     $content = View::render('admin/modules/requerimento/index',[
-      'icon' => ICON_IC,
-      'title' =>TITLE_IC,
-      'titlelow' => TITLELOW_IC,
-      'direntity' => ROTA_IC,
+      'icon' => ICON_REQUERIMENTO,
+      'title' =>TITLE_REQUERIMENTO,
+      'titlelow' => TITLELOW_REQUERIMENTO,
+      'direntity' => ROTA_REQUERIMENTO,
       'itens' => self::getRequerimentoItens($request,$obPagination),
-      'status' => self::getStatus($request),
-      'optionsBuscaTipodeic' => $tipodeicSelecionado,
-      'optionsBuscaServico' => $servicoSelecionado,
-      'optionsBuscaUsuario' => $usuarioSelecionado,
-      'optionsBuscaStatus' => $statusSelecionado
+      'status' => $status
     ]);
 
     //RETORNA A PÁGINA COMPLETA
@@ -103,9 +107,31 @@ class Requerimentos extends Page{
     //MONTA E RENDERIZA OS ITENS DE Requerimento
     while($obRequerimento = $results->fetchObject(EntityRequerimento::class)){
       $itens .= View::render('admin/modules/requerimento/item',[
-        'id_requerimento' => $obRequerimento->id_requerimento,
-        'id_atendimento' => $obRequerimento->id_atendimento,
-        'id_itemdeconf' => $obRequerimento->id_itemdeconf,
+        'id' => $obRequerimento->requerimento_id,
+        'descricao' => $obRequerimento->requerimento_desc,
+        'nrdgtec' => $obRequerimento->nrdgtec,
+
+        'ticket' => EntityChamado::getChamadoPorId($obRequerimento->id_chamado)->nr_solicitacao,
+        'atendimento' => EntityServico::getServicoPorId(EntityAtendimento::getAtendimentoPorId($obRequerimento->id_atendimento)->id_servico)->servico_nm.' - '.EntityTipodeic::getTipodeicPorId(EntityAtendimento::getAtendimentoPorId($obRequerimento->id_atendimento)->id_tipodeic)->tipodeic_nm,
+        'criticidade' => $obRequerimento->id_criticidade,
+        'urgencia' => $obRequerimento->id_urgencia,
+        'status' => EntityStatus::getStatusPorId($obRequerimento->id_status)->status_nm,
+        'atendente' => $obRequerimento->id_atendente,
+        'requisitante' => EntityUsuario::getUsuarioPorId($obRequerimento->id_atendido)->usuario_nm,
+        'autorizador' => $obRequerimento->id_autorizador,
+
+      //  'ticket' => EntityChamado::getChamadoPorId($obRequerimento->id_chamado)->nr_solicitacao,
+      //  'atendimento' => EntityServico::getServicoPorId(EntityAtendimento::getAtendimentoPorId($obRequerimento->id_atendimento)->id_servico)->servico_nm.' - '.EntityTipodeic::getTipodeicPorId(EntityAtendimento::getAtendimentoPorId($obRequerimento->id_atendimento)->id_tipodeic)->tipodeic_nm,
+      //  'criticidade' => EntityCriticidade::getCriticidadePorId($obRequerimento->id_criticidade)->criticidade_nm,
+      //  'urgencia' => EntityUrgencia::getUrgenciaPorId($obRequerimento->id_urgencia)->urgencia_nm,
+      //  'status' => EntityStatus::getStatusPorId($obRequerimento->id_status)->status_nm,
+      //  'atendente' => EntityUsuario::getUsuarioPorId($obRequerimento->id_atendente)->usuario_nm,
+      //  'requisitante' => EntityUsuario::getUsuarioPorId($obRequerimento->id_atendido)->usuario_nm,
+      //  'autorizador' => EntityUsuario::getUsuarioPorId($obRequerimento->id_autorizador)->usuario_nm,
+
+        'data_add' => $obRequerimento->data_add,
+        'data_alteracao' => $obRequerimento->data_up,
+        'ativo_fl' => $obRequerimento->ativo_fl,
         'texto_ativo' => ('s' == $obRequerimento->ativo_fl) ? 'Desativar' : 'Ativar',
         'class_ativo' => ('s' == $obRequerimento->ativo_fl) ? 'btn-warning' : 'btn-success',
         'style_ativo' => ('s' == $obRequerimento->ativo_fl) ? 'table-active' : 'table-danger'
@@ -296,7 +322,7 @@ class Requerimentos extends Page{
         $where = " id_servico = ".$servico_id." AND id_itemdeconfiguracao = ".$itemdeconfiguracao_id;
 
         //echo "<pre>"; print_r($where); echo "<pre>"; exit;
-        //VERIFICA SE JÁ EXISTE O IC com mesmo nome e tipo CADASTRADO NO BANCO
+        //VERIFICA SE JÁ EXISTE O REQUERIMENTO com mesmo nome e tipo CADASTRADO NO BANCO
         $obRequerimento = EntityRequerimento::getRequerimentos($where);
 
       //  echo "<pre>"; print_r($obRequerimento); echo "<pre>"; exit;
@@ -394,7 +420,7 @@ class Requerimentos extends Page{
 
 
          //RETORNA A PÁGINA COMPLETA
-         return parent::getPanel('Exclir IC',$content,'requerimentos');
+         return parent::getPanel('Exclir REQUERIMENTO',$content,'requerimentos');
        }
 
        /**

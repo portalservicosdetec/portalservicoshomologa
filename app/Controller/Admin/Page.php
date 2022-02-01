@@ -94,6 +94,14 @@ class Page{
             'navbarMenuLink' => '',
             'data-toggle' => ''
           ],
+          'requerimentos' => [
+            'label' => 'Requisições',
+            'link' => URL.'/admin/requerimentos',
+            'dropdown' => '',
+            'dropdown-toggle' => '',
+            'navbarMenuLink' => '',
+            'data-toggle' => ''
+          ],
           'servicos' => [
             'label' => 'Serviços',
             'link' => '#',
