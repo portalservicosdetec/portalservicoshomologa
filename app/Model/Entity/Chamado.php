@@ -158,7 +158,7 @@ class Chamado{
 
     //INSERIR O IC NO BANCO
     $obDatabase = new Database('tb_chamado');
-     // echo "<pre>"; print_r($obDatabase); echo "</pre>"; exit;
+    //echo "<pre>"; print_r($obDatabase); echo "</pre>"; exit;
 
     $this->chamado_id = $obDatabase->insert([
                                       'chamadoid_ano' => self::nrSolicitacao()[0],

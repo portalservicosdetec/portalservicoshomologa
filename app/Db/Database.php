@@ -145,6 +145,8 @@ class Database{
 
     //MONTA A QUERY
     $query = 'INSERT INTO '.$this->table.' ('.implode(',',$fields).') VALUES ('.implode(',',$binds).')';
+    echo "<pre>"; print_r($query); echo "<pre>";
+    echo "<pre>"; print_r(array_values($values)); echo "<pre>"; exit();
 
     //EXECUTA O INSERT
     $this->execute($query,array_values($values));
@@ -196,7 +198,7 @@ class Database{
 
     //EXECUTA A QUERY
 
-    //echo "<pre>"; print_r($query); echo "<pre>";
+    //echo "<pre>"; print_r($query); echo "<pre>", exit();
     return $this->execute($query);
   }
 
