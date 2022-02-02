@@ -163,6 +163,7 @@ class Chamado{
     $this->chamado_id = $obDatabase->insert([
                                       'chamadoid_ano' => self::nrSolicitacao()[0],
                                       'chamado_nm' => $this->chamado_nm,
+                                      'ano_add' =>$this->ano_add,
                                       'chamado_des' => $this->chamado_des,
                                       'id_usuario' => $_SESSION['admin']['usuario']['usuario_id'],
                                       'solicitado_por' => $this->solicitado_por,
