@@ -604,7 +604,7 @@ class Chamados extends Page{
        'uri' => $uri ?? ''
      ]);
 
-     //RETORNA A PÁGINA COMPLETA
+     //RETORNA A PÁGINA COMPLETA DO CHAMADO
      return parent::getPanel('Detalhes do chamado',$content,'chamados');
    }
 
@@ -682,8 +682,8 @@ class Chamados extends Page{
       $chamado_obs = filter_input(INPUT_POST, 'chamado_obs', FILTER_SANITIZE_STRING) ?? '';
       $tipodeic = filter_input(INPUT_POST, 'tipodeic', FILTER_SANITIZE_NUMBER_INT) ?? '';
       $id_usuario = filter_input(INPUT_POST, 'id_usuario', FILTER_SANITIZE_NUMBER_INT) ?? '';
-      $solicitado_por = filter_input(INPUT_POST, 'id_contato', FILTER_SANITIZE_NUMBER_INT) ?? '';
-      $aberto_para = filter_input(INPUT_POST, 'id_atendimento', FILTER_SANITIZE_NUMBER_INT) ?? '';
+      $solicitado_por = filter_input(INPUT_POST, 'id_contato', FILTER_SANITIZE_NUMBER_INT) ?? null;
+      $aberto_para = filter_input(INPUT_POST, 'id_atendimento', FILTER_SANITIZE_NUMBER_INT) ?? null;
 
       try {
         //NOVA ISNTANCIA DE CHAMADO
