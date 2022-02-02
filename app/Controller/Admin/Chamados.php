@@ -682,8 +682,8 @@ class Chamados extends Page{
       $chamado_obs = filter_input(INPUT_POST, 'chamado_obs', FILTER_SANITIZE_STRING) ?? '';
       $tipodeic = filter_input(INPUT_POST, 'tipodeic', FILTER_SANITIZE_NUMBER_INT) ?? '';
       $id_usuario = filter_input(INPUT_POST, 'id_usuario', FILTER_SANITIZE_NUMBER_INT) ?? '';
-      $solicitado_por = filter_input(INPUT_POST, 'id_contato', FILTER_SANITIZE_NUMBER_INT) ?? null;
-      $aberto_para = filter_input(INPUT_POST, 'id_atendimento', FILTER_SANITIZE_NUMBER_INT) ?? null;
+      $solicitado_por = filter_input(INPUT_POST, 'id_contato', FILTER_SANITIZE_NUMBER_INT) ?? 0;
+      $aberto_para = filter_input(INPUT_POST, 'id_atendimento', FILTER_SANITIZE_NUMBER_INT) ?? 0;
 
       try {
         //NOVA ISNTANCIA DE CHAMADO
@@ -695,10 +695,10 @@ class Chamados extends Page{
         }
 
         $obChamado->id_usuario = $id_usuario;
-        $obChamado->solicitado_por = $solicitado_por;
+        $obChamado->solicitado_por = $solicitado_por ?? 0;
         $obChamado->chamado_nm = $nome;
         $obChamado->chamado_des = $descricao;
-        $obChamado->aberto_para = $aberto_para;
+        $obChamado->aberto_para = $aberto_para ?? 0;
         $obChamado->chamado_obs = $chamado_obs;
         $obChamado->nr_solicitacao = $ticket;
         $obChamado->id_status = 1;
