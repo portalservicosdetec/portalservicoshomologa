@@ -11,6 +11,7 @@ use \App\Model\Entity\Itensconf as EntityItensconf;
 use \App\Model\Entity\Departamento as EntityDepartamento;
 use \App\Model\Entity\Usuario as EntityUsuario;
 use \App\Model\Entity\Tipodeservico as EntityTipodeservico;
+use \App\Model\Entity\Tipodeocorrencia as EntityTipodeocorrencia;
 use \App\Model\Entity\Tipodeic as EntityTipodeic;
 use \App\Model\Entity\Status as EntityStatus;
 use \App\Model\Entity\Localizacao as EntityLocalizacao;
@@ -19,6 +20,7 @@ use \App\Controller\Pages\Departamento as PagesDepartamento;
 use \App\Controller\Admin\Servicos as AdminServico;
 use \App\Controller\Admin\Departamentos as AdminDepartamento;
 use \App\Controller\Admin\Tipodeservicos as AdminTipodeServico;
+use \App\Controller\Admin\Tipodeocorrencias as AdminTipodeocorrencia;
 use \App\Controller\Admin\Tipodeics as AdminTipodeic;
 use \App\Controller\Admin\Categoriadeics as AdminCategoriadeics;
 use \App\Controller\Admin\Atendimentos as AdminAtendimento;
@@ -329,17 +331,18 @@ class Chamados extends Page{
     }
 
     $busca = filter_input(INPUT_GET, 'busca', FILTER_SANITIZE_STRING);
-    $id_tipodeservico = filter_input(INPUT_GET, 'tipodeservico', FILTER_SANITIZE_STRING);
-    $id_servico = filter_input(INPUT_GET, 'servico', FILTER_SANITIZE_STRING);
-    $id_itemdeconfiguracao = filter_input(INPUT_GET, 'itemdeconfiguracao', FILTER_SANITIZE_STRING);
-    $id_tipodeic = filter_input(INPUT_GET, 'tipodeic', FILTER_SANITIZE_STRING);
-    $id_departamento = filter_input(INPUT_GET, 'departamento', FILTER_SANITIZE_STRING);
-    $id_categoria_ic = filter_input(INPUT_GET, 'categoriadeic', FILTER_SANITIZE_STRING);
-    $id_atendimento = filter_input(INPUT_GET, 'atendimento', FILTER_SANITIZE_STRING);
-    $id_usuario = filter_input(INPUT_GET, 'usuario', FILTER_SANITIZE_STRING);
-    $id_status = filter_input(INPUT_GET, 'status', FILTER_SANITIZE_STRING);
-    $id_criticidade = filter_input(INPUT_GET, 'criticidade', FILTER_SANITIZE_STRING);
-    $id_urgencia = filter_input(INPUT_GET, 'urgencia', FILTER_SANITIZE_STRING);
+    $id_tipodeservico = filter_input(INPUT_GET, 'tipodeservico', FILTER_SANITIZE_NUMBER_INT);
+    $id_servico = filter_input(INPUT_GET, 'servico', FILTER_SANITIZE_NUMBER_INT);
+    $id_itemdeconfiguracao = filter_input(INPUT_GET, 'itemdeconfiguracao', FILTER_SANITIZE_NUMBER_INT);
+    $id_tipodeic = filter_input(INPUT_GET, 'tipodeic', FILTER_SANITIZE_NUMBER_INT);
+    $id_departamento = filter_input(INPUT_GET, 'departamento', FILTER_SANITIZE_NUMBER_INT);
+    $id_categoria_ic = filter_input(INPUT_GET, 'categoriadeic', FILTER_SANITIZE_NUMBER_INT);
+    $id_atendimento = filter_input(INPUT_GET, 'atendimento', FILTER_SANITIZE_NUMBER_INT);
+    $id_usuario = filter_input(INPUT_GET, 'usuario', FILTER_SANITIZE_NUMBER_INT);
+    $id_status = filter_input(INPUT_GET, 'status', FILTER_SANITIZE_NUMBER_INT);
+    $id_criticidade = filter_input(INPUT_GET, 'criticidade', FILTER_SANITIZE_NUMBER_INT);
+    $id_urgencia = filter_input(INPUT_GET, 'urgencia', FILTER_SANITIZE_NUMBER_INT);
+    $id_tipodeocorrencia = filter_input(INPUT_GET, 'tipodeocorrencia', FILTER_SANITIZE_NUMBER_INT);
 
     $itemdeconfiguracaoSelecionado = AdminItensconfs::getItensconfItensSelect($request,$id_itemdeconfiguracao);
     $tipoDeServicoSelecionado = AdminTipodeServico::getTipodeservicoItensSelect($request,$id_tipodeservico);
@@ -350,6 +353,7 @@ class Chamados extends Page{
     $usuarioSelecionado = AdminUsuario::getUsuarioItensSelect($request,$id_usuario);
     $atendimentoSelecionado  = AdminAtendimento::getAtendimentoItensSelect($request,$id_atendimento);
     $statusSelecionado = AdminStatus::getStatusItensSelect($request,$id_status);
+    $tipodeocorrenciaSelecionado = AdminTipodeocorrencia::getTipodeocorrenciaItensSelect($request,$id_tipodeocorrencia);
 
     $criticidadeSelecionado = AdminCriticidade::getCriticidadeItensSelect($request,$id_criticidade);
     $urgenciaSelecionado = AdminUrgencia::getUrgenciaItensSelect($request,$id_urgencia);
@@ -370,6 +374,7 @@ class Chamados extends Page{
       'idUsuarioLogado' => $idUsuarioLogado,
       //'optionsBuscaTipoDeServico' => $tipoDeServicoSelecionado,
       //'optionsBuscaTipodeic' => $tipodeicSelecionado,
+      'optionsBuscaTipodeOcorrencia' => $tipodeocorrenciaSelecionado,
       'optionsBuscaServico' => $servicoSelecionado,
       'optionsBuscaAtendimento' => $atendimentoSelecionado,
       'optionsBuscaUsuario' => $usuarioSelecionado,

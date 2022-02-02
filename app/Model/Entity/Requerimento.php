@@ -40,6 +40,12 @@ class Requerimento{
   public $id_atendimento;
 
   /**
+   * Tipo de Ocorrência
+   * @var integer
+   */
+  public $id_tipodeocorrencia;
+
+  /**
    * Criticidade
    * @var integer
    */
@@ -111,6 +117,7 @@ class Requerimento{
                                       'nrdgtec' => $this->nrdgtec,
                                       'id_chamado' => $this->id_chamado,
                                       'id_atendimento' => $this->id_atendimento,
+                                      'id_tipodeocorrencia' => $this->id_tipodeocorrencia,
                                       'id_criticidade' => $this->id_criticidade,
                                       'id_urgencia' => $this->id_urgencia,
                                       'id_status' => $this->id_status,
@@ -138,6 +145,7 @@ class Requerimento{
                                                   'nrdgtec' => $this->nrdgtec,
                                                   'id_chamado' => $this->id_chamado,
                                                   'id_atendimento' => $this->id_atendimento,
+                                                  'id_tipodeocorrencia' => $this->id_tipodeocorrencia,
                                                   'id_criticidade' => $this->id_criticidade,
                                                   'id_urgencia' => $this->id_urgencia,
                                                   'id_status' => $this->id_status,

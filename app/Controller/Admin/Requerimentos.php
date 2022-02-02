@@ -181,6 +181,7 @@ class Requerimentos extends Page{
       $usuario_autorizador = filter_input(INPUT_POST, 'usuario-autorizador', FILTER_SANITIZE_NUMBER_INT) ?? '';
       $urgencia = filter_input(INPUT_POST, 'urgencia', FILTER_SANITIZE_NUMBER_INT) ?? '';
       $criticidade = filter_input(INPUT_POST, 'criticidade', FILTER_SANITIZE_NUMBER_INT) ?? '';
+      $tipodeocorrencia = filter_input(INPUT_POST, 'tipodeocorrencia', FILTER_SANITIZE_NUMBER_INT) ?? '';
       $nr_dgtec = filter_input(INPUT_POST, 'nrdgtec', FILTER_SANITIZE_STRING) ?? '';
       $status = filter_input(INPUT_POST, 'status', FILTER_SANITIZE_NUMBER_INT) ?? '';
 
@@ -193,6 +194,7 @@ class Requerimentos extends Page{
         $obRequerimento->id_chamado = $id_chamado;
         $obRequerimento->id_atendimento = $atendimento;
         $obRequerimento->id_criticidade = $criticidade;
+        $obRequerimento->id_tipodeocorrencia = $tipodeocorrencia;
         $obRequerimento->id_urgencia = $urgencia;
         $obRequerimento->id_status = $status;
         $obRequerimento->id_atendente = $usuario_atendente;

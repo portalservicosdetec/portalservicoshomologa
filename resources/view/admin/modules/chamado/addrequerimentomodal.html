@@ -43,21 +43,30 @@
             </div>
           </div>
           <div class="form-row">
-            <div class="form-group col-md-6">
+            <div class="form-group col-md-4">
               <label for="recipient-urgencia" class="small-label col-form-label col-md-12 mb-0 p-0">Urgência: </label>
               <select name="urgencia" required value="" class="form-select form-select-sm" id="recipient-urgencia">
                 <option value=''>Selecione a Urgência</option>
                 {{optionsBuscaUrgencia}}
               </select>
             </div>
-            <div class="form-group col-md-6">
+            <div class="form-group col-md-4">
               <label for="recipient-criticidade" class="small-label col-form-label col-md-12 mb-0 p-0">Criticidade: </label>
               <select name="criticidade" required value="" class="form-select form-select-sm" id="recipient-criticidade">
                 <option value=''>Selecione a Criticidade</option>
                 {{optionsBuscaCriticidade}}
               </select>
             </div>
+            <div class="form-group col-md-4">
+              <label for="recipient-tipodeocorrencia" class="small-label col-form-label col-md-12 mb-0 p-0">Tipo de ocorrência: </label>
+              <select name="tipodeocorrencia" required value="" class="form-select form-select-sm" id="recipient-tipodeocorrencia">
+                <option value=''>Selecione o Tipo de ocorrência</option>
+                {{optionsBuscaTipodeOcorrencia}}
+              </select>
+            </div>
           </div>
+
+
           <!-- IMPEMENTAÇÃO FUTURA
           <div class="form-row">
             <div class="form-group col-md-3">
