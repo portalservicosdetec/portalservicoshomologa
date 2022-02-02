@@ -33,7 +33,6 @@ class Usuarios extends Page{
    */
   public static function getJsonUsuariosPorEmail($request){
 
-    $id = '';
     $email = filter_input(INPUT_GET, 'emailuser', FILTER_SANITIZE_STRING) ?? 0;
 
     $objUsuario = EntityUsuario::getUsuarioPorEmail($email);
