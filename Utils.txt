@@ -3,8 +3,6 @@ emerj.atwebpages.com
 
 
 
-
-
 SENHA:YEpjATrv53))Tg?u
 
 HOST:fdb33.awardspace.net
@@ -15,6 +13,9 @@ NAME:3911839_emerj
 
 USER:3911839_emerj
 SENHA:nHLJs_i.nBe2XbC
+
+DB_USER=emerjco_webdes
+DB_PASS=e4S(AoXmi{CH
 
 
 

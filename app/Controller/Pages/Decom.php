@@ -21,7 +21,7 @@ class Decom extends Page{
       'linktree' => self::getDecomLinktree($request),
     ]);
     //RETORNA A PÁGINA COMPLETA
-    return parent::getPage('EMERJ - Escola da Magistratura do Estado do Rio de Janeiro',$content,'Serviços DECOM');
+    return parent::getPage('EMERJ - Escola da Magistratura do Estado do Rio de Janeiro',$content,null);
   }
 
   /**

@@ -9,7 +9,7 @@
   </div>
 </div>
 {{status}}
-<table id="data-table-usuarios" class="table table-sm table-light table-hover table-striped">
+<table id="data-table-usuarios" class="table table-sm table-light table-hover table-striped" style="width:100%">
   <thead>
       <tr>
         <th scope="col">ID</th>
@@ -18,7 +18,7 @@
         <th scope="col">Cargo</th>
         <th scope="col">Sala</th>
         <th scope="col">Departamento</th>
-        <th scope="col"><span class="float-sm-right"></span></th>
+        <th scope="col" class="noExport"><span class="float-sm-right"></span></th>
       </tr>
   </thead>
   <tbody>
@@ -28,6 +28,55 @@
 <script type="text/javascript">
   $(document).ready(function() {
     var table = $('#data-table-usuarios').DataTable({
+      responsive: true,
+      lengthMenu: [
+          [ 10, 25, 50, -1 ],
+          [ 'Mostrar 10 registros', 'Mostrar 25 registros', 'Mostrar 50 registros', 'Exibir Todos' ]
+      ],
+      dom: 'Bfrtip',
+      buttons: [
+        {
+            extend: 'pageLength'
+        },
+        {
+            extend: 'colvis',
+            text: 'Visibilidade das Colunas',
+            postfixButtons: [ 'colvisRestore' ],
+            columns: ':not(.noVis)'
+        },
+        {
+            extend: 'excelHtml5',
+            text: '<i class="bi-file-excel"></i> Excel',
+            titleAttr: 'Exportar para Excel',
+            //className: 'btn-primary',
+            exportOptions: {
+                columns: [ ':visible' ],
+                columns: 'thead th:not(.noExport)'
+            }
+        },
+        {
+            extend: 'pdfHtml5',
+            text: '<i class="bi-file-pdf"></i> PDF',
+            titleAttr: 'Exportar para PDF',
+            exportOptions: {
+                columns: [ ':visible' ],
+                columns: 'thead th:not(.noExport)'
+            },
+            orientation: 'landscape',
+            pageSize: 'LEGAL',
+            footer: true
+        },
+      ],
+      columnDefs: [
+            {
+                targets: [-1],
+                className: 'noVis'
+            },
+            {
+                visible: false,
+                className: 'noVis'
+            }
+        ],
       "bStateSave": true,
       "fnStateSave": function (oSettings, oData) {
         localStorage.setItem('offersDataTables', JSON.stringify(oData));
@@ -35,7 +84,7 @@
       "fnStateLoad": function (oSettings) {
         return JSON.parse(localStorage.getItem('offersDataTables'));
       },
-      "language": { "url": "//cdn.datatables.net/plug-ins/1.11.1/i18n/pt_br.json" },
+      "language": { "url": "//cdn.datatables.net/plug-ins/1.11.1/i18n/pt_br.json" }
     });
   });
 </script>

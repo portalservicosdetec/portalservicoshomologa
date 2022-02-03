@@ -16,6 +16,72 @@ class Requerimento{
   public $requerimento_id;
 
   /**
+   * Descrição do requerimento
+   * @var string
+   */
+  public $requerimento_desc;
+
+  /**
+   * Descrição do requerimento
+   * @var string
+   */
+  public $nrdgtec;
+
+  /**
+   * Descrição da requerimento (pode conter html)
+   * @var integer
+   */
+  public $id_chamado;
+
+  /**
+   * Atendimento
+   * @var integer
+   */
+  public $id_atendimento;
+
+  /**
+   * Tipo de Ocorrência
+   * @var integer
+   */
+  public $id_tipodeocorrencia;
+
+  /**
+   * Criticidade
+   * @var integer
+   */
+  public $id_criticidade;
+
+  /**
+   * Urgencia
+   * @var integer
+   */
+  public $id_urgencia;
+
+  /**
+   * Status do andament
+   * @var integer
+   */
+  public $id_status;
+
+  /**
+   * Status do andament
+   * @var integer
+   */
+  public $id_atendente;
+
+  /**
+   * Status do andament
+   * @var integer
+   */
+  public $id_atendido;
+
+  /**
+   * Status do andament
+   * @var integer
+   */
+  public $id_autorizador;
+
+  /**
    * Data de publicação da requerimento
    * @var string
    */
@@ -28,34 +94,10 @@ class Requerimento{
   public $data_up;
 
   /**
-   * Descrição da requerimento (pode conter html)
-   * @var integer
-   */
-  public $id_chamado;
-
-  /**
-   * Descrição da andament (pode conter html)
-   * @var integer
-   */
-  public $id_atendimento;
-
-  /**
-   * Descrição da andament (pode conter html)
-   * @var integer
-   */
-  public $id_itemdeconf;
-
- /**
- * Data do atendimento do andament
- * @var string
+ * Define se o usuário está ativo
+ * @var string(s/n)
  */
-  public $dt_atendimento;
-
-  /**
-   * Status do andament
-   * @var integer
-   */
-  public $id_status;
+ public $ativo_fl;
 
 
   /**
@@ -71,9 +113,17 @@ class Requerimento{
      // echo "<pre>"; print_r($obDatabase); echo "</pre>"; exit;
 
     $this->andament_id = $obDatabase->insert([
+                                      'requerimento_desc' => $this->requerimento_desc,
+                                      'nrdgtec' => $this->nrdgtec,
                                       'id_chamado' => $this->id_chamado,
                                       'id_atendimento' => $this->id_atendimento,
-                                      'id_itemdeconf' => $this->id_itemdeconf
+                                      'id_tipodeocorrencia' => $this->id_tipodeocorrencia,
+                                      'id_criticidade' => $this->id_criticidade,
+                                      'id_urgencia' => $this->id_urgencia,
+                                      'id_status' => $this->id_status,
+                                      'id_atendente' => $this->id_atendente,
+                                      'id_atendido' => $this->id_atendido,
+                                      'id_autorizador' => strlen($this->id_autorizador) > 0 ? $this->id_autorizador : NULL
                                     ]);
 
     //RETORNAR SUCESSO
@@ -91,9 +141,17 @@ class Requerimento{
     $this->data_up = date('Y-m-d H:i:s');
 
     return (new Database('tb_requerimento'))->update('requerimento_id = '.$this->requerimento_id,[
-                                                'id_chamado' => $this->id_chamado,
-                                                'id_atendimento' => $this->id_atendimento,
-                                                'id_itemdeconf' => $this->id_itemdeconf
+                                                  'requerimento_desc' => $this->requerimento_desc,
+                                                  'nrdgtec' => $this->nrdgtec,
+                                                  'id_chamado' => $this->id_chamado,
+                                                  'id_atendimento' => $this->id_atendimento,
+                                                  'id_tipodeocorrencia' => $this->id_tipodeocorrencia,
+                                                  'id_criticidade' => $this->id_criticidade,
+                                                  'id_urgencia' => $this->id_urgencia,
+                                                  'id_status' => $this->id_status,
+                                                  'id_atendente' => $this->id_atendente,
+                                                  'id_atendido' => $this->id_atendido,
+                                                  'id_autorizador' => $this->id_autorizador
                                                   ]);
    }
 

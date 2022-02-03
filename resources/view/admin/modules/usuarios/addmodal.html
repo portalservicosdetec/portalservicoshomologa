@@ -25,8 +25,8 @@
           </div>
           <div class="form-row">
             <div class="form-group col-md-6">
-              <label>Email</label>
-                <input type="email" name="email" maxlength="50" value="" required  class="form-control form-control-sm">
+              <label for="recipient-email-user-add"><div id="label-email-user-add">Email</div></label>
+                <input type="email" id="recipient-email-user-add" name="email" maxlength="50" value="" required class="form-control form-control-sm">
             </div>
 
             <div class="form-group col-md-6">
@@ -60,13 +60,24 @@
           </div>
           <div class="modal-footer col-mb-12">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-            <button type="submit" class="btn btn-primary" id="add-button" name="button">Cadastrar Usuário</button>
+            <button type="submit" class="btn btn-primary" id="recipient-button-user-add" name="button">Cadastrar Usuário</button>
           </div>
         </div>
       </form>
     </div>
   </div>
 </div>
+<style>
+  .modal-input-fail {
+    border-color: #429;
+    color: #429;
+  }
+  .modal-label-email-fail {
+    color: #429;
+    border-color: #429;
+  }
+</style>
+
 <script type="text/javascript">
     $(document).ready(function() {
         $('#recipient-departamento-add').select2({
@@ -75,6 +86,34 @@
         $('#recipient-localizacao-add').select2({
           dropdownParent: $('#addModal')
         });
+   });
+   $(function(){
+
+     function zeraUsuarioEmailDuplicado(){
+       $("#label-email-user-add").text('Email');
+       $("#recipient-button-user-add").removeAttr("disabled");
+       $("#recipient-email-user-add").removeAttr("style");
+       $("#label-email-user-add").removeAttr("style");
+       console.log('OK!');
+     }
+     // JSON PARA RETORNAR DADOS (Nome,Departamento[SIGLA;ID],Localização[NOME;ID]) DO USUÁRIO POR E-MAIL
+     $("#recipient-email-user-add").blur(function() {
+       if( $(this).val() ) {
+           $.getJSON('usuarios/jsonusuarioporemail?',{emailuser: $(this).val(), ajax: 'true'}, function(j){
+            console.log(j);
+             if (j != null) {
+               $("#label-email-user-add").text(j[0]);
+               $("#recipient-email-user-add").attr("style", "border-color: red;");
+               $("#label-email-user-add").attr("style", "color: red");
+               $("#recipient-button-user-add").attr("disabled","disabled");
+             }else {
+               zeraUsuarioEmailDuplicado();
+             }
+         });
+       } else {
+         zeraUsuarioEmailDuplicado();
+       }
+     });
    });
 
 

@@ -25,6 +25,25 @@ const TITLELOW_USUARIO = 'o usuário';
 
 class Usuarios extends Page{
 
+
+  /**
+   * Método responsável por retornar mensagem caso usuario buscado por e-mail exista
+   * @param Request $request
+   * @return string
+   */
+  public static function getJsonUsuariosPorEmail($request){
+
+    $email = filter_input(INPUT_GET, 'emailuser', FILTER_SANITIZE_STRING) ?? 0;
+
+    $objUsuario = EntityUsuario::getUsuarioPorEmail($email);
+
+    if ($objUsuario) {
+      echo(json_encode(['E-mail '.$email.' já consta no sistema!']));
+    } else {
+      echo('null');
+    }
+  }
+
   /**
    * Método responsável pela renderização da view de listagem de usuários
    * @param string $dep

@@ -13,6 +13,16 @@ $obRouter->get('/admin/usuarios',[
   }
 ]);
 
+//ROTA JSON PARA VERIFICAR SE E-MAIL DE USUÁRIO JÁ ESTÁ CADASTRADO
+$obRouter->get('/admin/usuarios/jsonusuarioporemail',[
+  'middlewares' => [
+    'require-admin-login'
+  ],
+  function($request){
+    return new Response(200,Admin\Usuarios::getJsonUsuariosPorEmail($request));
+  }
+]);
+
 //ROTA DE CADASTRO DE UM NOVO USUÁRIOS
 $obRouter->get('/admin/usuarios/novo',[
   'middlewares' => [

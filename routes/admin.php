@@ -40,3 +40,6 @@ include __DIR__.'/admin/requerimentos.php';
 
 //INCLUI AS ROTAS DE SERVIÇOS DO DECOM
 include __DIR__.'/admin/decoms.php';
+
+//INCLUI AS ROTAS DE TIPOS DE OCORRÊNCIAS
+include __DIR__.'/admin/tipodeocorrencias.php';

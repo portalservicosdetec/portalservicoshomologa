@@ -16,6 +16,22 @@ class Page{
     return View::render('admin/header');
   }
 
+
+  /**
+   * Método responsável por renderizar o topo da nossa página genérica
+   * @param string
+   */
+  public static function getUserProfile(){
+    //return 'Olá Mundo';
+    return View::render('admin/user/profile',[
+      'departamentoUser' => $_SESSION['admin']['usuario']['departamento'],
+      'perfilIdUser' => $_SESSION['admin']['usuario']['id_perfil'],
+      'idUser' => $_SESSION['admin']['usuario']['usuario_id'],
+      'nomeUser' => $_SESSION['admin']['usuario']['usuario_nm'],
+      'emailUser' => $_SESSION['admin']['usuario']['email']
+    ]);
+  }
+
   /**
    * Método responsável por renderizar o rodapé da nossa página genérica
    * @param string
@@ -94,6 +110,14 @@ class Page{
             'navbarMenuLink' => '',
             'data-toggle' => ''
           ],
+          'requerimentos' => [
+            'label' => 'Requisições',
+            'link' => URL.'/admin/requerimentos',
+            'dropdown' => '',
+            'dropdown-toggle' => '',
+            'navbarMenuLink' => '',
+            'data-toggle' => ''
+          ],
           'servicos' => [
             'label' => 'Serviços',
             'link' => '#',
@@ -125,14 +149,6 @@ class Page{
             'dropdown-toggle' => '',
             'navbarMenuLink' => '',
             'data-toggle' => ''
-          ],
-          'novosite' => [
-            'label' => 'Novo Site',
-            'link' => URL.'/admin/localizacoes',
-            'dropdown' => 'dropdown',
-            'dropdown-toggle' => 'dropdown-toggle',
-            'navbarMenuLink' => 'navbarDropdownMenuLinkNovoSite',
-            'data-toggle' => 'data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"'
           ]
         ];
       } elseif ($currentDepartamento == 'DECOM') {
@@ -255,41 +271,6 @@ class Page{
           'dropdownlabel' => 'Categorias de ICs',
           'dropdownlink' => URL.'/admin/categoriadeics',
           'navbarDropdownMenuLink' => 'navbarDropdownMenuLinkICs',
-        ],
-        'noticias' => [
-          'dropdownlabel' => 'Notícias',
-          'dropdownlink' => URL.'/admin/noticias',
-          'navbarDropdownMenuLink' => 'navbarDropdownMenuLinkNovoSite',
-        ],
-        'cursos' => [
-          'dropdownlabel' => 'Cursos',
-          'dropdownlink' => URL.'/admin/cursos',
-          'navbarDropdownMenuLink' => 'navbarDropdownMenuLinkNovoSite',
-        ],
-        'tipodecursos' => [
-          'dropdownlabel' => 'Tipo de Cursos',
-          'dropdownlink' => URL.'/admin/tipodecursos',
-          'navbarDropdownMenuLink' => 'navbarDropdownMenuLinkNovoSite',
-        ],
-        'subtipodecursos' => [
-          'dropdownlabel' => 'SubTipo de Cursos',
-          'dropdownlink' => URL.'/admin/subtipodecursos',
-          'navbarDropdownMenuLink' => 'navbarDropdownMenuLinkNovoSite',
-        ],
-        'paginas' => [
-          'dropdownlabel' => 'Páginas',
-          'dropdownlink' => URL.'/admin/paginas',
-          'navbarDropdownMenuLink' => 'navbarDropdownMenuLinkNovoSite',
-        ],
-        'sessoes' => [
-          'dropdownlabel' => 'Sessões',
-          'dropdownlink' => URL.'/admin/sessoes',
-          'navbarDropdownMenuLink' => 'navbarDropdownMenuLinkNovoSite',
-        ],
-        'subsessoes' => [
-          'dropdownlabel' => 'Subsessões',
-          'dropdownlink' => URL.'/admin/subsessoes',
-          'navbarDropdownMenuLink' => 'navbarDropdownMenuLinkNovoSite',
         ]
       ];
     } elseif ($currentDepartamento == 'DECOM') {
@@ -324,6 +305,16 @@ class Page{
           'dropdownlabel' => 'Gestão de Usuários',
           'dropdownlink' => URL.'/admin/usuarios',
           'navbarDropdownMenuLink' => 'navbarDropdownMenuLinkServicos',
+        ],
+        'chamados' => [
+          'dropdownlabel' => 'Abrir chamado',
+          'dropdownlink' => URL.'/admin/chamados/novo',
+          'navbarDropdownMenuLink' => 'navbarDropdownMenuLinkServicos',
+        ],
+        'listarchamados' => [
+          'dropdownlabel' => 'Listar chamados',
+          'dropdownlink' => URL.'/admin/chamados',
+          'navbarDropdownMenuLink' => 'navbarDropdownMenuLinkServicos',
         ]
       ];
     } else {
@@ -351,6 +342,7 @@ class Page{
       'header' => self::getHeader(),
       'content' => $content,
       'footer' => self::getFooter(),
+      'userprofile' => self::getUserProfile(),
       'menu' => self::getMenu($currentModule,$currentDepartamento,$currentPerfil)
     ]);
   }
@@ -425,6 +417,7 @@ class Page{
     'header' => self::getHeader(),
     'footer' => self::getFooter(),
     'content' => $content,
+    //'userprofile' => self::getUserProfile(),
     'menu' => self::getMenu($currentModule,$currentDepartamento,$currentPerfil)
     ]);
 

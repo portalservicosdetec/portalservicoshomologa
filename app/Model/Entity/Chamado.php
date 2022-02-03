@@ -158,15 +158,16 @@ class Chamado{
 
     //INSERIR O IC NO BANCO
     $obDatabase = new Database('tb_chamado');
-     // echo "<pre>"; print_r($obDatabase); echo "</pre>"; exit;
+    //echo "<pre>"; print_r($obDatabase); echo "</pre>"; exit;
 
     $this->chamado_id = $obDatabase->insert([
                                       'chamadoid_ano' => self::nrSolicitacao()[0],
                                       'chamado_nm' => $this->chamado_nm,
+                                      'ano_add' =>$this->ano_add,
                                       'chamado_des' => $this->chamado_des,
                                       'id_usuario' => $_SESSION['admin']['usuario']['usuario_id'],
-                                      'solicitado_por' => $this->solicitado_por,
-                                      'aberto_para' => $this->aberto_para,
+                                      'solicitado_por' => strlen($this->solicitado_por) > 0 ? $this->solicitado_por : NULL,
+                                      'aberto_para' => strlen($this->aberto_para) > 0 ? $this->aberto_para : NULL,
                                       'chamado_obs' => $this->chamado_obs,
                                       'id_status' => $this->id_status,
                                       'nr_solicitacao' => $this->nr_solicitacao,
