@@ -418,7 +418,7 @@ class Chamados extends Page{
         }
       }
 
-      echo "<pre>BBBBB"; print_r($obChamado->solicitado_por); echo "<pre>"; 
+    //  echo "<pre>BBBBB"; print_r($obChamado->solicitado_por); echo "<pre>"; 
 
       if ($obChamado->solicitado_por > 0) {
         $obUsuarioSolicitante = EntityUsuario::getUsuarioPorId($obChamado->solicitado_por);
