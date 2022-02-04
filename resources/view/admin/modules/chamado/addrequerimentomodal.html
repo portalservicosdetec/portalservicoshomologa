@@ -65,39 +65,6 @@
               </select>
             </div>
           </div>
-
-
-          <!-- IMPEMENTAÇÃO FUTURA
-          <div class="form-row">
-            <div class="form-group col-md-3">
-              <label for="recipient-tipodeic" class="small-label col-form-label col-md-12 mb-0 p-0">Tipo de Serviço: </label>
-              <select name="tipodeic" required value="" class="form-select form-select-sm" id="recipient-tipodeic">
-                <option value=''>Selecione o Tipo de Serviço</option>
-                {{optionsBuscaTipoDeServico}}
-              </select>
-            </div>
-            <div class="form-group col-md-3">
-              <label for="recipient-tipodeic" class="small-label col-form-label col-md-12 mb-0 p-0">Serviço: </label>
-              <select name="tipodeic" required value="" class="form-select form-select-sm" id="recipient-tipodeic">
-                <option value=''>Selecione o Serviço</option>
-                {{optionsBuscaServico}}
-              </select>
-            </div>
-            <div class="form-group col-md-3">
-              <label for="recipient-tipodeic" class="small-label col-form-label col-md-12 mb-0 p-0">Tipo de Item: </label>
-              <select name="tipodeic" required value="" class="form-select form-select-sm" id="recipient-tipodeic">
-                <option value=''>Selecione o Tipo de Item</option>
-                {{optionsBuscaTipodeic}}
-              </select>
-            </div>
-            <div class="form-group col-md-3">
-              <label for="recipient-tipodeic" class="small-label col-form-label col-md-12 mb-0 p-0">Usuário: </label>
-              <select name="tipodeic" required value="" class="form-select form-select-sm" id="recipient-tipodeic">
-                <option value=''>Selecione o Usuário</option>
-                {{optionsBuscaUsuario}}
-              </select>
-            </div>
-          </div>-->
           <div class="form-row">
             <div class="form-group col-md-3">
               <label for="recipient-status" class="small-label col-form-label col-md-12 mb-0 p-0">Status: </label>
@@ -108,7 +75,7 @@
             </div>
             <div class="form-group col-md-3">
               <label for="recipient-nrdgtec" class="small-label col-form-label col-md-12 mb-0 p-0">Número da DGTEC: </label>
-              <input type="text" class="form-control form-control-sm" name="nrdgtec" maxlength="12" value="" id="recipient-nrdgtec">
+              <input type="text" class="form-control form-control-sm" name="nrdgtec" maxlength="20" value="" id="recipient-nrdgtec">
             </div>
             <div class="form-group col-md-6">
               <label for="recipient-usuario-autorizador" class="small-label col-form-label col-md-12 mb-0 p-0">Usuário Autorizador: </label>
@@ -124,73 +91,6 @@
               <textarea class="form-control" name="descricao" value="" rows="5" maxlength="5000" id="recipient-desc"></textarea>
             </div>
           </div>
-
-
-      <!--
-      <div class="container">
-        <div class="row">
-          <div class="col-sm-6" id="delail_titulo"></div>
-          <div class="col-sm-6" id="delail_data_abertuta"></div>
-        </div>
-        <div class="row">
-          <div class="col-sm-1" id="delail_UsuarioContatoId"></div>
-          <div class="col-sm-4" id="delail_UsuarioContatoNome"></div>
-          <div class="col-sm-3" id="delail_UsuarioContatoEmail"></div>
-          <div class="col-sm-2" id="delail_UsuarioContatoTelefone"></div>
-          <div class="col-sm-1" id="delail_UsuarioContatoSiglaDep"></div>
-          <div class="col-sm-1" id="delail_UsuarioContatoSala"></div>
-        </div>
-        <div class="row">
-          <div class="col-sm-12" id="delail_descricao"></div>
-        </div>
-        <div class="row">
-          <div class="col-sm-1" id="delail_UsuarioSolicitanteId"></div>
-          <div class="col-sm-4" id="delail_UsuarioSolicitanteNome"></div>
-          <div class="col-sm-3" id="delail_UsuarioSolicitanteEmail"></div>
-          <div class="col-sm-2" id="delail_UsuarioSolicitanteTelefone"></div>
-          <div class="col-sm-1" id="delail_UsuarioSolicitanteSiglaDep"></div>
-          <div class="col-sm-1" id="delail_UsuarioSolicitanteSala"></div>
-        </div>
-        <div class="row">
-          <div class="col-sm-1" id="delail_UsuarioAtendidoId"></div>
-          <div class="col-sm-4" id="delail_UsuarioAtendidoNome"></div>
-          <div class="col-sm-3" id="delail_UsuarioAtendidoEmail"></div>
-          <div class="col-sm-2" id="delail_UsuarioAtendidoTelefone"></div>
-          <div class="col-sm-1" id="delail_UsuarioAtendidoSiglaDep"></div>
-          <div class="col-sm-1" id="delail_UsuarioAtendidoSala"></div>
-        </div>
-        <div class="row">
-          <div class="col-sm-1" id="delail_UsuarioAutorizadorId"></div>
-          <div class="col-sm-4" id="delail_UsuarioAutorizadorNome"></div>
-          <div class="col-sm-3" id="delail_UsuarioAutorizadorEmail"></div>
-          <div class="col-sm-2" id="delail_UsuarioAutorizadorTelefone"></div>
-          <div class="col-sm-1" id="delail_UsuarioAutorizadorSiglaDep"></div>
-          <div class="col-sm-1" id="delail_UsuarioAutorizadorSala"></div>
-        </div>
-        <div class="row">
-          <div class="col-sm-1" id="delail_UsuarioAtendenteId"></div>
-          <div class="col-sm-4" id="delail_UsuarioAtendenteNome"></div>
-          <div class="col-sm-3" id="delail_UsuarioAtendenteEmail"></div>
-          <div class="col-sm-2" id="delail_UsuarioAtendenteTelefone"></div>
-          <div class="col-sm-1" id="delail_UsuarioAtendenteSiglaDep"></div>
-          <div class="col-sm-1" id="delail_UsuarioAtendenteSala"></div>
-        </div>
-        <div class="row">
-          <div class="col-sm-4" id="delail_dataAtendimento"></div>
-          <div class="col-sm-4" id="delail_nrSolicitacao"></div>
-          <div class="col-sm-4" id="delail_nrRequisicao"></div>
-        </div>
-        <div class="row">
-          <div class="col-sm-12" id="delail_chamadoObs"></div>
-        </div>
-        <div class="row">
-          <div class="col-sm-4" id="delail_idStatus"></div>
-          <div class="col-sm-4" id="delail_idChamadoPai"></div>
-          <div class="col-sm-4" id="delail_statusdoatendimento"></div>
-        </div>
-
-      </div>
-        -->
       <div class="modal-footer col-mb-12">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
         <button type="submit" class="btn btn-primary" id="add-button" name="button">Cadastrar Requisição</button>
