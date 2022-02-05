@@ -1,0 +1,17 @@
+URL=https://emerj.com.br/portalservicos
+DB_HOST=localhost:3306
+DB_NAME=emerjco_portalservicos
+DB_NAME_EVENTO=emerjco_evento
+DB_USER=emerjco_web
+DB_PASS=407Vutepufr#
+DB_PORT=3306
+MAINTENANCE=false
+HOST_SMTP=mail.emerj.com.br
+USER_SMTP=portalservicos@emerj.com.br
+PASS_SMTP=WpEA]shuv9)N
+SECURE_SMTP=SSL
+PORT_SMTP=465
+CHARSET_SMTP=UTF-8
+FROM_EMAIL=portalservicos@emerj.com.br
+FROM_NAME=EMERJ - Portal de Serviços
+PAGINATION_LIMIT=7

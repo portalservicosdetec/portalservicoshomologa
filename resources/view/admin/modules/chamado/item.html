@@ -1,7 +1,58 @@
 <tr class="tr-sm {{style_ativo}}">
   <th scope="row"><small>{{ticket}}</small></th>
   <td><small>{{descricao}}</small></td>
-  <td><small>{{Requisitante}}</small></td>
+  <td>
+    <small>
+      <div class="dropdown">
+        <a
+          class="dropdown hidden-arrow"
+          href="#"
+          id="navbarDropdownMenuContato"
+          role="button"
+          data-toggle="dropdown"
+          aria-expanded="false"
+        >
+        <i class="bi-person-fill" style="font-size: 1rem; margin-right: 2px; color: cornflowerblue;"></i></a>{{UsuarioContatoNome}}
+        <ul class="dropdown-menu dropdown-menu-right" style="width: 340px" aria-labelledby="navbarDropdownMenuContato">
+          <li>
+            <div style="margin-left: 10px; font-size: 16px;"><i class="bi-person-fill" style="font-size: 1.2rem; max-height:18px; margin-right: 5px; color: steelblue;"></i><strong>{{UsuarioContatoNome}}</strong></div>
+          </li>
+          <li><hr class="dropdown-divider"></li>
+          <li>
+            <div style="margin-left: 10px; font-size: 12px;"><i class="bi-envelope" style="font-size: 1rem; max-height:15px; margin-right: 5px; color: steelblue;"></i>{{UsuarioContatoEmail}}</div>
+            <div style="margin-left: 10px; font-size: 12px;"><i class="bi-telephone" style="font-size: 1rem; max-height:15px; margin-right: 5px; color: steelblue;"></i>{{UsuarioContatoTelefone}}</div>
+            <div style="margin-left: 10px; font-size: 12px;"><i class="bi-house" style="font-size: 1rem; max-height:15px; margin-right: 5px; color: steelblue;"></i>{{UsuarioContatoSiglaDep}} - {{UsuarioContatoSala}}</div>
+          </li>
+        </ul>
+      </div>
+    </small>
+  </td>
+  <td>
+    <small>
+      <div class="dropdown">
+        <a
+          class="dropdown hidden-arrow"
+          href="#"
+          id="navbarDropdownMenuRequisitante"
+          role="button"
+          data-toggle="dropdown"
+          aria-expanded="false"
+        >
+        <i class="bi-person-fill" style="font-size: 1rem; margin-right: 2px; color: cornflowerblue;"></i></a>{{UsuarioSolicitanteNome}}
+        <ul class="dropdown-menu dropdown-menu-right" style="width: 340px" aria-labelledby="navbarDropdownMenuRequisitante">
+          <li>
+            <div style="margin-left: 10px; font-size: 16px;"><i class="bi-person-fill" style="font-size: 1.2rem; max-height:18px; margin-right: 5px; color: steelblue;"></i><strong>{{UsuarioSolicitanteNome}}</strong></div>
+          </li>
+          <li><hr class="dropdown-divider"></li>
+          <li>
+            <div style="margin-left: 10px; font-size: 12px;"><i class="bi-envelope" style="font-size: 1rem; max-height:15px; margin-right: 5px; color: steelblue;"></i>{{UsuarioSolicitanteEmail}}</div>
+            <div style="margin-left: 10px; font-size: 12px;"><i class="bi-telephone" style="font-size: 1rem; max-height:15px; margin-right: 5px; color: steelblue;"></i>{{UsuarioSolicitanteTelefone}}</div>
+            <div style="margin-left: 10px; font-size: 12px;"><i class="bi-house" style="font-size: 1rem; max-height:15px; margin-right: 5px; color: steelblue;"></i>{{UsuarioSolicitanteSiglaDep}} - {{UsuarioSolicitanteSala}}</div>
+          </li>
+        </ul>
+      </div>
+    </small>
+  </td>
   <td><small>{{data_abertura}}</small></td>
   <td><small>{{statusdoatendimento}}</small></td>
   <td>
