@@ -1,4 +1,6 @@
 files/*
+tmp/*
+admin/logs/*
 .env
 .htaccess
-Utils.txt
+.cpanel.yml
