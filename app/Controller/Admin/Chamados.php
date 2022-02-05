@@ -418,7 +418,7 @@ class Chamados extends Page{
         }
       }
 
-    //  echo "<pre>BBBBB"; print_r($obChamado->solicitado_por); echo "<pre>"; 
+    //  echo "<pre>BBBBB"; print_r($obChamado->solicitado_por); echo "<pre>";
 
       if ($obChamado->solicitado_por > 0) {
         $obUsuarioSolicitante = EntityUsuario::getUsuarioPorId($obChamado->solicitado_por);
@@ -441,11 +441,13 @@ class Chamados extends Page{
         'id' => $obChamado->chamado_id,
         'ticket' => $obChamado->nr_solicitacao,
         'titulo' => $obChamado->chamado_nm,
-        'descricao' => $obChamado->chamado_des,
-        'data_abertura' => $obChamado->data_add,
+        'descricao' => View::limitCharacter($obChamado->chamado_des,'\S',1,30) ?? '',
+        'descricaoFull' => $obChamado->chamado_des ?? '',
+        'data_abertura' => date('d/m/y', strtotime($obChamado->data_add)).' às '.date('H:i', strtotime($obChamado->data_add)),
 
         "UsuarioContatoId" => $UsuarioContatoId,
         "UsuarioContatoNome" => $UsuarioContatoNome,
+        "UsuarioContatoPrimeiroNome" => View::firstName($UsuarioContatoNome).' ('.$UsuarioContatoSiglaDep.')',
         "UsuarioContatoEmail" => $UsuarioContatoEmail,
         "UsuarioContatoTelefone" => $UsuarioContatoTelefone,
         "UsuarioContatoSiglaDep" =>$UsuarioContatoSiglaDep,
@@ -453,6 +455,7 @@ class Chamados extends Page{
 
         "UsuarioSolicitanteId" => $UsuarioSolicitanteId,
         "UsuarioSolicitanteNome" => $UsuarioSolicitanteNome,
+        "UsuarioSolicitantePrimeiroNome" => View::firstName($UsuarioSolicitanteNome).' ('.$UsuarioSolicitanteSiglaDep.')',
         "UsuarioSolicitanteEmail" => $UsuarioSolicitanteEmail,
         "UsuarioSolicitanteTelefone" => $UsuarioSolicitanteTelefone,
         "UsuarioSolicitanteSiglaDep" => $UsuarioSolicitanteSiglaDep,

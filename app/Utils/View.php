@@ -18,6 +18,22 @@ class View{
     self::$vars = $vars;
   }
 
+
+  // FUNÇÃO PARA LIMITAR A QUANTIDADE DE CARACTERES ATE O PRÓXIMO ESPAÇO
+  public static function limitCharacter($string,$srtValor,$ini,$tam){
+
+    $regex = '/.{'.$ini.','.$tam.'}('.$srtValor.'*|$)/';
+    preg_match_all($regex, $string, $matches);
+    $result = array_shift($matches[0]);
+    return $result;
+  }
+
+// FUNÇÃO PARA LIMITAR A QUANTIDADE DE CARACTERES ATE O PRÓXIMO ESPAÇO
+public static function firstName($name){
+  $array = explode(" ",$name);
+  return $array[0];
+}
+
   /**
    * Método responsável por retornar o conteúdo de uma view
    * @param string $view

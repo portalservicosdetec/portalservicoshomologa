@@ -43,6 +43,26 @@
             </div>
           </div>
           <div class="form-row">
+            <div class="form-group col-md-3">
+              <label for="recipient-status" class="small-label col-form-label col-md-12 mb-0 p-0">Status: </label>
+              <select name="status" required value="" class="form-select form-select-sm" id="recipient-status">
+                <option value=''>Selecione o Status</option>
+                {{optionsBuscaStatus}}
+              </select>
+            </div>
+            <div class="form-group col-md-3">
+              <label for="recipient-nrdgtec" class="small-label col-form-label col-md-12 mb-0 p-0">Número da DGTEC: </label>
+              <input type="text" class="form-control form-control-sm" name="nrdgtec" maxlength="20" value="" id="recipient-nrdgtec">
+            </div>
+            <div class="form-group col-md-6">
+              <label for="recipient-usuario-autorizador" class="small-label col-form-label col-md-12 mb-0 p-0">Usuário Autorizador: </label>
+              <select name="usuario-autorizador" value="" class="form-select form-select-sm" id="recipient-usuario-autorizador">
+                <option value=''>Selecione o Usuário Autorizador</option>
+                {{optionsBuscaUsuario}}
+              </select>
+            </div>
+          </div>
+          <div class="form-row">
             <div class="form-group col-md-4">
               <label for="recipient-urgencia" class="small-label col-form-label col-md-12 mb-0 p-0">Urgência: </label>
               <select name="urgencia" required value="" class="form-select form-select-sm" id="recipient-urgencia">
@@ -65,30 +85,11 @@
               </select>
             </div>
           </div>
-          <div class="form-row">
-            <div class="form-group col-md-3">
-              <label for="recipient-status" class="small-label col-form-label col-md-12 mb-0 p-0">Status: </label>
-              <select name="status" required value="" class="form-select form-select-sm" id="recipient-status">
-                <option value=''>Selecione o Status</option>
-                {{optionsBuscaStatus}}
-              </select>
-            </div>
-            <div class="form-group col-md-3">
-              <label for="recipient-nrdgtec" class="small-label col-form-label col-md-12 mb-0 p-0">Número da DGTEC: </label>
-              <input type="text" class="form-control form-control-sm" name="nrdgtec" maxlength="20" value="" id="recipient-nrdgtec">
-            </div>
-            <div class="form-group col-md-6">
-              <label for="recipient-usuario-autorizador" class="small-label col-form-label col-md-12 mb-0 p-0">Usuário Autorizador: </label>
-              <select name="usuario-autorizador" value="" class="form-select form-select-sm" id="recipient-usuario-autorizador">
-                <option value=''>Selecione o Usuário Autorizador</option>
-                {{optionsBuscaUsuario}}
-              </select>
-            </div>
-          </div>
+
           <div class="form-row">
             <div class="form-group col-md-12">
               <label for="recipient-desc" class="small-label col-form-label col-md-12 mb-0 p-0">Obs: </label>
-              <textarea class="form-control" name="descricao" value="" rows="5" maxlength="5000" id="recipient-desc"></textarea>
+              <textarea class="form-control" name="descricao" value="" rows="3" maxlength="5000" id="recipient-desc"></textarea>
             </div>
           </div>
       <div class="modal-footer col-mb-12">
