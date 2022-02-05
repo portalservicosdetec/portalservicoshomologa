@@ -1,0 +1,79 @@
+<tr class="tr-sm {{style_ativo}}">
+  <th scope="row"><small>{{ticket}}</small></th>
+  <td><small>{{descricao}}</small></td>
+  <td><small>{{Requisitante}}</small></td>
+  <td><small>{{data_abertura}}</small></td>
+  <td><small>{{statusdoatendimento}}</small></td>
+  <td>
+    <div role="toolbar" class="btn-toolbar float-sm-right">
+      <div class="btn-group dropleft" role="group">
+        <button id="btnGroupDrop1" type="button" class="btn btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Ações
+        </button>
+        <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+          <a class="dropdown-item" href="{{URL}}/admin/{{direntity}}/{{ticket}}/detail" type="button" role="button" class="btn btn-danger btn-sm" name="button" data-bs-toggle="modal" data-bs-target="#detailModal"
+          data-bs-whatever-url="{{URL}}"
+          data-bs-whatever-uri="{{uri}}"
+          data-bs-whatever-id="{{id}}"
+          data-bs-whatever-ticket="{{ticket}}"
+          data-bs-whatever-titulo="{{titulo}}"
+          data-bs-whatever-descricao="{{descricao}}"
+          data-bs-whatever-data_abertura="{{data_abertura}}"
+
+          data-bs-whatever-UsuarioContatoId="{{UsuarioContatoId}}"
+          data-bs-whatever-UsuarioContatoNome="{{UsuarioContatoNome}}"
+          data-bs-whatever-UsuarioContatoEmail="{{UsuarioContatoEmail}}"
+          data-bs-whatever-UsuarioContatoTelefone="{{UsuarioContatoTelefone}}"
+          data-bs-whatever-UsuarioContatoSiglaDep="{{UsuarioContatoSiglaDep}}"
+          data-bs-whatever-UsuarioContatoSala="{{UsuarioContatoSala}}"
+
+          data-bs-whatever-UsuarioSolicitanteId="{{UsuarioSolicitanteId}}"
+          data-bs-whatever-UsuarioSolicitanteNome="{{UsuarioSolicitanteNome}}"
+          data-bs-whatever-UsuarioSolicitanteEmail="{{UsuarioSolicitanteEmail}}"
+          data-bs-whatever-UsuarioSolicitanteTelefone="{{UsuarioSolicitanteTelefone}}"
+          data-bs-whatever-UsuarioSolicitanteSiglaDep="{{UsuarioSolicitanteSiglaDep}}"
+          data-bs-whatever-UsuarioSolicitanteSala="{{UsuarioSolicitanteSala}}"
+
+          data-bs-whatever-UsuarioAtendidoId="{{UsuarioAtendidoId}}"
+          data-bs-whatever-UsuarioAtendidoNome="{{UsuarioAtendidoNome}}"
+          data-bs-whatever-UsuarioAtendidoEmail="{{UsuarioAtendidoEmail}}"
+          data-bs-whatever-UsuarioAtendidoTelefone="{{UsuarioAtendidoTelefone}}"
+          data-bs-whatever-UsuarioAtendidoSiglaDep="{{UsuarioAtendidoSiglaDep}}"
+          data-bs-whatever-UsuarioAtendidoSala="{{UsuarioAtendidoSala}}"
+
+          data-bs-whatever-dataAtendimento="{{dataAtendimento}}"
+          data-bs-whatever-nrSolicitacao="{{nrSolicitacao}}"
+          data-bs-whatever-nrRequisicao="{{nrRequisicao}}"
+          data-bs-whatever-chamadoObs="{{chamadoObs}}"
+          data-bs-whatever-idStatus="{{idStatus}}"
+          data-bs-whatever-idChamadoPai="{{idChamadoPai}}"
+          data-bs-whatever-statusdoatendimento="{{statusdoatendimento}}"
+
+          data-bs-whatever-dir="{{direntity}}"
+          data-bs-whatever-title="{{title}}"
+          data-bs-whatever-titlelow="{{titlelow}}">
+          <i class="bi-zoom-in" style="font-size: 1rem; margin-right: 3px; color: cornflowerblue;"></i>Ver Detalhes</a>
+
+          <a class="dropdown-item" href="{{URL}}/admin/requerimentos/novo/{{id}}" type="button" role="button" class="btn btn-danger btn-sm" name="button" data-bs-toggle="modal" data-bs-target="#addRequerimentoModal"
+          data-bs-whatever-url="{{URL}}"
+          data-bs-whatever-uri="{{uri}}"
+          data-bs-whatever-id="{{id}}"
+          data-bs-whatever-dir="requerimentos"
+          data-bs-whatever-descricao="{{descricao}}"
+          data-bs-whatever-title="Requisição"
+          data-bs-whatever-nrSolicitacao="{{nrSolicitacao}}"
+          data-bs-whatever-data_abertura="{{data_abertura}}"
+
+          data-bs-whatever-UsuarioContatoId="{{UsuarioContatoId}}"
+          data-bs-whatever-UsuarioContatoNome="{{UsuarioContatoNome}}"
+          data-bs-whatever-UsuarioContatoEmail="{{UsuarioContatoEmail}}"
+          data-bs-whatever-UsuarioContatoTelefone="{{UsuarioContatoTelefone}}"
+          data-bs-whatever-UsuarioContatoSiglaDep="{{UsuarioContatoSiglaDep}}"
+          data-bs-whatever-UsuarioContatoSala="{{UsuarioContatoSala}}"
+          data-bs-whatever-statusdoatendimento="{{statusdoatendimento}}">
+          <i class="bi-ticket" style="font-size: 1rem; margin-right: 3px; color: lightseagreen;"></i>Cadastrar Requisição</a>
+        </div>
+      </div>
+    </div>
+  </td>
+</tr>

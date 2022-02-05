@@ -1,0 +1,91 @@
+
+<div class="row align-items-end">
+  <div class="col-md-3">
+    <h5 class="card-title"><i class="bi-{{icon}}" style="font-size: 2rem; margin-right: 8px; vertical-align: bootom; padding-bootom: 0px; color: dimgray;"></i>{{title}}</h5>
+  </div>
+  <div class="col-md-6 d-flex justify-content-center">
+    <a href="{{URL}}/admin/{{direntity}}/novo" type="button" class="btn btn-sm btn-primary float-sm-right h4"><i class="bi-plus-lg" style="font-size: 1.rem; max-height:15px; margin-right: 5px; color: white;"></i>Cadastrar {{title}}</a>
+  </div>
+  <div class="col-md-3">
+  </div>
+</div>
+
+{{status}}
+<table id="data-table-chamados" class="table table-sm table-light table-hover table-striped">
+  <thead>
+      <tr>
+        <th>#Ticket</th>
+        <th>Descrição</th>
+        <th>Requisitante</th>
+        <th>Data da abertura</th>
+        <th>Status</th>
+        <th><div class="d-flex justify-content-center">Ações</div></th>
+      </tr>
+  </thead>
+  <tbody>
+    {{itens}}
+  </tbody>
+</table>
+<script type="text/javascript">
+  $(document).ready(function() {
+    var table = $('#data-table-chamados').DataTable({
+      responsive: true,
+      lengthMenu: [
+          [ 10, 25, 50, -1 ],
+          [ 'Mostrar 10 registros', 'Mostrar 25 registros', 'Mostrar 50 registros', 'Exibir Todos' ]
+      ],
+      dom: 'Bfrtip',
+      buttons: [
+        {
+            extend: 'pageLength'
+        },
+        {
+            extend: 'colvis',
+            text: 'Visibilidade das Colunas',
+            postfixButtons: [ 'colvisRestore' ],
+            columns: ':not(.noVis)'
+        },
+        {
+            extend: 'excelHtml5',
+            text: '<i class="bi-file-excel"></i> Excel',
+            titleAttr: 'Exportar para Excel',
+            //className: 'btn-primary',
+            exportOptions: {
+                columns: [ ':visible' ],
+                columns: 'thead th:not(.noExport)'
+            }
+        },
+        {
+            extend: 'pdfHtml5',
+            text: '<i class="bi-file-pdf"></i> PDF',
+            titleAttr: 'Exportar para PDF',
+            exportOptions: {
+                columns: [ ':visible' ],
+                columns: 'thead th:not(.noExport)'
+            },
+            orientation: 'landscape',
+            pageSize: 'LEGAL',
+            footer: true
+        },
+      ],
+      columnDefs: [
+            {
+                targets: [-1],
+                className: 'noVis'
+            },
+            {
+                visible: false,
+                className: 'noVis'
+            }
+        ],
+      "bStateSave": true,
+      "fnStateSave": function (oSettings, oData) {
+        localStorage.setItem('offersDataTables', JSON.stringify(oData));
+      },
+      "fnStateLoad": function (oSettings) {
+        return JSON.parse(localStorage.getItem('offersDataTables'));
+      },
+      "language": { "url": "//cdn.datatables.net/plug-ins/1.11.1/i18n/pt_br.json" }
+    });
+  });
+</script>

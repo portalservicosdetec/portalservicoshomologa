@@ -1,0 +1,56 @@
+<div id="conteudo-home" class="container">
+  <div class="row align-items-start">
+    <div class="col-md-9 pe-5 order-md-1 mb-5 order-2">
+      <h1>{{titulo}}</h1><br>
+      <p>{{descricao}}</p>
+      <div>{{conteudo}}</div>
+    </div>
+    <div id="conteudo-menu" class="col-md-3 order-md-2 mb-5 order-1">
+      {{menu}}
+    </div>
+  </div>
+</div>
+
+<!-- Modal PDF -->
+<div class="modal fade" id="ModalPDFSessao" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="ModalPDFSessao" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="ModalPDFSessaoLabel"></h5>
+        <button type="button" class="btn-close btn-fechar" data-bs-dismiss="modal"  aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <embed id="modal-pdf" frameborder="0">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary btn-fechar" data-bs-dismiss="modal">Fechar</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Fim Modal PDF -->
+
+<script>
+   const link = document.querySelector(".modalPdf");
+
+  link = addEventListener("click", (event) => {
+    
+    var tag = document.querySelector("#modal-pdf");
+    var label = document.querySelector("#ModalPDFSessaoLabel");
+   
+    href = event.target.closest(".modalPdf").href;
+    let titulo = event.target.closest(".modalPdf").textContent;
+
+    tag.setAttribute("src", href);
+   
+    label.textContent = titulo;
+
+    const btnFechar = document.querySelectorAll(".btn-fechar");
+
+    [...btnFechar].forEach(element => {
+      element.addEventListener("click", () => {
+      window.location.reload();
+      })
+    });  
+  })
+</script>
