@@ -93,6 +93,56 @@ class Login{
 
 
     /**
+    * Método que verifica se o usuário esta logado
+    * @return boolean
+    */
+    public static function isNotPermission(){
+      //INICIA A SESSÃO
+      self::init();
+      $permissao = false;
+
+      $currentDepartamento = $_SESSION['admin']['usuario']['departamento'];
+      $currentPerfil = $_SESSION['admin']['usuario']['id_perfil'];
+      $idUsuarioLogado = $_SESSION['admin']['usuario']['usuario_id'];
+
+      //STATUS
+      if(!isset($currentDepartamento)) return $permissao = false;
+
+     //MENSAGENS DE STATUS
+     switch ($currentDepartamento) {
+       case 'EMERJ':
+         $permissao = true;
+         break;
+       case 'DETEC':
+         $permissao = true;
+         break;
+       case 'DECOM':
+         $permissao = true;
+         break;
+     }
+     //STATUS
+     if(!isset($currentPerfil)) return $permissao = false;
+
+    //MENSAGENS DE STATUS
+    switch ($currentPerfil) {
+      case 1:
+        $permissao = true;
+        break;
+      case 2:
+        $permissao = true;
+        break;
+    }
+
+      if (!$permissao) {
+        return true;
+      } else {
+        return false;
+      }
+
+    }
+
+
+    /**
     * Método responsável por obrigar o usuário a estar logado para acessar
     */
     public static function requireLogin(){
