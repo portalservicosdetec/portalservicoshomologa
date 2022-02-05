@@ -29,6 +29,7 @@ use \App\Controller\Admin\Usuarios as AdminUsuario;
 use \App\Controller\Admin\Status as AdminStatus;
 use \App\Controller\Admin\Criticidades as AdminCriticidade;
 use \App\Controller\Admin\Urgencias as AdminUrgencia;
+use \App\Session\Admin\Login as SessionAdminLogin;
 use \App\File\Upload;
 use \App\Db\Pagination;
 use \App\Communication\Email;
@@ -297,38 +298,13 @@ class Chamados extends Page{
    */
   public static function getListChamados($request,$errorMessage = null){
 
+    if (SessionAdminLogin::isNotPermission()) {
+      //$request->getRouter()->redirect('/?status=sempermissao');
+    }
+
     $currentDepartamento = $_SESSION['admin']['usuario']['departamento'];
     $currentPerfil = $_SESSION['admin']['usuario']['id_perfil'];
     $idUsuarioLogado = $_SESSION['admin']['usuario']['usuario_id'];
-
-    //STATUS
-    if(!isset($currentDepartamento)) return $permissao = false;
-
-   //MENSAGENS DE STATUS
-   switch ($currentDepartamento) {
-     case 'EMERJ':
-       $permissao = true;
-       break;
-     case 'DETEC':
-       $permissao = true;
-       break;
-   }
-   //STATUS
-   if(!isset($currentPerfil)) return $permissao = false;
-
-  //MENSAGENS DE STATUS
-  switch ($currentPerfil) {
-    case 1:
-      $permissao = true;
-      break;
-    case 2:
-      $permissao = true;
-      break;
-  }
-
-    if (!$permissao) {
-      $request->getRouter()->redirect('/?status=sempermissao');
-    }
 
     $busca = filter_input(INPUT_GET, 'busca', FILTER_SANITIZE_STRING);
     $id_tipodeservico = filter_input(INPUT_GET, 'tipodeservico', FILTER_SANITIZE_NUMBER_INT);
@@ -344,10 +320,12 @@ class Chamados extends Page{
     $id_urgencia = filter_input(INPUT_GET, 'urgencia', FILTER_SANITIZE_NUMBER_INT);
     $id_tipodeocorrencia = filter_input(INPUT_GET, 'tipodeocorrencia', FILTER_SANITIZE_NUMBER_INT);
 
+/*
     $itemdeconfiguracaoSelecionado = AdminItensconfs::getItensconfItensSelect($request,$id_itemdeconfiguracao);
     $tipoDeServicoSelecionado = AdminTipodeServico::getTipodeservicoItensSelect($request,$id_tipodeservico);
     $tipodeicSelecionado = AdminTipodeic::getTipodeicItensSelect($request,$id_tipodeic);
     $categoriadeicSelecionado = AdminCategoriadeics::getCategoriadeicItensRadio($request,$id_categoria_ic);
+*/
     $servicoSelecionado = AdminServico::getServicoItensSelect($request,$id_servico);
     $departamentoSelecionado = PagesDepartamento::getDepartamentoItensSelect($request,$id_departamento);
     $usuarioSelecionado = AdminUsuario::getUsuarioItensSelect($request,$id_usuario);
@@ -369,7 +347,7 @@ class Chamados extends Page{
       'titlelow' => TITLELOW_CHAMADO,
       'direntity' => ROTA_CHAMADO,
       'itens' => self::getChamadoItens($request,$obPagination),
-      'pagination' => parent::getPagination($request,$obPagination),
+//      'pagination' => parent::getPagination($request,$obPagination),
       'status' => self::getStatus($request),
       'idUsuarioLogado' => $idUsuarioLogado,
       //'optionsBuscaTipoDeServico' => $tipoDeServicoSelecionado,
@@ -399,40 +377,21 @@ class Chamados extends Page{
    */
   private static function getChamadoItens($request,&$obPagination){
 
+    $where = '';
     $itens = '';
     $UsuarioSolicitanteNome = null;
 
-    //OBTEM OS GETS DA URL
-    $busca = filter_input(INPUT_GET, 'busca', FILTER_SANITIZE_STRING);
-    $servico = filter_input(INPUT_GET, 'servico', FILTER_SANITIZE_STRING);
-    //MONTA AS CONDICÕES DA BUSCA
-    $condicoes = [
-      strlen($busca) ? 'chamado_nm LIKE "%'.str_replace(' ','%',$busca).'%"' : null,
-      strlen($servico) ? 'id_servico = '.$servico : null
-    ];
+    $currentDepartamento = $_SESSION['admin']['usuario']['departamento'];
+    $currentPerfil = $_SESSION['admin']['usuario']['id_perfil'];
+    $idUsuarioLogado = $_SESSION['admin']['usuario']['usuario_id'];
 
-    $condicoes = array_filter($condicoes);
-    $where = implode(' AND ',$condicoes);
-
-    //QUANTIDADE TOTAL DE REGISTROS
-    $qtTotal = EntityChamado::getChamados($where,null,null,'COUNT(*) as qtd')->fetchObject()->qtd;
-
-    //ULTIMO CHAMADO
-    //$ultimoChamado = EntityChamado::nrSolicitacao();
-
-    //PÁGINA ATUAL
-    $queryParams = $request->getQueryParams();
-    $paginaAtual = $queryParams['pagina'] ?? 1;
-    $pag = '?pagina='.$paginaAtual;
-
-    //CAMINHO ATUAL
-    $uri=strstr("$_SERVER[REQUEST_URI]", '?');
-    if($uri == ''){
-      $uri = $pag;
+    if (SessionAdminLogin::isNotPermission()) {
+      $where = 'id_usuario = '.$idUsuarioLogado.' OR solicitado_por = '.$idUsuarioLogado;
     }
 
+
     //INSTÂNCIA DE PAGINAÇÃO
-    $obPagination = new Pagination($qtTotal,$paginaAtual,100);
+    //$obPagination = new Pagination($qtTotal,$paginaAtual,100);
 
     $strEditModal = View::render('admin/modules/'.DIR_CHAMADO.'/editmodal',[]);
     $strAddModal = View::render('admin/modules/'.DIR_CHAMADO.'/addmodal',[]);
@@ -442,7 +401,7 @@ class Chamados extends Page{
     $strAddRequerimentoModal = View::render('admin/modules/'.DIR_CHAMADO.'/addrequerimentomodal',[]);
 
     //RESULTADO DA PAGINA
-    $results = EntityChamado::getChamados($where,'chamado_id DESC',$obPagination->getLimit());
+    $results = EntityChamado::getChamados($where,'chamado_id DESC',null);
 
     //MONTA E RENDERIZA OS ITENS DE Chamado
     while($obChamado = $results->fetchObject(EntityChamado::class)){
@@ -459,6 +418,8 @@ class Chamados extends Page{
         }
       }
 
+    //  echo "<pre>BBBBB"; print_r($obChamado->solicitado_por); echo "<pre>"; 
+
       if ($obChamado->solicitado_por > 0) {
         $obUsuarioSolicitante = EntityUsuario::getUsuarioPorId($obChamado->solicitado_por);
         if($obUsuarioSolicitante instanceof EntityUsuario){
@@ -471,29 +432,6 @@ class Chamados extends Page{
         }
       }
 
-      if ($obChamado->aberto_para > 0) {
-        $obUsuarioAtendido = EntityUsuario::getUsuarioPorId($obChamado->aberto_para) ?? '';
-        if($obUsuarioAtendido instanceof EntityUsuario){
-          $UsuarioAtendidoId = $obUsuarioAtendido->usuario_id;
-          $UsuarioAtendidoNome = $obUsuarioAtendido->usuario_nm;
-          $UsuarioAtendidoEmail = $obUsuarioAtendido->email;
-          $UsuarioAtendidoTelefone = $obUsuarioAtendido->usuario_fone;
-          $UsuarioAtendidoSiglaDep = EntityDepartamento::getDepartamentoPorId($obUsuarioAtendido->id_departamento)->departamento_sg;
-          $UsuarioAtendidoSala = EntityLocalizacao::getLocalizacaoPorId($obUsuarioAtendido->sala)->localizacao_nm;
-        }
-      }
-
-      if ($obChamado->atendido_por > 0) {
-        $obUsuarioAtendente = EntityUsuario::getUsuarioPorId($obChamado->atendido_por) ?? '';
-        if($obUsuarioAtendente instanceof EntityUsuario){
-          $UsuarioAtendenteId = $obUsuarioAtendente->usuario_id ?? '-';
-          $UsuarioAtendenteNome = $obUsuarioAtendente->usuario_nm ?? '-';
-          $UsuarioAtendenteEmail = $obUsuarioAtendente->email ?? '-';
-          $UsuarioAtendenteTelefone = $obUsuarioAtendente->usuario_fone ?? '-';
-          $UsuarioAtendenteSiglaDep = EntityDepartamento::getDepartamentoPorId($obUsuarioAtendente->id_departamento)->departamento_sg ?? '-';
-          $UsuarioAtendenteSala = EntityLocalizacao::getLocalizacaoPorId($obUsuarioAtendente->sala)->localizacao_nm ?? '-';
-        }
-      }
 
       $itens .= View::render('admin/modules/chamado/item',[
         'icon' => ICON_CHAMADO,
@@ -506,28 +444,19 @@ class Chamados extends Page{
         'descricao' => $obChamado->chamado_des,
         'data_abertura' => $obChamado->data_add,
 
-        "UsuarioContatoId" => $UsuarioContatoId ?? '-',
-        "UsuarioContatoNome" => $UsuarioContatoNome ?? '-',
-        "UsuarioContatoEmail" => $UsuarioContatoEmail ?? '-',
-        "UsuarioContatoTelefone" => $UsuarioContatoTelefone ?? '-',
-        "UsuarioContatoSiglaDep" =>$UsuarioContatoSiglaDep ?? '-',
-        "UsuarioContatoSala" => $UsuarioContatoSala ?? '-',
+        "UsuarioContatoId" => $UsuarioContatoId,
+        "UsuarioContatoNome" => $UsuarioContatoNome,
+        "UsuarioContatoEmail" => $UsuarioContatoEmail,
+        "UsuarioContatoTelefone" => $UsuarioContatoTelefone,
+        "UsuarioContatoSiglaDep" =>$UsuarioContatoSiglaDep,
+        "UsuarioContatoSala" => $UsuarioContatoSala,
 
-        "UsuarioSolicitanteId" => $UsuarioSolicitanteId ?? '-',
-        "UsuarioSolicitanteNome" => $UsuarioSolicitanteNome ?? '-',
-        "UsuarioSolicitanteEmail" => $UsuarioSolicitanteEmail ?? '-',
-        "UsuarioSolicitanteTelefone" => $UsuarioSolicitanteTelefone ?? '-',
-        "UsuarioSolicitanteSiglaDep" => $UsuarioSolicitanteSiglaDep ?? '-',
-        "UsuarioSolicitanteSala" => $UsuarioSolicitanteSala ?? '-',
-
-        "UsuarioAtendidoId" => $UsuarioAtendidoId ?? '-',
-        "UsuarioAtendidoNome" => $UsuarioAtendidoNome ?? '-',
-        "UsuarioAtendidoEmail" => $UsuarioAtendidoEmail ?? '-',
-        "UsuarioAtendidoTelefone" => $UsuarioAtendidoTelefone ?? '-',
-        "UsuarioAtendidoSiglaDep" => $UsuarioAtendidoSiglaDep ?? '-',
-        "UsuarioAtendidoSala" => $UsuarioAtendidoSala ?? '-',
-
-        "Requisitante" => (($UsuarioAtendidoNome ?? $UsuarioSolicitanteNome) ?? $UsuarioContatoNome) ?? '-',
+        "UsuarioSolicitanteId" => $UsuarioSolicitanteId,
+        "UsuarioSolicitanteNome" => $UsuarioSolicitanteNome,
+        "UsuarioSolicitanteEmail" => $UsuarioSolicitanteEmail,
+        "UsuarioSolicitanteTelefone" => $UsuarioSolicitanteTelefone,
+        "UsuarioSolicitanteSiglaDep" => $UsuarioSolicitanteSiglaDep,
+        "UsuarioSolicitanteSala" => $UsuarioSolicitanteSala,
 
         'dataAtendimento' => $obChamado->dt_atendimento ?? '-',
         'nrSolicitacao' => $obChamado->nr_solicitacao ?? '-',
@@ -541,8 +470,8 @@ class Chamados extends Page{
         'class_ativo' => (2 == $obChamado->id_status) ? 'btn-warning' : 'btn-success',
         'style_ativo' => (1 == $obChamado->id_status) ? 'table-active' : 'table-danger',
         'andamentos' => (1 == $obChamado->id_status) ? 'table-active' : 'table-danger',
-        'paginaAtual' => $paginaAtual,
-        'uri' => $uri
+    //    'paginaAtual' => $paginaAtual,
+    //    'uri' => $uri
       ]);
 
     }
@@ -617,18 +546,10 @@ class Chamados extends Page{
    */
    public static function getNovoChamado($request){
 
-     $currentIDDepartamentoPai = '';
-
-     $departamento_id = $_SESSION['admin']['usuario']['id_departamento'];
      $currentDepartamento = $_SESSION['admin']['usuario']['departamento'];
-     $currentIDDepartamentoPai = $_SESSION['admin']['usuario']['id_departamento_pai'];
      $currentPerfil = $_SESSION['admin']['usuario']['id_perfil'];
-     $currentRamal = $_SESSION['admin']['usuario']['ramal'];
 
      $optionsUsuario = AdminUsuario::getUsuarioItensSelectEmail($request,null);
-     $optionsServico = AdminServico::getServicoItensSelect($request,null);
-     $optionsTipodeic = AdminTipodeic::getTipodeicItensSelect($request,null);
-     $categoriadeicSelecionado = AdminCategoriadeics::getCategoriadeicItensRadio($request,null);
 
      //CONTEÚDO DO FORMULÁRIO
      $content = View::render('admin/modules/chamado/form',[
@@ -636,19 +557,9 @@ class Chamados extends Page{
        'nome' => $_SESSION['admin']['usuario']['usuario_nm'],
        'email' => $_SESSION['admin']['usuario']['email'],
        'usuario' => $_SESSION['admin']['usuario']['usuario_id'],
-       'usuariodepartamento' => EntityDepartamento::getDepartamentoPorId($departamento_id)->departamento_sg,
-       'departamento_id' => $currentIDDepartamentoPai,
-       'salaid' => $_SESSION['admin']['usuario']['sala'] ?? '',
-       'sala' => EntityLocalizacao::getLocalizacaoPorId($_SESSION['admin']['usuario']['sala'])->localizacao_nm ?? '',
-       'ramal' => $currentRamal,
        'optionsUsuario' => $optionsUsuario,
-       'optionsServico' => $optionsServico,
-       'optionsTipodeic' => $optionsTipodeic,
-       'optionsCategoriadeic' => $categoriadeicSelecionado,
        'status' => self::getStatus($request)
      ]);
-
-     $uri = '?token=abrirchamado';
 
      //RETORNA A PÁGINA COMPLETA
      return parent::getPanel('Cadastrar Chamado - EMERJ',$content,'chamados',$currentDepartamento,$currentPerfil);
@@ -661,29 +572,26 @@ class Chamados extends Page{
     */
     public static function setNovoChamado($request){
 
-      //PÁGINA ATUAL
-       $queryParams = $request->getQueryParams();
-       $paginaAtual = $queryParams['pagina'] ?? 1;
+      $idContato = filter_input(INPUT_POST, 'usuario', FILTER_SANITIZE_NUMBER_INT);
+      $nomeContato = filter_input(INPUT_POST, 'nome', FILTER_SANITIZE_STRING);
+      $emailContato = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_STRING);
 
-      //echo "<pre>"; print_r($request); echo "<pre>";
-      $emailusuario = filter_input(INPUT_POST, 'email_usuario', FILTER_SANITIZE_STRING) ?? '';
-      $emailatendimento = filter_input(INPUT_POST, 'email_atendimento', FILTER_SANITIZE_STRING) ?? '';
-      $chamado_nm = filter_input(INPUT_POST, 'chamado_nm', FILTER_SANITIZE_STRING) ?? '';
-      $itens_checados = filter_input(INPUT_POST, 'itens_checados', FILTER_SANITIZE_STRING) ?? '';
-      $nome_chamado = $chamado_nm.' itens do atendimento: '.$itens_checados;
-      $nome = $nome_chamado;
-
+      //comparação utilizando FILTER_SANITIZE_NUMBER_INT retorna 0 quando vazio!!!
+      $idSolicitante = filter_input(INPUT_POST, 'id_atendimento', FILTER_SANITIZE_NUMBER_INT) > 0 ? filter_input(INPUT_POST, 'id_atendimento', FILTER_SANITIZE_NUMBER_INT) : $idContato;
+      $nomeSolicitante = strlen(filter_input(INPUT_POST, 'nome_atendimento', FILTER_SANITIZE_STRING)) > 0 ? filter_input(INPUT_POST, 'nome_atendimento', FILTER_SANITIZE_STRING) : $nomeContato;
+      $emailSolicitante = strlen(filter_input(INPUT_POST, 'email_atendimento', FILTER_SANITIZE_STRING)) > 0 ? filter_input(INPUT_POST, 'email_atendimento', FILTER_SANITIZE_STRING) : $emailContato;
+/*
+      echo "<pre>"; print_r($nomeContato); echo "<pre>";
+      echo "<pre>"; print_r($idSolicitante); echo "<pre>";
+      echo "<pre>"; print_r($emailContato); echo "<pre>";
+      echo "<pre>"; print_r($idContato); echo "<pre>";
+      echo "<pre>"; print_r($nomeSolicitante); echo "<pre>";
+      echo "<pre>"; print_r($emailSolicitante); echo "<pre>";
+      echo "<pre>"; print_r(filter_input(INPUT_POST, 'email_atendimento', FILTER_SANITIZE_STRING)); echo "<pre>";
+      echo "<pre>"; print_r(filter_input(INPUT_POST, 'nome_atendimento', FILTER_SANITIZE_STRING)); echo "<pre>"; exit;
+*/
       //DADOS DO POST
-      $posVars = $request->getPostVars();
-      $id_servico = filter_input(INPUT_POST, 'servico', FILTER_SANITIZE_NUMBER_INT) ?? '';
-      $id_departamento = filter_input(INPUT_POST, 'departamento', FILTER_SANITIZE_NUMBER_INT) ?? '';
-
       $descricao = filter_input(INPUT_POST, 'descricao', FILTER_SANITIZE_STRING) ?? '';
-      $chamado_obs = filter_input(INPUT_POST, 'chamado_obs', FILTER_SANITIZE_STRING) ?? '';
-      $tipodeic = filter_input(INPUT_POST, 'tipodeic', FILTER_SANITIZE_NUMBER_INT) ?? '';
-      $id_usuario = filter_input(INPUT_POST, 'id_usuario', FILTER_SANITIZE_NUMBER_INT) ?? '';
-      $solicitado_por = filter_input(INPUT_POST, 'id_contato', FILTER_SANITIZE_NUMBER_INT) ?? 0;
-      $aberto_para = filter_input(INPUT_POST, 'id_atendimento', FILTER_SANITIZE_NUMBER_INT) ?? 0;
 
       try {
         //NOVA ISNTANCIA DE CHAMADO
@@ -694,15 +602,11 @@ class Chamados extends Page{
           throw new \Exception('Falha na criação do Ticket.');
         }
 
-        $obChamado->id_usuario = $id_usuario;
-        $obChamado->solicitado_por = $solicitado_por ?? 0;
-        $obChamado->chamado_nm = $nome;
+        $obChamado->id_usuario = $idContato;
+        $obChamado->solicitado_por = $idSolicitante;
         $obChamado->chamado_des = $descricao;
-        $obChamado->aberto_para = $aberto_para ?? 0;
-        $obChamado->chamado_obs = $chamado_obs;
         $obChamado->nr_solicitacao = $ticket;
         $obChamado->id_status = 1;
-
         $sucessoInsert = $obChamado->cadastrar();
 
         if (!$sucessoInsert) {
@@ -712,19 +616,21 @@ class Chamados extends Page{
         $dataChamado = date("d/m/Y H:i:s");
 
         $corpoEmail = '';
-
         $assuntoEmail = 'Solicitação de atendimento criada -'.$ticket;
 
+        $textoComplementar = '';
+        if ($idContato != $idSolicitante){
+          $textoComplementar = ', por '.$nomeContato;
+        }
         //echo "<pre>"; print_r($emailcc); echo "<pre>"; exit;
-
         $corpoEmail = $corpoEmail.'<h1>Escola da Magistratura do Estado do Rio de Janeiro</h1>';
         $corpoEmail = $corpoEmail.'<h2>Departamento de Tecnologia de Informação - DETEC</h2><hr>';
-        $corpoEmail = $corpoEmail.'<h3>Prezado(a) ANDRE RODRIGUES RIBEIRO ({NOME_USUARIO}),</h3><BR>';
-        $corpoEmail = $corpoEmail.'<p>Recebemos a solicitação de número '.$ticket.'</p><BR>';
-        $corpoEmail = $corpoEmail.'Data Abertura: '.$dataChamado.'<BR>';
+        $corpoEmail = $corpoEmail.'<h3>Prezado(a) '.$nomeSolicitante.',</h3>';
+        $corpoEmail = $corpoEmail.'<p>Recebemos a solicitação de número <strong>'.$ticket.'</strong> aberta em '.$dataChamado.$textoComplementar.' com a seguinte descrição:</p>';
         $corpoEmail = $corpoEmail.'Descrição do chamado: '.$descricao.'<BR><BR>';
-        $corpoEmail = $corpoEmail.'E-mail: '.$emailusuario.'<BR><BR>';
-        $corpoEmail = $corpoEmail.'<p>Acompanhe o andamento da solicitação pela web, <a href="{{URL}}">clicando aqui</a>.</p><BR>';
+        $corpoEmail = $corpoEmail.'E-mail: '.$emailSolicitante.'<BR><BR>';
+  //  IMPLEMENTAR!!!
+    //  $corpoEmail = $corpoEmail.'<p>Acompanhe o andamento da solicitação pela web, <a href="{{URL}}">clicando aqui</a>.</p><BR>';
         $corpoEmail = $corpoEmail.'<p>Atenciosamente,</p>';
         $corpoEmail = $corpoEmail.'<p><strong>DETEC – Departamento de Tecnologia de Informação</strong></p><BR>';
         $corpoEmail = $corpoEmail.'<p>Enviado em: '.$dataChamado.' pelo Portal de Serviços DETEC. Não responda a este e-mail.</p>';
@@ -733,9 +639,6 @@ class Chamados extends Page{
 
         $email = 'a.tangy@gmail.com';
         $emailcc = 'andrerribeiro@tjrj.jus.br';
-
-
-
 
         $dirTemp = __DIR__.'/../../../files/chamados/tmp';
         $dirChamado = __DIR__.'/../../../files/chamados/'.$idChamado;
@@ -777,7 +680,12 @@ class Chamados extends Page{
 
       } finally {
 
-        $request->getRouter()->redirect('/admin/chamados?pagina='.$paginaAtual.'&status=gravado&nm='.$nome.'&strMsn='.$strmsn.'&acao=alter');
+        if (SessionAdminLogin::isNotPermission()) {
+          $request->getRouter()->redirect('/admin/chamados?pagina='.$paginaAtual.'&status=gravado&nm='.$nome.'&strMsn='.$strmsn.'&acao=alter');
+        } else {
+          $request->getRouter()->redirect('/admin/chamados?pagina='.$paginaAtual.'&status=gravado&nm='.$nome.'&strMsn='.$strmsn.'&acao=alter');
+          //$request->getRouter()->redirect('/admin/chamados/novo?strMsn='.$strmsn.'&acao=alter');
+        }
 
       }
     }
