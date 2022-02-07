@@ -2,6 +2,8 @@
 
 namespace App\Controller\Admin;
 
+use \DateTime;
+
 use \App\Utils\View;
 use \App\Model\Entity\Chamado as EntityChamado;
 use \App\Model\Entity\Servico as EntityServico;
@@ -35,11 +37,15 @@ use \App\Db\Pagination;
 use \App\Communication\Email;
 
 
+
 const DIR_CHAMADO = 'chamado';
 const ROTA_CHAMADO = 'chamados';
 const ICON_CHAMADO = 'telephone-inbound';
 const TITLE_CHAMADO = 'Chamados';
 const TITLELOW_CHAMADO = 'o chamado';
+
+
+
 
 class Chamados extends Page{
 
@@ -326,13 +332,11 @@ class Chamados extends Page{
     $tipodeicSelecionado = AdminTipodeic::getTipodeicItensSelect($request,$id_tipodeic);
     $categoriadeicSelecionado = AdminCategoriadeics::getCategoriadeicItensRadio($request,$id_categoria_ic);
 */
-    $servicoSelecionado = AdminServico::getServicoItensSelect($request,$id_servico);
-    $departamentoSelecionado = PagesDepartamento::getDepartamentoItensSelect($request,$id_departamento);
-    $usuarioSelecionado = AdminUsuario::getUsuarioItensSelect($request,$id_usuario);
-    $atendimentoSelecionado  = AdminAtendimento::getAtendimentoItensSelect($request,$id_atendimento);
-    $statusSelecionado = AdminStatus::getStatusItensSelect($request,$id_status);
     $tipodeocorrenciaSelecionado = AdminTipodeocorrencia::getTipodeocorrenciaItensSelect($request,$id_tipodeocorrencia);
-
+    $servicoSelecionado = AdminServico::getServicoItensSelect($request,$id_servico);
+    $atendimentoSelecionado  = AdminAtendimento::getAtendimentoItensSelect($request,$id_atendimento);
+    $usuarioSelecionado = AdminUsuario::getUsuarioItensSelect($request,$id_usuario);
+    $statusSelecionado = AdminStatus::getStatusItensSelect($request,$id_status);
     $criticidadeSelecionado = AdminCriticidade::getCriticidadeItensSelect($request,$id_criticidade);
     $urgenciaSelecionado = AdminUrgencia::getUrgenciaItensSelect($request,$id_urgencia);
 
@@ -377,6 +381,8 @@ class Chamados extends Page{
    */
   private static function getChamadoItens($request,&$obPagination){
 
+    date_default_timezone_set('America/Sao_Paulo');
+
     $where = '';
     $itens = '';
     $UsuarioSolicitanteNome = null;
@@ -402,6 +408,13 @@ class Chamados extends Page{
 
     //RESULTADO DA PAGINA
     $results = EntityChamado::getChamados($where,'chamado_id DESC',null);
+
+    $agora = date("Y-m-d");
+    $dateNow = new DateTime($agora);
+
+
+
+
 
     //MONTA E RENDERIZA OS ITENS DE Chamado
     while($obChamado = $results->fetchObject(EntityChamado::class)){
@@ -433,17 +446,21 @@ class Chamados extends Page{
       }
 
 
+      $dataChamado = new DateTime($obChamado->data_add);
+      $intervalo = $dataChamado->diff($dateNow);
+
+
       $itens .= View::render('admin/modules/chamado/item',[
         'icon' => ICON_CHAMADO,
         'title' =>TITLE_CHAMADO,
         'titlelow' => TITLELOW_CHAMADO,
         'direntity' => ROTA_CHAMADO,
-        'id' => $obChamado->chamado_id,
+        'id' => View::crypt('encrypt',$obChamado->chamado_id),
         'ticket' => $obChamado->nr_solicitacao,
         'titulo' => $obChamado->chamado_nm,
         'descricao' => View::limitCharacter($obChamado->chamado_des,'\S',1,30) ?? '',
         'descricaoFull' => $obChamado->chamado_des ?? '',
-        'data_abertura' => date('d/m/y', strtotime($obChamado->data_add)).' às '.date('H:i', strtotime($obChamado->data_add)),
+        'data_abertura' => date('d/m/y', strtotime($obChamado->data_add)).' às '.date('H:i', strtotime($obChamado->data_add)).' ('.$intervalo->format('%R%a dias').')',
 
         "UsuarioContatoId" => $UsuarioContatoId,
         "UsuarioContatoNome" => $UsuarioContatoNome,

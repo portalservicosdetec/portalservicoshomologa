@@ -2,6 +2,8 @@
 
 namespace App\Controller\Admin;
 
+use \DateTime;
+
 use \App\Utils\View;
 use \App\Model\Entity\Requerimento as EntityRequerimento;
 use \App\Model\Entity\Chamado as EntityChamado;
@@ -10,19 +12,29 @@ use \App\Model\Entity\Servico as EntityServico;
 use \App\Model\Entity\Tipodeic as EntityTipodeic;
 use \App\Model\Entity\Itensconf as EntityItensconf;
 use \App\Model\Entity\Departamento as EntityDepartamento;
+use \App\Model\Entity\Localizacao as EntityLocalizacao;
 use \App\Model\Entity\Criticidade as EntityCriticidade;
 use \App\Model\Entity\Urgencia as EntityUrgencia;
 use \App\Model\Entity\Status as EntityStatus;
 use \App\Model\Entity\Usuario as EntityUsuario;
 use \App\Controller\Pages\Departamento as PagesDepartamento;
 use \App\Controller\Admin\Servicos as AdminServico;
-use \App\Controller\Admin\Tipodeics as AdminTipodeics;
-use \App\Controller\Admin\Usuarios as AdminUsuarios;
+use \App\Controller\Admin\Departamentos as AdminDepartamento;
+use \App\Controller\Admin\Tipodeservicos as AdminTipodeServico;
+use \App\Controller\Admin\Tipodeocorrencias as AdminTipodeocorrencia;
+use \App\Controller\Admin\Tipodeics as AdminTipodeic;
+use \App\Controller\Admin\Categoriadeics as AdminCategoriadeics;
+use \App\Controller\Admin\Atendimentos as AdminAtendimento;
+use \App\Controller\Admin\Itensconfs as AdminItensconfs;
+use \App\Controller\Admin\Usuarios as AdminUsuario;
+use \App\Controller\Admin\Status as AdminStatus;
+use \App\Controller\Admin\Criticidades as AdminCriticidade;
+use \App\Controller\Admin\Urgencias as AdminUrgencia;
 use \App\Db\Pagination;
 
 const DIR_REQUERIMENTO = 'requerimento';
 const ROTA_REQUERIMENTO = 'requerimentos';
-const ICON_REQUERIMENTO = 'telephone-inbound';
+const ICON_REQUERIMENTO = 'box-arrow-in-down';
 const TITLE_REQUERIMENTO = 'Requisições';
 const TITLELOW_REQUERIMENTO = 'a requisição';
 
@@ -149,7 +161,129 @@ class Requerimentos extends Page{
    * @param Request $request
    * @return string
    */
-   public static function getNovoRequerimento($request){
+   public static function getNovoRequerimento($request,$id_chamado){
+
+     date_default_timezone_set('America/Sao_Paulo');
+
+     $agora = date("Y-m-d");
+     $dateNow = new DateTime($agora);
+
+     $UsuarioSolicitanteNome = '';
+     $UsuarioSolicitanteSiglaDep = '';
+
+     $id_tipodeservico = filter_input(INPUT_GET, 'tipodeservico', FILTER_SANITIZE_NUMBER_INT);
+     $id_servico = filter_input(INPUT_GET, 'servico', FILTER_SANITIZE_NUMBER_INT);
+     $id_itemdeconfiguracao = filter_input(INPUT_GET, 'itemdeconfiguracao', FILTER_SANITIZE_NUMBER_INT);
+     $id_tipodeic = filter_input(INPUT_GET, 'tipodeic', FILTER_SANITIZE_NUMBER_INT);
+     $id_departamento = filter_input(INPUT_GET, 'departamento', FILTER_SANITIZE_NUMBER_INT);
+     $id_categoria_ic = filter_input(INPUT_GET, 'categoriadeic', FILTER_SANITIZE_NUMBER_INT);
+     $id_atendimento = filter_input(INPUT_GET, 'atendimento', FILTER_SANITIZE_NUMBER_INT);
+     $id_usuario = filter_input(INPUT_GET, 'usuario', FILTER_SANITIZE_NUMBER_INT);
+     $id_status = filter_input(INPUT_GET, 'status', FILTER_SANITIZE_NUMBER_INT);
+     $id_criticidade = filter_input(INPUT_GET, 'criticidade', FILTER_SANITIZE_NUMBER_INT);
+     $id_urgencia = filter_input(INPUT_GET, 'urgencia', FILTER_SANITIZE_NUMBER_INT);
+     $id_tipodeocorrencia = filter_input(INPUT_GET, 'tipodeocorrencia', FILTER_SANITIZE_NUMBER_INT);
+
+     $currentDepartamento = $_SESSION['admin']['usuario']['departamento'];
+     $currentPerfil = $_SESSION['admin']['usuario']['id_perfil'];
+
+     $optionsUsuario = AdminUsuario::getUsuarioItensSelectEmail($request,null);
+     $obChamado = EntityChamado::getChamadoPorId(View::crypt('decrypt',$id_chamado));
+
+     $tipodeocorrenciaSelecionado = AdminTipodeocorrencia::getTipodeocorrenciaItensSelect($request,$id_tipodeocorrencia);
+     $servicoSelecionado = AdminServico::getServicoItensSelect($request,$id_servico);
+     $atendimentoSelecionado  = AdminAtendimento::getAtendimentoItensSelect($request,$id_atendimento);
+     $usuarioSelecionado = AdminUsuario::getUsuarioItensSelect($request,$id_usuario);
+     $statusSelecionado = AdminStatus::getStatusItensSelect($request,$id_status);
+     $criticidadeSelecionado = AdminCriticidade::getCriticidadeItensSelect($request,$id_criticidade);
+     $urgenciaSelecionado = AdminUrgencia::getUrgenciaItensSelect($request,$id_urgencia);
+
+     if ($obChamado->id_usuario > 0) {
+       $obUsuarioContato = EntityUsuario::getUsuarioPorId($obChamado->id_usuario);
+       if($obUsuarioContato instanceof EntityUsuario){
+         $UsuarioContatoId = $obUsuarioContato->usuario_id;
+         $UsuarioContatoNome = $obUsuarioContato->usuario_nm;
+         $UsuarioContatoEmail = $obUsuarioContato->email;
+         $UsuarioContatoTelefone = $obUsuarioContato->usuario_fone;
+         $UsuarioContatoSiglaDep = EntityDepartamento::getDepartamentoPorId($obUsuarioContato->id_departamento)->departamento_sg;
+         $UsuarioContatoSala = EntityLocalizacao::getLocalizacaoPorId($obUsuarioContato->sala)->localizacao_nm;
+       }
+     }
+
+   //  echo "<pre>BBBBB"; print_r($obChamado->solicitado_por); echo "<pre>";
+
+     if ($obChamado->solicitado_por > 0) {
+       $obUsuarioSolicitante = EntityUsuario::getUsuarioPorId($obChamado->solicitado_por);
+       if($obUsuarioSolicitante instanceof EntityUsuario){
+         $UsuarioSolicitanteId = $obUsuarioSolicitante->usuario_id ?? '';
+         $UsuarioSolicitanteNome = $obUsuarioSolicitante->usuario_nm;
+         $UsuarioSolicitanteEmail = $obUsuarioSolicitante->email;
+         $UsuarioSolicitanteTelefone = $obUsuarioSolicitante->usuario_fone;
+         $UsuarioSolicitanteSiglaDep = EntityDepartamento::getDepartamentoPorId($obUsuarioSolicitante->id_departamento)->departamento_sg;
+         $UsuarioSolicitanteSala = EntityLocalizacao::getLocalizacaoPorId($obUsuarioSolicitante->sala)->localizacao_nm;
+       }
+     }
+
+     $dataChamado = new DateTime($obChamado->data_add);
+     $intervalo = $dataChamado->diff($dateNow);
+
+     //CONTEÚDO DO FORMULÁRIO
+     $content = View::render('admin/modules/requerimento/form',[
+       'id_chamado' => $id_chamado,
+       'ticket' => $obChamado->nr_solicitacao,
+       'titulo' => $obChamado->chamado_nm,
+       'descricao' => View::limitCharacter($obChamado->chamado_des,'\S',1,30) ?? '',
+       'descricaoFull' => $obChamado->chamado_des ?? '',
+       'data_abertura' => date('d/m/y', strtotime($obChamado->data_add)).' às '.date('H:i', strtotime($obChamado->data_add)).' ('.$intervalo->format('%R%a dias').')',
+
+       "UsuarioContatoId" => $UsuarioContatoId,
+       "UsuarioContatoNome" => $UsuarioContatoNome,
+       "UsuarioContatoPrimeiroNome" => View::firstName($UsuarioContatoNome).' ('.$UsuarioContatoSiglaDep.')',
+       "UsuarioContatoEmail" => $UsuarioContatoEmail,
+       "UsuarioContatoTelefone" => $UsuarioContatoTelefone,
+       "UsuarioContatoSiglaDep" =>$UsuarioContatoSiglaDep,
+       "UsuarioContatoSala" => $UsuarioContatoSala,
+
+       "UsuarioSolicitanteId" => $UsuarioSolicitanteId ?? '',
+       "UsuarioSolicitanteNome" => $UsuarioSolicitanteNome ?? '',
+       "UsuarioSolicitantePrimeiroNome" => View::firstName($UsuarioSolicitanteNome).' ('.$UsuarioSolicitanteSiglaDep.')' ?? '',
+       "UsuarioSolicitanteEmail" => $UsuarioSolicitanteEmail ?? '',
+       "UsuarioSolicitanteTelefone" => $UsuarioSolicitanteTelefone ?? '',
+       "UsuarioSolicitanteSiglaDep" => $UsuarioSolicitanteSiglaDep ?? '',
+       "UsuarioSolicitanteSala" => $UsuarioSolicitanteSala ?? '',
+
+       'dataAtendimento' => $obChamado->dt_atendimento ?? '-',
+       'nrSolicitacao' => $obChamado->nr_solicitacao ?? '-',
+       'nrRequisicao' => $obChamado->nr_requisicao ?? '-',
+       'chamadoObs' => $obChamado->chamado_obs ?? '-',
+       'idStatus' => $obChamado->id_status ?? '-',
+       'idChamadoPai' => $obChamado->id_chamado_pai ?? '-',
+       'statusdoatendimento' => EntityStatus::getStatusPorId($obChamado->id_status)->status_nm ?? '',
+
+       'optionsBuscaTipodeOcorrencia' => $tipodeocorrenciaSelecionado,
+       'optionsBuscaServico' => $servicoSelecionado,
+       'optionsBuscaAtendimento' => $atendimentoSelecionado,
+       'optionsBuscaUsuario' => $usuarioSelecionado,
+       'optionsBuscaStatus' => $statusSelecionado,
+       'optionsBuscaCriticidade' => $criticidadeSelecionado,
+       'optionsBuscaUrgencia' => $urgenciaSelecionado,
+
+       'texto_ativo' => (1 == $obChamado->id_status) ? 'Alterar Status' : 'Ativar',
+       'class_ativo' => (2 == $obChamado->id_status) ? 'btn-warning' : 'btn-success',
+       'style_ativo' => (1 == $obChamado->id_status) ? 'table-active' : 'table-danger',
+       'andamentos' => (1 == $obChamado->id_status) ? 'table-active' : 'table-danger',
+
+       'title' => 'Cadastrar Requisição',
+       'nome' => $_SESSION['admin']['usuario']['usuario_nm'],
+       'email' => $_SESSION['admin']['usuario']['email'],
+       'usuario' => $_SESSION['admin']['usuario']['usuario_id'],
+       'optionsUsuario' => $optionsUsuario,
+       'icon' => ICON_REQUERIMENTO,
+       'status' => self::getStatus($request)
+     ]);
+
+     //RETORNA A PÁGINA COMPLETA
+     return parent::getPanel('Cadastrar Chamado - EMERJ',$content,'chamados',$currentDepartamento,$currentPerfil);
 
 
    }

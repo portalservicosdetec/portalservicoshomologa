@@ -1,6 +1,6 @@
 <div class="form-row">
   <div class="form-group col-md-6">
-    <h5 class="card-title">{{title}}</h5>
+    <h5 class="card-title"><i class="bi-{{icon}}" style="font-size: 2rem; margin-right: 8px; vertical-align: bootom; padding-bootom: 0px; color: dimgray;"></i>{{title}} para o chamado: #{{ticket}}</h5>
   </div>
   <div class="form-group col-md-6 d-flex justify-content-end" style="width:100%">
       <a href="{{URL}}/admin/chamados">
@@ -9,145 +9,149 @@
   </div>
 </div>
 {{status}}
-<form method="post" enctype="multipart/form-data">
-<div class="col-lg-12" style="padding-top:8px;">
-   <div class="card">
-        <div class="card-header">
-          <div class="form-row">
-            <div class="form-group col-md-3">
-              <label class="medium-label is-required col-md-12 mb-0 p-0">Dados do Requisitante  </label>
-                <input type="text" name="nome_usuario" maxlength="40" value="{{nome}}" required  class="form-control form-control-sm" disabled>
-            </div>
-            <div class="form-group col-md-3">
-              <label class="medium-label is-required col-md-12 mb-0 p-0">E-mail:</label>
-                <input type="text" name="email_usuario" maxlength="40" value="{{email}}" required  class="form-control form-control-sm" disabled>
-            </div>
-            <div class="form-group col-md-3">
-              <label class="medium-label is-required col-md-12 mb-0 p-0">Departamento:</label>
-                <input type="hidden" name="departamento_usuario_logado_id" maxlength="2" value="{{departamento_id}}" id="departamento_usuario_logado_id"  class="form-control form-control-sm" disabled>
-                <input type="text" name="departamento_usuario" maxlength="40" value="{{usuariodepartamento}}" required  class="form-control form-control-sm" disabled>
-            </div>
-            <div class="form-group col-md-2">
-              <label class="medium-label is-required col-md-12 mb-0 p-0">Sala:</label>
-                <input type="hidden" name="sala_usuario_logado_id" maxlength="2" value="{{salaid}}" id="sala_usuario_logado_id"  class="form-control form-control-sm" disabled>
-                <input type="text" name="sala" id="sala_usuario_logado" maxlength="40" value="{{sala}}" required  class="form-control form-control-sm" disabled>
-                <input type="hidden" name="id_usuario" id="id_usuario" maxlength="40" value="{{usuario}}" required  class="form-control form-control-sm">
-                <input type="hidden" name="departamento" id="departamento" value="{{departamento_id}}">
-            </div>
-            <div class="form-group col-md-1">
-              <label class="medium-label is-required col-md-12 mb-0 p-0">Ramal:</label>
-                <input type="text" name="ramal" id="sala_usuario_logado" maxlength="40" value="{{ramal}}" required  class="form-control form-control-sm" disabled>
-            </div>
-          </div>
-          <div class="form-row" id="container-usuario-contato">
-            <div class="form-group col-md-3">
-              <label class="medium-label is-required col-md-12 mb-0 p-0">Informe o e-mail do Contato</label>
-              <select name="id_contato" value="" id="idcontato" class="form-select form-select-sm">
-                <!--onchange="javascript:location.href='{{uri}}&idcontato='+document.getElementById('idcontato').value;"-->
-                <option value=''>Informe o e-mail</option>
-                {{optionsUsuario}}
-              </select>
-            </div>
-            <div class="form-group col-md-3">
-              <label class="medium-label is-required col-md-12 mb-0 p-0">Nome:</label>
-                <input type="text" name="nome_contato" id="nome_contato" maxlength="40" value="" class="form-control form-control-sm" disabled>
-            </div>
-            <div class="form-group col-md-3">
-              <label class="medium-label is-required col-md-12 mb-0 p-0">Departamento:</label>
-                <input type="hidden" name="departamento_contato_id" id="departamento_contato_id" maxlength="2" value="" class="form-control form-control-sm" disabled>
-                <input type="text" name="departamento_contato" id="departamento_contato" maxlength="40" value="" class="form-control form-control-sm" disabled>
-            </div>
-            <div class="form-group col-md-2">
-              <label class="medium-label is-required col-md-12 mb-0 p-0">Sala:</label>
-                <input type="hidden" name="email_contato" id="emailcontato" maxlength="80" value="" class="form-control form-control-sm" disabled>
-                <input type="hidden" name="sala_contato_id" id="sala_contato_id" maxlength="2" value="" class="form-control form-control-sm" disabled>
-                <input type="text" name="sala_contato" id="sala_contato" maxlength="40" value=""  class="form-control form-control-sm" disabled>
-            </div>
-            <div class="form-group col-md-1">
-              <label class="medium-label is-required col-md-12 mb-0 p-0">Ramal:</label>
-                <input type="text" name="ramal_contato" id="ramal_contato" maxlength="40" value=""  class="form-control form-control-sm" disabled>
-            </div>
-          </div>
-          <div class="form-row">
-            <div class="form-group col-md-12">
-              O atendimento deste chamado é para você mesmo ou para outra pessoa?
-              <div class="custom-control custom-switch">
-                <input type="checkbox" class="custom-control-input" id="action-btn-b">
-                <label class="custom-control-label" for="action-btn-b">Chamado para outra pessoa.</label>
-              </div>
-            </div>
-          </div>
-          <div class="form-row hide" id="container-b">
-            <div class="form-group col-md-3">
-              <label class="medium-label is-required col-md-12 mb-0 p-0">Informe o e-mail</label>
-              <select name="id_atendimento" id="idatendimento" value="" class="form-select form-select-sm">
-                <!--onchange="javascript:location.href='{{uri}}&idatendimento='+document.getElementById('idatendimento').value;-->
-                <option value=''>Informe o e-mail</option>
-                {{optionsUsuario}}
-              </select>
-            </div>
-            <div class="form-group col-md-3">
-              <label class="medium-label is-required col-md-12 mb-0 p-0">Nome:</label>
-                <input type="text" name="nome_atendimento" id="nome_atendimento" maxlength="40" value=""  class="form-control form-control-sm" disabled>
-            </div>
-            <div class="form-group col-md-3">
-              <label class="medium-label is-required col-md-12 mb-0 p-0">Departamento:</label>
-                <input type="hidden" name="departamento_atendimento_id" id="departamento_atendimento_id" maxlength="2" value="" class="form-control form-control-sm" disabled>
-                <input type="text" name="departamento_atendimento" id="departamento_atendimento" maxlength="40" value=""  class="form-control form-control-sm" disabled>
-            </div>
-            <div class="form-group col-md-2">
-              <label class="medium-label is-required col-md-12 mb-0 p-0">Sala:</label>
-                <input type="hidden" name="email_atendimento" id="emailatendimento" maxlength="70" value=""  class="form-control form-control-sm" disabled>
-                <input type="hidden" name="sala_atendimento_id" id="sala_atendimento_id" maxlength="2" value="" class="form-control form-control-sm" disabled>
-                <input type="text" name="sala_atendimento" id="sala_atendimento" maxlength="40" value=""  class="form-control form-control-sm" disabled>
-            </div>
-            <div class="form-group col-md-1">
-              <label class="medium-label is-required col-md-12 mb-0 p-0">Ramal:</label>
-                <input type="text" name="ramal_atendimento" id="ramal_atendimento" maxlength="40" value=""  class="form-control form-control-sm" disabled>
-            </div>
-          </div>
-        </div>
-        <div class="card-body">
-            <div class="form-row">
-                <div class="form-group col-md-12">
-                    <label for="" class="medium-label is-required col-md-12 mb-0 p-0">Descreva sua solicitação:</label>
-                    <textarea class="form-control" rows="6" name="descricao" required value="" id="recipient-descricao"></textarea>
-                </div>
-            </div>
-            <div class="form-row">
-              <label for="" class="form-label medium-label col-md-12 mb-2 p-0">Caso necessário, escolha um ou mais arquivos que deseja anexar para auxiliar neste atendimento:</label>
-              <div id="drop_file_zone" ondrop="upload_file(event)" ondragover="return false">
-
-                  <div id="drag_upload_file">
-                      <p>Arraste o(s) arquivo(s) para esta área</p>
-                      <p>ou</p>
-                      <p><input type="button" value="Clique aqui para escolher o(s) arquivo(s)" onclick="file_explorer();" /></p>
-                      <input class="form-control form-control-sm mb-0 p-1" accept=".doc,.docx,.xls,.xlsx,application/msword,application/pdf,application/msexcel,application/x-zip-compressed,application/rtf,image/jpg,image/jpeg,image/png" type="file" id="selectfile" multiple />
-                  </div>
-              </div>
-              <div class="form-group col-md-12">
-                <!-- DIV responsável por montar a lista de arqrivos do UPLOAD -->
-                  <div class="d-grid gap-2 pt-3" id="arquivos_de_envio"></div>
-                <!-- FIM da DIV responsável por montar a lista de arqrivos do UPLOAD -->
-              </div>
-              <div class="col-lg-12" hidden>
-                  <input type="text" name="chamado_nm" id="recipient-chamado_nm" value="">
-                  <input type="text" name="itens_checados" id="recipient-itens_checados" value="">
-                  <input type="text" name="sala_item_checado" id="recipient-sala-item-checado" value="">
-                  <input type="text" name="departamento_item_checado" id="recipient-departamento-item-checado" value="">
-                  <label class="small-label col-md-12 mb-0 p-0">Descreva, caso necessário, uma observação:</label>
-                  <input type="text" name="chamado_obs" maxlength="255" value="{{chamadoObs}}"  class="form-control form-control-sm">
-              </div>
-            </div>
-        </div>
-        <div class="form-group col-md-12 d-flex justify-content-center">
-          <button type="submit" class="btn btn-sm btn-primary" style="width:300px;">{{title}}</button>
-        </div>
+<form id="urlAddRequrimentoBt" class="needs-validation" novalidate>
+  <div class="modal-body">
+    <div class="container">
+      <div class="row">
+        <div class="col-sm-3" id="delail_data_abertura"></div>
+        <div class="col-sm-3" id="delail_statusdoatendimento"></div>
+        <div class="col-sm-6" id="delail_descricao"></div>
+      </div>
+      <div class="row">
+        <div class="col-sm-1" id="delail_UsuarioContatoId"></div>
+        <div class="col-sm-4" id="delail_UsuarioContatoNome"></div>
+        <div class="col-sm-3" id="delail_UsuarioContatoEmail"></div>
+        <div class="col-sm-2" id="delail_UsuarioContatoTelefone"></div>
+        <div class="col-sm-1" id="delail_UsuarioContatoSiglaDep"></div>
+        <div class="col-sm-1" id="delail_UsuarioContatoSala"></div>
+      </div>
     </div>
+    <div class="form-row">
+      <div class="form-group col-md-6">
+        <label for="recipient-atendimento" class="small-label col-form-label col-md-12 mb-0 p-0">Atendimento: </label>
+        <select name="atendimento" required value="" class="form-select form-select-sm" id="recipient-atendimento">
+          <option value=''>Selecione o Atendimento</option>
+          {{optionsBuscaAtendimento}}
+        </select>
+        <div class="invalid-feedback">
+              Por favor, informe o atendimento desta requisição.
+        </div>
+        <input type="hidden" name="atendente" value="{{idUsuarioLogado}}" id="recipient-atendente">
+        <input type="hidden" name="chamado" value="" id="recipient-chamado">
+      </div>
+      <div class="form-group col-md-6">
+        <label for="recipient-usuario-atendido" class="small-label col-form-label col-md-12 mb-0 p-0">Usuário para o qual se destina o atendimento: </label>
+        <select name="usuario-atendido" required value="" class="form-select form-select-sm" id="recipient-usuario-atendido">
+          <option value=''>Selecione o Usuário</option>
+          {{optionsBuscaUsuario}}
+        </select>
+        <div class="invalid-feedback">
+            Por favor, informe o usuário atendido nesta requisição.
+        </div>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group col-md-3">
+        <label for="recipient-status" class="small-label col-form-label col-md-12 mb-0 p-0">Status: </label>
+        <select name="status" required value="" class="form-select form-select-sm" id="recipient-status">
+          <option value=''>Selecione o Status</option>
+          {{optionsBuscaStatus}}
+        </select>
+        <div class="invalid-feedback">
+              Por favor, selecione o status desta requisição.
+        </div>
+      </div>
+      <div class="form-group col-md-3">
+        <label for="recipient-nrdgtec" class="small-label col-form-label col-md-12 mb-0 p-0">Número da DGTEC: </label>
+        <input type="text" class="form-control form-control-sm" name="nrdgtec" maxlength="13" value="" id="recipient-nrdgtec" pattern="/(([A-Z]{2})(\d{4}).(\d{6}))/gm">
+        <div class="invalid-feedback">
+                Por favor, insera um número de chamado DGTEC em formato correto.
+          </div>
+      </div>
+      <div class="form-group col-md-6">
+        <label for="recipient-usuario-autorizador" class="small-label col-form-label col-md-12 mb-0 p-0">Usuário Autorizador: (opcional)</label>
+        <select name="usuario-autorizador" value="" class="form-select form-select-sm" id="recipient-usuario-autorizador">
+          <option value=''>Selecione o Usuário Autorizador</option>
+          {{optionsBuscaUsuario}}
+        </select>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group col-md-4">
+        <label for="recipient-urgencia" class="small-label col-form-label col-md-12 mb-0 p-0">Urgência: </label>
+        <select name="urgencia" required value="" class="form-select form-select-sm" id="recipient-urgencia">
+          <option value=''>Selecione a Urgência</option>
+          {{optionsBuscaUrgencia}}
+        </select>
+        <div class="invalid-feedback">
+                Por favor, informe a urgência.
+        </div>
+      </div>
+      <div class="form-group col-md-4">
+        <label for="recipient-criticidade" class="small-label col-form-label col-md-12 mb-0 p-0">Criticidade: </label>
+        <select name="criticidade" required value="" class="form-select form-select-sm" id="recipient-criticidade">
+          <option value=''>Selecione a Criticidade</option>
+          {{optionsBuscaCriticidade}}
+        </select>
+        <div class="invalid-feedback">
+                Por favor, informe a criticadade.
+              </div>
+      </div>
+      <div class="form-group col-md-4">
+        <label for="recipient-tipodeocorrencia" class="small-label col-form-label col-md-12 mb-0 p-0">Tipo de ocorrência: </label>
+        <select name="tipodeocorrencia" required value="" class="form-select form-select-sm" id="recipient-tipodeocorrencia">
+          <option value=''>Selecione o Tipo de ocorrência</option>
+          {{optionsBuscaTipodeOcorrencia}}
+        </select>
+        <div class="invalid-feedback">
+                Por favor, informe o tipo de ocorrência.
+        </div>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group col-md-12">
+        <label for="recipient-desc" class="small-label col-form-label col-md-12 mb-0 p-0">Observação: </label>
+        <textarea class="form-control" name="descricao" value="" rows="3" maxlength="5000" id="recipient-desc"></textarea>
+      </div>
+    </div>
+<div class="modal-footer col-mb-12">
+  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+  <button type="submit" class="btn btn-primary" id="add-button" name="button">Cadastrar Requisição</button>
+</div>
 </div>
 </form>
 <script type="text/javascript" src="{{URL}}/resources/js/custom.js"></script>
 <script type="text/javascript">
+
+  $(document).ready(function() {
+      $('#recipient-atendimento').select2();
+      $('#recipient-usuario-atendido').select2();
+      $('#recipient-usuario-autorizador').select2();
+  });
+
+  $("#recipient-nrdgtec").mask("SS0000.000000");
+
+  (function () {
+  'use strict'
+
+  // Fetch all the forms we want to apply custom Bootstrap validation styles to
+  var forms = document.querySelectorAll('.needs-validation')
+
+  // Loop over them and prevent submission
+  Array.prototype.slice.call(forms)
+    .forEach(function (form) {
+      form.addEventListener('submit', function (event) {
+        if (!form.checkValidity()) {
+          event.preventDefault()
+          event.stopPropagation()
+        }
+
+        form.classList.add('was-validated')
+      }, false)
+    })
+  })()
+
 
   $('#action-btn-b').click(function(e){
      if($('#action-btn-b').is(':checked')){

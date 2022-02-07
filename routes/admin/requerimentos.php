@@ -22,6 +22,16 @@ $obRouter->post('/admin/requerimentos/novo',[
   }
 ]);
 
+//ROTA DE CADASTRO DE UM NOVO REQUERIMENTO
+$obRouter->get('/admin/requerimentos/novo/{chamado_id}',[
+  'middlewares' => [
+    'require-admin-login'
+  ],
+  function($request,$chamado_id){
+    return new Response(200,Admin\Requerimentos::getNovoRequerimento($request,$chamado_id));
+  }
+]);
+
 //ROTA DE EDIÇÃO DE UM REQUERIMENTO
 $obRouter->get('/admin/requerimentos/{requerimento_id}/edit',[
   'middlewares' => [
