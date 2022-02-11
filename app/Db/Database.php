@@ -172,6 +172,8 @@ class Database{
     //MONTA A QUERY
     $query = 'SELECT '.$fields.' FROM '.$this->table.' '.$where.' '.$order.' '.$limit;
 
+    //echo "<pre>"; print_r($query); echo "<pre>";
+
     //EXECUTA A QUERY
     return $this->execute($query);
   }

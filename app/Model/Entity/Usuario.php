@@ -81,6 +81,12 @@ class Usuario{
   public $ativo_fl;
 
   /**
+ * Define se o usuário está ativo
+ * @var string(s/n)
+ */
+  public $validado_fl;
+
+  /**
    * Método responsável por cadastrar um novo usuário no banco
    * @return boolean
    */
@@ -100,7 +106,6 @@ class Usuario{
                                       'id_departamento' => $this->id_departamento,
                                       'sala' => $this->sala,
                                       'usuario_fone' => $this->usuario_fone,
-                                      'ativo_fl' => $this->ativo_fl
                                     ]);
 
     //RETORNAR SUCESSO
