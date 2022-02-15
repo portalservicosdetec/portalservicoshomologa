@@ -237,9 +237,7 @@ class Router{
     **/
     public function redirect($route){
       $url = $this->url.$route;
-
       //echo "<pre>";    print_r($url);    echo "</pre>"; exit;
-
       header('location: '.$url);
       exit;
 
