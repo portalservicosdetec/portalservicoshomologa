@@ -1,15 +1,76 @@
 <tr class="tr-sm {{style_ativo}}">
   <th scope="row"><small>{{ticket}}</small></th>
-  <td><small>{{descricao}}</small></td>
-  <td><small>{{Requisitante}}</small></td>
-  <td><small>{{data_abertura}}</small></td>
-  <td><small>{{statusdoatendimento}}</small></td>
+  <td><small>{{descricao}} <i class="bi-three-dots iconBtnDropdown" style="vertical-align: -4px;" type="button" data-bs-toggle="popover" data-bs-placement="top"  data-bs-trigger="hover focus" data-bs-title="Descrição do Chamado" data-bs-content="{{descricaoFull}}"></i></small></td>
   <td>
-    <div role="toolbar" class="btn-toolbar float-sm-right">
+    <small>
+      <div class="dropdown">
+        <a
+          class="dropdown hidden-arrow"
+          href="#"
+          id="navbarDropdownMenuContato"
+          role="button"
+          data-toggle="dropdown"
+          aria-expanded="false"
+        >
+        <i class="bi-person-fill iconBtnDropdown"></i></a>{{UsuarioContatoPrimeiroNome}}
+        <ul class="dropdown-menu dropdown-menu-right" style="width: 280px" aria-labelledby="navbarDropdownMenuContato">
+          <li>
+            <div style="margin-left: 8px; font-size: 12px;"><i class="bi-person-fill" style="font-size: 1.2rem; max-height:18px; margin-right: 5px; color: steelblue;"></i><strong>{{UsuarioContatoNome}}</strong></div>
+          </li>
+          <li><hr class="dropdown-divider"></li>
+          <li>
+            <div style="margin-left: 8px; font-size: 10px;"><i class="bi-envelope" style="font-size: 1rem; max-height:15px; margin-right: 5px; color: steelblue;"></i>{{UsuarioContatoEmail}}</div>
+            <div style="margin-left: 8px; font-size: 10px;"><i class="bi-telephone" style="font-size: 1rem; max-height:15px; margin-right: 5px; color: steelblue;"></i>{{UsuarioContatoTelefone}}</div>
+            <div style="margin-left: 8px; font-size: 10px;"><i class="bi-house" style="font-size: 1rem; max-height:15px; margin-right: 5px; color: steelblue;"></i>{{UsuarioContatoSiglaDep}} - {{UsuarioContatoSala}}</div>
+          </li>
+        </ul>
+      </div>
+    </small>
+  </td>
+  <td>
+    <small>
+      <div class="dropdown">
+        <a
+          class="dropdown hidden-arrow"
+          href="#"
+          id="navbarDropdownMenuRequisitante"
+          role="button"
+          data-toggle="dropdown"
+          aria-expanded="false"
+        >
+        <i class="bi-person-fill iconBtnDropdown"></i></a>{{UsuarioSolicitantePrimeiroNome}}
+        <ul class="dropdown-menu dropdown-menu-right" style="width: 280px" aria-labelledby="navbarDropdownMenuRequisitante">
+          <li>
+            <div style="margin-left: 8px; font-size: 12px;"><i class="bi-person-fill" style="font-size: 1.2rem; max-height:18px; margin-right: 5px; color: steelblue;"></i><strong>{{UsuarioSolicitanteNome}}</strong></div>
+          </li>
+          <li><hr class="dropdown-divider"></li>
+          <li>
+            <div style="margin-left: 8px; font-size: 10px;"><i class="bi-envelope" style="font-size: 1rem; max-height:15px; margin-right: 5px; color: steelblue;"></i>{{UsuarioSolicitanteEmail}}</div>
+            <div style="margin-left: 8px; font-size: 10px;"><i class="bi-telephone" style="font-size: 1rem; max-height:15px; margin-right: 5px; color: steelblue;"></i>{{UsuarioSolicitanteTelefone}}</div>
+            <div style="margin-left: 8px; font-size: 10px;"><i class="bi-house" style="font-size: 1rem; max-height:15px; margin-right: 5px; color: steelblue;"></i>{{UsuarioSolicitanteSiglaDep}} - {{UsuarioSolicitanteSala}}</div>
+          </li>
+        </ul>
+      </div>
+    </small>
+  </td>
+  <td><small><i class="bi-clock-fill iconBtnDropdown"></i>{{data_abertura}}</small></td>
+  <td>
+    <small class="float-sm-right mr-2">
+      <i class="bi-flag iconBtnDropdown"  type="button" data-bs-toggle="popover" data-bs-placement="top"  data-bs-trigger="hover focus" data-bs-content="{{statusdoatendimento}}"></i>
+    </small>
+  </td>
+  <td>
+    <div role="toolbar" class="float-sm-right mr-2">
       <div class="btn-group dropleft" role="group">
-        <button id="btnGroupDrop1" type="button" class="btn btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          Ações
-        </button>
+        <a id="btnGroupDrop1"
+            role="button"
+            class="dropdown hidden-arrow"
+            data-toggle="dropdown"
+            aria-haspopup="true"
+            aria-expanded="false"
+            >
+          <i class="bi-gear-fill iconBtnDropdown"></i>
+        </a>
         <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
           <a class="dropdown-item" href="{{URL}}/admin/{{direntity}}/{{ticket}}/detail" type="button" role="button" class="btn btn-danger btn-sm" name="button" data-bs-toggle="modal" data-bs-target="#detailModal"
           data-bs-whatever-url="{{URL}}"
@@ -54,23 +115,7 @@
           data-bs-whatever-titlelow="{{titlelow}}">
           <i class="bi-zoom-in" style="font-size: 1rem; margin-right: 3px; color: cornflowerblue;"></i>Ver Detalhes</a>
 
-          <a class="dropdown-item" href="{{URL}}/admin/requerimentos/novo/{{id}}" type="button" role="button" class="btn btn-danger btn-sm" name="button" data-bs-toggle="modal" data-bs-target="#addRequerimentoModal"
-          data-bs-whatever-url="{{URL}}"
-          data-bs-whatever-uri="{{uri}}"
-          data-bs-whatever-id="{{id}}"
-          data-bs-whatever-dir="requerimentos"
-          data-bs-whatever-descricao="{{descricao}}"
-          data-bs-whatever-title="Requisição"
-          data-bs-whatever-nrSolicitacao="{{nrSolicitacao}}"
-          data-bs-whatever-data_abertura="{{data_abertura}}"
-
-          data-bs-whatever-UsuarioContatoId="{{UsuarioContatoId}}"
-          data-bs-whatever-UsuarioContatoNome="{{UsuarioContatoNome}}"
-          data-bs-whatever-UsuarioContatoEmail="{{UsuarioContatoEmail}}"
-          data-bs-whatever-UsuarioContatoTelefone="{{UsuarioContatoTelefone}}"
-          data-bs-whatever-UsuarioContatoSiglaDep="{{UsuarioContatoSiglaDep}}"
-          data-bs-whatever-UsuarioContatoSala="{{UsuarioContatoSala}}"
-          data-bs-whatever-statusdoatendimento="{{statusdoatendimento}}">
+          <a class="dropdown-item" href="{{URL}}/admin/requerimentos/novo/{{id}}" type="button" role="button" class="btn btn-sm" name="button">
           <i class="bi-ticket" style="font-size: 1rem; margin-right: 3px; color: lightseagreen;"></i>Cadastrar Requisição</a>
         </div>
       </div>

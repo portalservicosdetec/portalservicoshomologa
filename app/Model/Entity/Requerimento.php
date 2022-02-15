@@ -123,7 +123,7 @@ class Requerimento{
                                       'id_status' => $this->id_status,
                                       'id_atendente' => $this->id_atendente,
                                       'id_atendido' => $this->id_atendido,
-                                      'id_autorizador' => $this->id_autorizador
+                                      'id_autorizador' => strlen($this->id_autorizador) > 0 ? $this->id_autorizador : NULL
                                     ]);
 
     //RETORNAR SUCESSO

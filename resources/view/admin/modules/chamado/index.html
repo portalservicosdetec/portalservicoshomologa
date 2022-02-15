@@ -16,9 +16,10 @@
       <tr>
         <th>#Ticket</th>
         <th>Descrição</th>
-        <th>Requisitante</th>
+        <th>Contato</th>
+        <th>Solicitante</th>
         <th>Data da abertura</th>
-        <th>Status</th>
+        <th><div class="d-flex justify-content-center">Status</div></th>
         <th><div class="d-flex justify-content-center">Ações</div></th>
       </tr>
   </thead>
@@ -71,6 +72,7 @@
       columnDefs: [
             {
                 targets: [-1],
+                sortable: false,
                 className: 'noVis'
             },
             {

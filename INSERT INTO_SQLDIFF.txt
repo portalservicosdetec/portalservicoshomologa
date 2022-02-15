@@ -1,0 +1,6 @@
+Criar regra para alteração de status do chamado?
+Permitir alteração de status do chamado? Ex. Pode-se alterar o status do chamado para fechado mesmo tendo requisições abertas pertencentes a este chamado? 
+
+
+
+INSERT INTO tb_chamado (chamadoid_ano,chamado_nm,chamado_des,id_usuario,solicitado_por,aberto_para,chamado_obs,id_status,nr_solicitacao,id_chamado_pai) VALUES (1,'Teste Nome','Teste Descricao',22,29,187,'Teste OBS',1,'SS.20220001',null) 

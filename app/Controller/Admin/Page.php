@@ -305,6 +305,16 @@ class Page{
           'dropdownlabel' => 'Gestão de Usuários',
           'dropdownlink' => URL.'/admin/usuarios',
           'navbarDropdownMenuLink' => 'navbarDropdownMenuLinkServicos',
+        ],
+        'chamados' => [
+          'dropdownlabel' => 'Abrir chamado',
+          'dropdownlink' => URL.'/admin/chamados/novo',
+          'navbarDropdownMenuLink' => 'navbarDropdownMenuLinkServicos',
+        ],
+        'listarchamados' => [
+          'dropdownlabel' => 'Listar chamados',
+          'dropdownlink' => URL.'/admin/chamados',
+          'navbarDropdownMenuLink' => 'navbarDropdownMenuLinkServicos',
         ]
       ];
     } else {
