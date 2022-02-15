@@ -990,8 +990,13 @@ class Chamados extends Page{
 
    //MENSAGENS DE STATUS
    switch ($queryParams['status']) {
+
      case 'gravado':
        return Alert::getSuccess('Chamado cadastrado com sucesso!'.$strMsn);
+       // code...
+       break;
+     case 'requerimentogravado':
+       return Alert::getSuccess('Requisição cadastrada com sucesso!'.$strMsn);
        // code...
        break;
      case 'alterado':
