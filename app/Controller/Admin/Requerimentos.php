@@ -163,6 +163,9 @@ class Requerimentos extends Page{
    */
    public static function getNovoRequerimento($request,$id_chamado){
 
+     $id_chamado = View::crypt('decrypt',$id_chamado);
+     $currentAtendente = $_SESSION['admin']['usuario']['usuario_id'];
+
      date_default_timezone_set('America/Sao_Paulo');
 
      $agora = date("Y-m-d");
@@ -188,7 +191,7 @@ class Requerimentos extends Page{
      $currentPerfil = $_SESSION['admin']['usuario']['id_perfil'];
 
      $optionsUsuario = AdminUsuario::getUsuarioItensSelectEmail($request,null);
-     $obChamado = EntityChamado::getChamadoPorId(View::crypt('decrypt',$id_chamado));
+     $obChamado = EntityChamado::getChamadoPorId($id_chamado);
 
      $tipodeocorrenciaSelecionado = AdminTipodeocorrencia::getTipodeocorrenciaItensSelect($request,$id_tipodeocorrencia);
      $servicoSelecionado = AdminServico::getServicoItensSelect($request,$id_servico);
@@ -276,16 +279,14 @@ class Requerimentos extends Page{
        'title' => 'Cadastrar Requisição',
        'nome' => $_SESSION['admin']['usuario']['usuario_nm'],
        'email' => $_SESSION['admin']['usuario']['email'],
-       'usuario' => $_SESSION['admin']['usuario']['usuario_id'],
+       'idUsuarioLogado' => $_SESSION['admin']['usuario']['usuario_id'],
        'optionsUsuario' => $optionsUsuario,
        'icon' => ICON_REQUERIMENTO,
        'status' => self::getStatus($request)
      ]);
 
      //RETORNA A PÁGINA COMPLETA
-     return parent::getPanel('Cadastrar Chamado - EMERJ',$content,'chamados',$currentDepartamento,$currentPerfil);
-
-
+     return parent::getPanel('Cadastrar Requisição para o chamado '.$obChamado->nr_solicitacao.' - EMERJ',$content,'chamados',$currentDepartamento,$currentPerfil);
    }
 
    /**
@@ -294,6 +295,10 @@ class Requerimentos extends Page{
     * @return string
     */
     public static function setNovoRequerimento($request,$id_requerimento){
+
+
+
+      //echo "<pre>"; print_r("entrou no setNovoRequerimento!!!!"); echo "<pre>"; exit;
 
       //PÁGINA ATUAL
        $queryParams = $request->getQueryParams();
@@ -410,7 +415,7 @@ class Requerimentos extends Page{
 
       } finally {
 
-        $request->getRouter()->redirect('/admin/chamados?pagina='.$paginaAtual.'&status=gravado&nm='.$nome.'&strMsn='.$strmsn.'&acao=alter');
+        $request->getRouter()->redirect('/admin/chamados?pagina='.$paginaAtual.'&status=requerimentogravado&nm='.$nome.'&strMsn='.$strmsn.'&acao=alter');
 
       }
     }
