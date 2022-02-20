@@ -67,6 +67,12 @@ class Requerimento{
    * Status do andament
    * @var integer
    */
+  public $requerimento_nivel;
+
+  /**
+   * Status do andament
+   * @var integer
+   */
   public $id_atendente;
 
   /**
@@ -121,6 +127,7 @@ class Requerimento{
                                       'id_criticidade' => $this->id_criticidade,
                                       'id_urgencia' => $this->id_urgencia,
                                       'id_status' => $this->id_status,
+                                      'requerimento_nivel' => $this->requerimento_nivel,
                                       'id_atendente' => $this->id_atendente,
                                       'id_atendido' => $this->id_atendido,
                                       'id_autorizador' => strlen($this->id_autorizador) > 0 ? $this->id_autorizador : NULL
@@ -149,6 +156,7 @@ class Requerimento{
                                                   'id_criticidade' => $this->id_criticidade,
                                                   'id_urgencia' => $this->id_urgencia,
                                                   'id_status' => $this->id_status,
+                                                  'requerimento_nivel' => $this->requerimento_nivel,
                                                   'id_atendente' => $this->id_atendente,
                                                   'id_atendido' => $this->id_atendido,
                                                   'id_autorizador' => $this->id_autorizador
