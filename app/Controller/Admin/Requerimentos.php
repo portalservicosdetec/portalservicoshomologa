@@ -125,6 +125,7 @@ class Requerimentos extends Page{
 
         'ticket' => EntityChamado::getChamadoPorId($obRequerimento->id_chamado)->nr_solicitacao,
         'atendimento' => EntityServico::getServicoPorId(EntityAtendimento::getAtendimentoPorId($obRequerimento->id_atendimento)->id_servico)->servico_nm.' - '.EntityTipodeic::getTipodeicPorId(EntityAtendimento::getAtendimentoPorId($obRequerimento->id_atendimento)->id_tipodeic)->tipodeic_nm,
+        'nivel' => $obRequerimento->requerimento_nivel,
         'criticidade' => $obRequerimento->id_criticidade,
         'urgencia' => $obRequerimento->id_urgencia,
         'status' => EntityStatus::getStatusPorId($obRequerimento->id_status)->status_nm,
@@ -186,6 +187,7 @@ class Requerimentos extends Page{
      $id_criticidade = filter_input(INPUT_GET, 'criticidade', FILTER_SANITIZE_NUMBER_INT);
      $id_urgencia = filter_input(INPUT_GET, 'urgencia', FILTER_SANITIZE_NUMBER_INT);
      $id_tipodeocorrencia = filter_input(INPUT_GET, 'tipodeocorrencia', FILTER_SANITIZE_NUMBER_INT);
+     $nivel = filter_input(INPUT_GET, 'nivel', FILTER_SANITIZE_NUMBER_INT);
 
      $currentDepartamento = $_SESSION['admin']['usuario']['departamento'];
      $currentPerfil = $_SESSION['admin']['usuario']['id_perfil'];
@@ -200,6 +202,18 @@ class Requerimentos extends Page{
      $statusSelecionado = AdminStatus::getStatusItensSelect($request,$id_status);
      $criticidadeSelecionado = AdminCriticidade::getCriticidadeItensSelect($request,$id_criticidade);
      $urgenciaSelecionado = AdminUrgencia::getUrgenciaItensSelect($request,$id_urgencia);
+
+     $nivelSelecionado = '';
+     $strSelected = '';
+
+      for ($n = 1; $n <= 3; $n++ ) {
+        if ($nivel == $n) {
+          $strSelected = ' selected';
+        }
+        $nivelSelecionado = $nivelSelecionado."<option value='$n'$strSelected>Nível $n</option>";
+        $strSelected = '';
+      }
+
 
      if ($obChamado->id_usuario > 0) {
        $obUsuarioContato = EntityUsuario::getUsuarioPorId($obChamado->id_usuario);
@@ -270,6 +284,7 @@ class Requerimentos extends Page{
        'optionsBuscaStatus' => $statusSelecionado,
        'optionsBuscaCriticidade' => $criticidadeSelecionado,
        'optionsBuscaUrgencia' => $urgenciaSelecionado,
+       'optionsBuscaNivel' => $nivelSelecionado,
 
        'texto_ativo' => (1 == $obChamado->id_status) ? 'Alterar Status' : 'Ativar',
        'class_ativo' => (2 == $obChamado->id_status) ? 'btn-warning' : 'btn-success',
@@ -321,6 +336,7 @@ class Requerimentos extends Page{
       $urgencia = filter_input(INPUT_POST, 'urgencia', FILTER_SANITIZE_NUMBER_INT) ?? '';
       $criticidade = filter_input(INPUT_POST, 'criticidade', FILTER_SANITIZE_NUMBER_INT) ?? '';
       $tipodeocorrencia = filter_input(INPUT_POST, 'tipodeocorrencia', FILTER_SANITIZE_NUMBER_INT) ?? '';
+      $nivel = filter_input(INPUT_POST, 'nivel', FILTER_SANITIZE_NUMBER_INT) ?? '';
       $nr_dgtec = filter_input(INPUT_POST, 'nrdgtec', FILTER_SANITIZE_STRING) ?? '';
       $status = filter_input(INPUT_POST, 'status', FILTER_SANITIZE_NUMBER_INT) ?? '';
 
@@ -336,6 +352,7 @@ class Requerimentos extends Page{
         $obRequerimento->id_tipodeocorrencia = $tipodeocorrencia;
         $obRequerimento->id_urgencia = $urgencia;
         $obRequerimento->id_status = $status;
+        $obRequerimento->requerimento_nivel = $nivel;
         $obRequerimento->id_atendente = $usuario_atendente;
         $obRequerimento->id_atendido = $usuario_atendido;
         $obRequerimento->id_autorizador = $usuario_autorizador;
