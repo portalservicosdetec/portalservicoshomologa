@@ -37,7 +37,7 @@ class Requerimento{
    * Atendimento
    * @var integer
    */
-  public $id_atendimento;
+  public $id_servico;
 
   /**
    * Tipo de Ocorrência
@@ -62,6 +62,12 @@ class Requerimento{
    * @var integer
    */
   public $id_status;
+
+  /**
+   * Status do andament
+   * @var integer
+   */
+  public $requerimento_nivel;
 
   /**
    * Status do andament
@@ -116,11 +122,12 @@ class Requerimento{
                                       'requerimento_desc' => $this->requerimento_desc,
                                       'nrdgtec' => $this->nrdgtec,
                                       'id_chamado' => $this->id_chamado,
-                                      'id_atendimento' => $this->id_atendimento,
+                                      'id_servico' => $this->id_servico,
                                       'id_tipodeocorrencia' => $this->id_tipodeocorrencia,
                                       'id_criticidade' => $this->id_criticidade,
                                       'id_urgencia' => $this->id_urgencia,
                                       'id_status' => $this->id_status,
+                                      'requerimento_nivel' => $this->requerimento_nivel,
                                       'id_atendente' => $this->id_atendente,
                                       'id_atendido' => $this->id_atendido,
                                       'id_autorizador' => strlen($this->id_autorizador) > 0 ? $this->id_autorizador : NULL
@@ -144,11 +151,12 @@ class Requerimento{
                                                   'requerimento_desc' => $this->requerimento_desc,
                                                   'nrdgtec' => $this->nrdgtec,
                                                   'id_chamado' => $this->id_chamado,
-                                                  'id_atendimento' => $this->id_atendimento,
+                                                  'id_servico' => $this->id_servico,
                                                   'id_tipodeocorrencia' => $this->id_tipodeocorrencia,
                                                   'id_criticidade' => $this->id_criticidade,
                                                   'id_urgencia' => $this->id_urgencia,
                                                   'id_status' => $this->id_status,
+                                                  'requerimento_nivel' => $this->requerimento_nivel,
                                                   'id_atendente' => $this->id_atendente,
                                                   'id_atendido' => $this->id_atendido,
                                                   'id_autorizador' => $this->id_autorizador
