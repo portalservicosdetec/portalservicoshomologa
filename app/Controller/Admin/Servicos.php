@@ -5,8 +5,10 @@ namespace App\Controller\Admin;
 use \App\Utils\View;
 use \App\Model\Entity\Servico as EntityServico;
 use \App\Model\Entity\Tipodeservico as EntityTipodeservico;
+use \App\Model\Entity\Departamento as EntityDepartamento;
 use \App\Model\Entity\Atendimento as EntityAtendimento;
 use \App\Controller\Admin\Tipodeservicos as AdminTipodeservico;
+use \App\Controller\Admin\Departamentos as AdminDepartamento;
 use \App\Db\Pagination;
 
 const DIR_SERVICO = 'servico';
@@ -60,6 +62,7 @@ class Servicos extends Page{
     $status = self::getStatus($request);
 
     $tipodeservicoSelecionado = AdminTipodeservico::getTipodeservicoItensSelect($request,$id) ?? '';
+    $departamentoSelecionado = AdminDepartamento::getDepartamentoItensSelect($request,$id) ?? '';
 
     //CONTEÚDO DA HOME
     $content = View::render('admin/modules/'.DIR_SERVICO.'/index',[
@@ -69,7 +72,8 @@ class Servicos extends Page{
       'direntity' => ROTA_SERVICO,
       'itens' => self::getServicoItens($request,$obPagination),
       'status' => self::getStatus($request),
-      'optionsTipodeservico' => $tipodeservicoSelecionado
+      'optionsTipodeservico' => $tipodeservicoSelecionado,
+      'optionsDepartamento' => $departamentoSelecionado
     ]);
 
     //RETORNA A PÁGINA COMPLETA
@@ -100,9 +104,14 @@ class Servicos extends Page{
       $itens .= View::render('admin/modules/'.DIR_SERVICO.'/item',[
         'id' => $obServico->servico_id,
         'nome' => $obServico->servico_nm,
+        'sla' => $obServico->sla,
         'descricao' => $obServico->servico_des,
+        'servico_fluxo' => $obServico->servico_fluxo,
+        'servico_form' => $obServico->servico_form,
         'tipodeservico' => EntityTipodeservico::getTipodeservicoPorId($obServico->id_tipodeservico)->tipodeservico_nm,
+        'departamento' => EntityDepartamento::getDepartamentoPorId($obServico->id_departamento)->departamento_nm,
         'id_tipodeservico' => $obServico->id_tipodeservico,
+        'id_departamento' => $obServico->id_departamento,
         'texto_ativo' => ('s' == $obServico->ativo_fl) ? 'Desativar' : 'Ativar',
         'class_ativo' => ('s' == $obServico->ativo_fl) ? 'btn-warning' : 'btn-success',
         'style_ativo' => ('s' == $obServico->ativo_fl) ? 'table-active' : 'table-danger',
@@ -129,8 +138,10 @@ class Servicos extends Page{
       //DADOS DO POST
       $posVars = $request->getPostVars();
       $nome = filter_input(INPUT_POST, 'nome', FILTER_SANITIZE_STRING);
+      $sla = filter_input(INPUT_POST, 'sla', FILTER_SANITIZE_NUMBER_INT);
       $descricao = filter_input(INPUT_POST, 'descricao', FILTER_SANITIZE_STRING);
       $tipodeservico = filter_input(INPUT_POST, 'tipodeservico', FILTER_SANITIZE_NUMBER_INT);
+      $departamento = filter_input(INPUT_POST, 'departamento', FILTER_SANITIZE_NUMBER_INT);
 
       $where = ' servico_nm = "'.$nome.'" AND id_tipodeservico = '.$tipodeservico;
 
@@ -147,9 +158,11 @@ class Servicos extends Page{
 
       ////$obServico::getServicoPorEmail($posVars['email']);
       $obServico->servico_nm = $nome;
+      $obServico->sla = $sla;
       $obServico->servico_des = $descricao;
       $obServico->ativo_fl = 's';
       $obServico->id_tipodeservico = $tipodeservico;
+      $obServico->id_departamento = $departamento;
       $obServico->cadastrar();
 
 
@@ -157,9 +170,6 @@ class Servicos extends Page{
       $request->getRouter()->redirect('/admin/'.ROTA_SERVICO.'?pagina='.$paginaAtual.'&status=gravado&nm='.$nome.'&acao=alter');
 
     }
-
-
-
 
      /**
       * Método responsável por gravar a edição de um item de configuração
@@ -173,17 +183,21 @@ class Servicos extends Page{
         $posVars = $request->getPostVars();
         $id = filter_input(INPUT_POST, 'id', FILTER_SANITIZE_NUMBER_INT);;
         $nome = filter_input(INPUT_POST, 'nome', FILTER_SANITIZE_STRING);
+        $sla = filter_input(INPUT_POST, 'sla', FILTER_SANITIZE_NUMBER_INT);
         $descricao = filter_input(INPUT_POST, 'descricao', FILTER_SANITIZE_STRING);
-        $tipodeservico = filter_input(INPUT_POST, 'tipodeservico', FILTER_SANITIZE_STRING);
+        $tipodeservico = filter_input(INPUT_POST, 'tipodeservico', FILTER_SANITIZE_NUMBER_INT);
+        $departamento = filter_input(INPUT_POST, 'departamento', FILTER_SANITIZE_NUMBER_INT);
 
         $where = ' servico_nm = "'.$nome.'" AND id_tipodeservico = '.$tipodeservico;
 
         //VERIFICA SE JÁ EXISTE O IC com mesmo nome e tipo CADASTRADO NO BANCO
-        $obServicoVer = EntityServico::getServicos($where)->fetchColumn();
+        $obServicoVer = EntityServico::getServicos($where);
 
         if($obServicoVer > 0){
           //echo "<pre>"; print_r($id); echo "<pre>"; exit;
-          $request->getRouter()->redirect('/admin/servicos?status=updatefail');
+          if ($obServicoVer->servico_id != $id) {
+            $request->getRouter()->redirect('/admin/servicos?status=updatefail');
+          }
         }
 
         //OBTÉM O USUÁRIO DO BANCO DE DADOS
@@ -195,8 +209,10 @@ class Servicos extends Page{
 
         //ATUALIZA A INSTANCIA
         $obServico->servico_nm = $nome;
+        $obServico->sla = $sla;
         $obServico->servico_des = $descricao;
         $obServico->id_tipodeservico = $tipodeservico;
+        $obServico->id_departamento = $departamento;
         $obServico->atualizar();
 
         //REDIRECIONA O USUÁRIO

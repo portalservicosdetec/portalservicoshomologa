@@ -37,7 +37,7 @@ class Requerimento{
    * Atendimento
    * @var integer
    */
-  public $id_atendimento;
+  public $id_servico;
 
   /**
    * Tipo de Ocorrência
@@ -122,7 +122,7 @@ class Requerimento{
                                       'requerimento_desc' => $this->requerimento_desc,
                                       'nrdgtec' => $this->nrdgtec,
                                       'id_chamado' => $this->id_chamado,
-                                      'id_atendimento' => $this->id_atendimento,
+                                      'id_servico' => $this->id_servico,
                                       'id_tipodeocorrencia' => $this->id_tipodeocorrencia,
                                       'id_criticidade' => $this->id_criticidade,
                                       'id_urgencia' => $this->id_urgencia,
@@ -151,7 +151,7 @@ class Requerimento{
                                                   'requerimento_desc' => $this->requerimento_desc,
                                                   'nrdgtec' => $this->nrdgtec,
                                                   'id_chamado' => $this->id_chamado,
-                                                  'id_atendimento' => $this->id_atendimento,
+                                                  'id_servico' => $this->id_servico,
                                                   'id_tipodeocorrencia' => $this->id_tipodeocorrencia,
                                                   'id_criticidade' => $this->id_criticidade,
                                                   'id_urgencia' => $this->id_urgencia,
