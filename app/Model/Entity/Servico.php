@@ -16,16 +16,34 @@ class Servico{
   public $servico_id;
 
   /**
-   * Título do serviço (pode conter html)
+   * Título do serviço
    * @var string
    */
   public $servico_nm;
+
+  /**
+   * SLA do serviço
+   * @var integer
+   */
+  public $sla;
 
   /**
    * Descrição do serviço (pode conter html)
    * @var string
    */
   public $servico_des;
+
+  /**
+   * Nome do arquivo de imagem do Fluxograma do serviço
+   * @var string
+   */
+  public $servico_fluxo;
+
+  /**
+   * Nome do arquivo doc do Formulário do serviço
+   * @var string
+   */
+  public $servico_form;
 
   /**
    * Data de publicação do serviço
@@ -51,6 +69,13 @@ class Servico{
  */
 public $id_tipodeservico;
 
+/**
+* Departamento relacionado
+* @var integer
+*/
+public $id_departamento;
+
+
   /**
    * Método responsável por cadastrar um nova IC no banco
    * @return boolean
@@ -65,9 +90,13 @@ public $id_tipodeservico;
 
     $this->servico_id = $obDatabase->insert([
                                       'servico_nm' => $this->servico_nm,
+                                      'sla' => $this->sla,
                                       'servico_des' => $this->servico_des,
+                                      'servico_fluxo' => $this->servico_fluxo,
+                                      'servico_form' => $this->servico_form,
                                       'ativo_fl'     => $this->ativo_fl,
-                                      'id_tipodeservico'  => $this->id_tipodeservico
+                                      'id_tipodeservico'  => $this->id_tipodeservico,
+                                      'id_departamento'  => $this->id_departamento
                                     ]);
 
     //RETORNAR SUCESSO
@@ -75,7 +104,7 @@ public $id_tipodeservico;
   }
 
   /**
-   * Método responsável por atualizar o IC no banco
+   * Método responsável por atualizar o Serviço no banco
    * @return boolean
    */
   public function atualizar(){
@@ -85,11 +114,15 @@ public $id_tipodeservico;
     $this->data_up = date('Y-m-d H:i:s');
 
     return (new Database('tb_servico'))->update('servico_id = '.$this->servico_id,[
-                                                                'servico_nm'    => $this->servico_nm,
+                                                                'servico_nm' => $this->servico_nm,
+                                                                'sla' => $this->sla,
                                                                 'servico_des' => $this->servico_des,
-                                                                'ativo_fl'    => $this->ativo_fl,
+                                                                'servico_fluxo' => $this->servico_fluxo,
+                                                                'servico_form' => $this->servico_form,
+                                                                'ativo_fl'     => $this->ativo_fl,
                                                                 'data_up'  => $this->data_up,
-                                                                'id_tipodeservico' => $this->id_tipodeservico
+                                                                'id_tipodeservico' => $this->id_tipodeservico,
+                                                                'id_departamento'  => $this->id_departamento
                                                               ]);
   }
 

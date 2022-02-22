@@ -9,35 +9,48 @@
   </div>
 </div>
 {{status}}
-<form id="urlAddRequrimentoBt" class="needs-validation" novalidate>
+<form id="urlAddRequrimentoBt" method="post" class="needs-validation" novalidate>
   <div class="modal-body">
-    <div class="container">
-      <div class="row">
-        <div class="col-sm-3" id="delail_data_abertura"></div>
-        <div class="col-sm-3" id="delail_statusdoatendimento"></div>
-        <div class="col-sm-6" id="delail_descricao"></div>
+    <!-- asdbaskjdaksjd -->
+    <div class="accordion mb-3" id="accordionPanelsStay">
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="panelsStayOpen-headingOne">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="false" aria-controls="panelsStayOpen-collapseOne">
+            Descrição do chamado <b>&nbsp;{{ticket}}&nbsp;</b> aberto por:<b>&nbsp;{{UsuarioContatoPrimeiroNome}}&nbsp;</b> em {{data_abertura}}
+          </button>
+        </h2>
+        <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse" aria-labelledby="panelsStayOpen-headingOne">
+          <div class="accordion-body">
+            <strong>{{UsuarioContatoNome}}:&nbsp;</strong> {{descricaoFull}}
+          </div>
+        </div>
       </div>
-      <div class="row">
-        <div class="col-sm-1" id="delail_UsuarioContatoId"></div>
-        <div class="col-sm-4" id="delail_UsuarioContatoNome"></div>
-        <div class="col-sm-3" id="delail_UsuarioContatoEmail"></div>
-        <div class="col-sm-2" id="delail_UsuarioContatoTelefone"></div>
-        <div class="col-sm-1" id="delail_UsuarioContatoSiglaDep"></div>
-        <div class="col-sm-1" id="delail_UsuarioContatoSala"></div>
-      </div>
+      <!--div class="accordion-item">
+        <h2 class="accordion-header" id="panelsStayOpen-headingTwo">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseTwo" aria-expanded="false" aria-controls="panelsStayOpen-collapseTwo">
+            Accordion Item #2
+          </button>
+        </h2>
+        <div id="panelsStayOpen-collapseTwo" class="accordion-collapse collapse" aria-labelledby="panelsStayOpen-headingTwo">
+          <div class="accordion-body">
+            <strong>This is the second item's accordion body.</strong> It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
+          </div>
+        </div>
+      </div-->
     </div>
+    <!-- FIM ACORDIOM -->
     <div class="form-row">
       <div class="form-group col-md-6">
-        <label for="recipient-atendimento" class="small-label col-form-label col-md-12 mb-0 p-0">Atendimento: </label>
-        <select name="atendimento" required value="" class="form-select form-select-sm" id="recipient-atendimento">
-          <option value=''>Selecione o Atendimento</option>
-          {{optionsBuscaAtendimento}}
+        <label for="recipient-servico" class="small-label col-form-label col-md-12 mb-0 p-0">Serviço: </label>
+        <select name="servico" required value="" class="form-select form-select-sm" id="recipient-servico">
+          <option value=''>Selecione o Serviço</option>
+          {{optionsBuscaServico}}
         </select>
         <div class="invalid-feedback">
               Por favor, informe o atendimento desta requisição.
         </div>
         <input type="hidden" name="atendente" value="{{idUsuarioLogado}}" id="recipient-atendente">
-        <input type="hidden" name="chamado" value="" id="recipient-chamado">
+        <input type="hidden" name="chamado" value="{{id_chamado}}" id="recipient-chamado">
       </div>
       <div class="form-group col-md-6">
         <label for="recipient-usuario-atendido" class="small-label col-form-label col-md-12 mb-0 p-0">Usuário para o qual se destina o atendimento: </label>
@@ -63,7 +76,7 @@
       </div>
       <div class="form-group col-md-3">
         <label for="recipient-nrdgtec" class="small-label col-form-label col-md-12 mb-0 p-0">Número da DGTEC: </label>
-        <input type="text" class="form-control form-control-sm" name="nrdgtec" maxlength="13" value="" id="recipient-nrdgtec" pattern="/(([A-Z]{2})(\d{4}).(\d{6}))/gm">
+        <input type="text" class="form-control form-control-sm" name="nrdgtec" maxlength="14" value="" id="recipient-nrdgtec" pattern="S{2}20[0-9]{2}.[0-9]{6}">
         <div class="invalid-feedback">
                 Por favor, insera um número de chamado DGTEC em formato correto.
           </div>
@@ -77,7 +90,7 @@
       </div>
     </div>
     <div class="form-row">
-      <div class="form-group col-md-4">
+      <div class="form-group col-md-3">
         <label for="recipient-urgencia" class="small-label col-form-label col-md-12 mb-0 p-0">Urgência: </label>
         <select name="urgencia" required value="" class="form-select form-select-sm" id="recipient-urgencia">
           <option value=''>Selecione a Urgência</option>
@@ -87,7 +100,7 @@
                 Por favor, informe a urgência.
         </div>
       </div>
-      <div class="form-group col-md-4">
+      <div class="form-group col-md-3">
         <label for="recipient-criticidade" class="small-label col-form-label col-md-12 mb-0 p-0">Criticidade: </label>
         <select name="criticidade" required value="" class="form-select form-select-sm" id="recipient-criticidade">
           <option value=''>Selecione a Criticidade</option>
@@ -97,7 +110,7 @@
                 Por favor, informe a criticadade.
               </div>
       </div>
-      <div class="form-group col-md-4">
+      <div class="form-group col-md-3">
         <label for="recipient-tipodeocorrencia" class="small-label col-form-label col-md-12 mb-0 p-0">Tipo de ocorrência: </label>
         <select name="tipodeocorrencia" required value="" class="form-select form-select-sm" id="recipient-tipodeocorrencia">
           <option value=''>Selecione o Tipo de ocorrência</option>
@@ -105,6 +118,16 @@
         </select>
         <div class="invalid-feedback">
                 Por favor, informe o tipo de ocorrência.
+        </div>
+      </div>
+      <div class="form-group col-md-3">
+        <label for="recipient-nivel" class="small-label col-form-label col-md-12 mb-0 p-0">Nível de Atendimento: </label>
+        <select name="nivel" required value="" class="form-select form-select-sm" id="recipient-nivel">
+          <option value=''>Selecione o Nível de Atendimento</option>
+          {{optionsBuscaNivel}}
+        </select>
+        <div class="invalid-feedback">
+                Por favor, informe o Nível de Atendimento.
         </div>
       </div>
     </div>
@@ -125,16 +148,24 @@
 <script type="text/javascript">
 
   $(document).ready(function() {
-      $('#recipient-atendimento').select2();
+      $('#recipient-servico').select2();
       $('#recipient-usuario-atendido').select2();
       $('#recipient-usuario-autorizador').select2();
   });
 
-  $("#recipient-nrdgtec").mask("SS0000.000000");
+  $('#recipient-nrdgtec').mask('AA0000.000000');
+
+  $('.money2').mask("#.##0,00", {reverse: true});
+  $('.ip_address').mask('0ZZ.0ZZ.0ZZ.0ZZ', {
+    translation: {
+      'Z': {
+        pattern: /[0-9]/, optional: true
+      }
+    }
+  });
 
   (function () {
   'use strict'
-
   // Fetch all the forms we want to apply custom Bootstrap validation styles to
   var forms = document.querySelectorAll('.needs-validation')
 
@@ -151,230 +182,5 @@
       }, false)
     })
   })()
-
-
-  $('#action-btn-b').click(function(e){
-     if($('#action-btn-b').is(':checked')){
-          console.log("on");
-          $('#container-b').removeClass('hide');
-     } else {
-         console.log("off");
-         $('#container-b').addClass('hide');
-         zeraUsuarioAtendimento();
-         validaUsuario();
-     }
-  })
-
-  function zeraUsuarioContato(){
-    zeraUsuarioAtendimento();
-    $('#nome_contato').val(null);
-    $('#emailcontato').val(null);
-    $('#departamento_contato_id').val(null);
-    $('#departamento_contato').val(null);
-    $('#sala_contato_id').val(null);
-    $('#sala_contato').val(null);
-    $('#ramal_contato').val(null);
-    validaUsuario();
-  }
-  function zeraUsuarioAtendimento(){
-    //document.getElementById("action-btn-b").classList.toggle("hide");
-    $('idatendimento option:eq(1)');
-    $('#idatendimento option:eq(1)').prop('selected', true);
-    $('#idatendimento').val('25');
-    $('#nome_atendimento').val(null);
-    $('#emailatendimento').val(null);
-    $('#departamento_atendimento_id').val(null);
-    $('#departamento_atendimento').val(null);
-    $('#sala_atendimento_id').val(null);
-    $('#sala_atendimento').val(null);
-    $('#ramal_atendimento').val(null);
-    $('#idatendimento').select2();
-  }
-
-  $(document).ready(function() {
-      $('#idcontato').select2();
-      $('#idatendimento').select2();
-  });
-
-  function validaUsuario(){
-    if($('#departamento_atendimento_id').val()){
-      $('#recipient-sala-item-checado').val($('#sala_atendimento_id').val());
-      $('#recipient-departamento-item-checado').val($('#departamento_atendimento_id').val());
-      console.log('USUÁRIO DE ATENDIMENTO = '+$('#departamento_atendimento_id').val());
-    } else {
-      if($('#departamento_contato_id').val()){
-        $('#recipient-sala-item-checado').val($('#sala_contato_id').val());
-        $('#recipient-departamento-item-checado').val($('#departamento_contato_id').val());
-        console.log('USUÁRIO DE CONTANTO = '+$('#departamento_contato_id').val());
-      } else {
-        $('#recipient-sala-item-checado').val($('#sala_usuario_logado_id').val());
-        $('#recipient-departamento-item-checado').val($('#departamento_usuario_logado_id').val());
-        console.log('APENAS USUÁRIO DE LOGADO = '+$('#sala_usuario_logado_id').val());
-      }
-    }
-    listaICs();
-  }
-
-  $(function(){
-    $(".categoriadeic").click(function () {
-      id = $("input[type=radio][name='categoriadeic']:checked").val();
-      if( $(this).val() ) {
-        $('#tipodeic').hide();
-        $('#servico').hide();
-        $('#label-servico').hide();
-        $('#itemdeconfiguracao').hide();
-        $('#label-itemdeconfiguracao').hide();
-        $('#recipient-chamado_nm').val('');
-        $('#recipient-itens_checados').val('');
-        $('.carregando').show();
-          $.getJSON('jsoncategoria?',{categoriadeic: $(this).val(), ajax: 'true'}, function(j){
-						var options = '<option value="">Selecione o tipo de item</option>';
-						for (var i = 0; i < j.length; i++) {
-							options += '<option value="' + j[i].id + '">' + j[i].tipodeic_nm + '</option>';
-						}
-						$('#tipodeic').html(options).show();
-						$('.carregando').hide();
-					});
-      } else {
-        $('#tipodeic').html('<option value="">Selecione o tipo de item</option>');
-      }
-    });
-    // JSON PARA RETORNAR DADOS (Nome,Departamento[SIGLA;ID],Localização[NOME;ID]) DO USUÁRIO POR E-MAIL
-    $("#idcontato").change(function() {
-      if( $(this).val() ) {
-          $.getJSON('jsonusuarioporid?',{id: $(this).val(), ajax: 'true'}, function(j){
-            //console.log('nome_contato = '+j[0].nome_contato);
-            $('#nome_contato').val(j[0].nome_contato);
-            $('#emailcontato').val(j[0].email_contato);
-            $('#departamento_contato_id').val(j[0].departamento_id);
-            $('#departamento_contato').val(j[0].departamento_sg);
-            $('#sala_contato_id').val(j[0].localizacao_id);
-            $('#sala_contato').val(j[0].localizacao_nm);
-            $('#ramal_contato').val(j[0].usuario_fone);
-            $('#recipient-sala-item-checado').val(j[0].localizacao_id);
-            $('#recipient-departamento-item-checado').val(j[0].departamento_id);
-            validaUsuario();
-				});
-      } else {
-        zeraUsuarioContato();
-      }
-
-    });
-    // JSON PARA RETORNAR DADOS (Nome,Departamento[SIGLA;ID],Localização[NOME;ID]) DO USUÁRIO POR E-MAIL
-    $("#idatendimento").change(function() {
-      if( $(this).val() ) {
-
-          $.getJSON('jsonusuarioporid?',{id: $(this).val(), ajax: 'true'}, function(j){
-            //console.log('nome_contato = '+j[0].nome_contato);
-            $('#nome_atendimento').val(j[0].nome_contato);
-            $('#emailatendimento').val(j[0].email_contato);
-            $('#departamento_atendimento_id').val(j[0].departamento_id);
-            $('#departamento_atendimento').val(j[0].departamento_sg);
-            $('#sala_atendimento_id').val(j[0].localizacao_id);
-            $('#sala_atendimento').val(j[0].localizacao_nm);
-            $('#ramal_atendimento').val(j[0].usuario_fone);
-            $('#recipient-sala-item-checado').val(j[0].localizacao_id);
-            $('#recipient-departamento-item-checado').val(j[0].departamento_id);
-            validaUsuario();
-        });
-      } else {
-        zeraUsuarioAtendimento();
-      }
-
-    });
-    $("#tipodeic").change(function() {
-      if( $(this).val() ) {
-        $('#servico').hide();
-        $('#label-servico').hide();
-        $('#itemdeconfiguracao').hide();
-        $('#label-itemdeconfiguracao').hide();
-        $('#recipient-chamado_nm').val('');
-        $('#recipient-itens_checados').val('');
-        $('.carregando').show();
-            $.getJSON('jsonservico?',{tipodeic: $(this).val(), ajax: 'true'}, function(j){
-						var options = '<option value="">Selecione o serviço</option>';
-						for (var i = 0; i < j.length; i++) {
-							options += '<option value="' + j[i].id + '">' + j[i].servico_nm + '</option>';
-						}
-						$('#servico').html(options).show();
-            $('.carregando').hide();
-            $('#label-servico').show();
-					});
-      } else {
-        $('#servico').hide();
-        $('#label-servico').hide();
-        $('#itemdeconfiguracao').hide();
-        $('#label-itemdeconfiguracao').hide();
-      }
-    });
-
-    $("#servico").change(function() {
-      if( $(this).val() ) {
-        $('#itemdeconfiguracao').hide();
-        $('#label-itemdeconfiguracao').hide();
-        $('.carregando').show();
-            listaICs();
-
-            } else {
-              $('#itemdeconfiguracao').hide();
-              $('#label-itemdeconfiguracao').hide();
-            }
-          });
-      });
-
-  $(document).ready(function() {
-        $("#itemdeconfiguracao").click(function(e) {
-            var checados = [];
-            $.each($("input[name='optionsIC[]']:checked"), function(){
-                checados.push($(this).parent().text());
-            });
-            $('#recipient-itens_checados').val(checados.join(", "));
-        });
-    });
-
-    function listaICs() {
-      var sala = $('#recipient-sala-item-checado').val();
-      var tipo = $('#tipodeic').val();
-      var serv = $("#servico").val();
-      var depart = $('#recipient-departamento-item-checado').val();
-
-      if(sala && tipo && serv)  {
-          console.log('dep = '+depart+' sala = '+sala+' tipo = '+tipo+' serv = '+serv);
-          //$('#departamento').val() RETIRADO E VALOR 5 (DETEC) FORÇADO PARA TESTES
-          $.getJSON('jsonics?',{servico: serv, tipodeic: tipo, departatendido: depart, departamento: 5, sala: sala, ajax: 'true'}, function(j){
-          var options = '';
-          for (var i = 0; i < j.length; i++) {
-            options += '<label class="btn btn-sm btn-outline-primary" for="option' + j[i].id + '" tabindex="0" role="button" data-bs-toggle="popover" title="' + j[i].descricao + '"  data-bs-placement="bottom" data-bs-trigger="hover" data-bs-content="' + j[i].descricao + '"><input type="checkbox" value="' + j[i].id + '" name="optionsIC[]" id="option' + j[i].id + '" class="btn-check" autocomplete="off" />' + j[i].itemdeconf_nm + '</label>&nbsp';
-          }
-          $('#itemdeconfiguracao').html(options).show();
-          $('.carregando').hide();
-          $('#label-itemdeconfiguracao').show();
-          $('#recipient-chamado_nm').val('Solicitação para '+$('#servico :selected').text()+': '+$('#tipodeic :selected').text());
-          });
-      }
-    }
-
-  function show2(ev2) {
-
-    var rowescolha = document.querySelector('.escolha');
-    var srt = '';
-
-    if (ev2 == 'categoriadeic3') {
-      rowescolha.style.display = "none";
-    } else {
-      rowescolha.style.display = "block";
-      if (ev2 == 'categoriadeic2') {
-        srt = 'sistema/aplicativo';
-      }
-      if (ev2 == 'categoriadeic1') {
-        srt = 'equipamento';
-      }
-      document.getElementById('label-tipodeic').textContent = 'Selecione o '+srt+':';
-
-    }
-  }
-
-
-  validaUsuario();
 
 </script>
