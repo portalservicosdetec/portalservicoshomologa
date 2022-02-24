@@ -94,8 +94,8 @@ class Usuarios extends Page{
 
     $currentDepartamento = $_SESSION['admin']['usuario']['departamento'] ?? '';
     $currentPerfil = $_SESSION['admin']['usuario']['id_perfil'] ?? '';
-    $strPerfilDesenvDisable = 'disabled';
-    $strPerfilDesenvHide = 'hide';
+    $strPerfilDesenvDisable = '';
+    $strPerfilDesenvHide = '';
     $id_perfil = '5';
 
     if ($currentPerfil == 1) {
