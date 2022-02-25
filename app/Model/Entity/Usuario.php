@@ -81,10 +81,17 @@ class Usuario{
   public $ativo_fl;
 
   /**
+<<<<<<< HEAD
  * Define se o usuário está ativo
  * @var string(s/n)
  */
   public $validado_fl;
+=======
+ * Define se o usuário (confirmação do e-mail) está validado
+ * @var string(s/n)
+ */
+ public $validado_fl;
+>>>>>>> 8544181bb3d246d88125080b2d1f9238b6e53e87
 
   /**
    * Método responsável por cadastrar um novo usuário no banco

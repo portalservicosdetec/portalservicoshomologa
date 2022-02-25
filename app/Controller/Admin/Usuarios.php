@@ -94,8 +94,8 @@ class Usuarios extends Page{
 
     $currentDepartamento = $_SESSION['admin']['usuario']['departamento'] ?? '';
     $currentPerfil = $_SESSION['admin']['usuario']['id_perfil'] ?? '';
-    $strPerfilDesenvDisable = 'disabled';
-    $strPerfilDesenvHide = 'hide';
+    $strPerfilDesenvDisable = '';
+    $strPerfilDesenvHide = '';
     $id_perfil = '5';
 
     if ($currentPerfil == 1) {
@@ -156,6 +156,7 @@ class Usuarios extends Page{
     $strAtivaModal = View::render('admin/modules/'.DIR_USUARIO.'/ativamodal',[]);
     $strDeleteModal = View::render('admin/modules/'.DIR_USUARIO.'/deletemodal',[]);
     $strResetModal = View::render('admin/modules/'.DIR_USUARIO.'/resetmodal',[]);
+    $strPermissoesModal = View::render('admin/modules/'.DIR_USUARIO.'/permissoesmodal',[]);
 
     //RESULTADO DA PAGINA
     $results = EntityUsuario::getUsuarios();
@@ -180,6 +181,8 @@ class Usuarios extends Page{
         'perfil_id' => $obUsuario->id_perfil,
         'sala_id' => $obUsuario->sala,
         'departamento_id' => $obUsuario->id_departamento,
+        'icon_validado' => ('s' == $obUsuario->validado_fl) ? 'person-check-fill' : 'person-x-fill',
+        'color_icon_validado' => ('s' == $obUsuario->validado_fl) ? 'green' : 'red',
         'texto_ativo' => ('s' == $obUsuario->ativo_fl) ? 'Desativar' : 'Ativar',
         'class_ativo' => ('s' == $obUsuario->ativo_fl) ? 'btn-warning' : 'btn-success',
         'style_ativo' => ('s' == $obUsuario->ativo_fl) ? 'table-active' : 'table-danger'
@@ -190,6 +193,7 @@ class Usuarios extends Page{
     $itens .= $strEditModal;
     $itens .= $strAddModal;
     $itens .= $strResetModal;
+    $itens .= $strPermissoesModal;
     return $itens;
   }
 

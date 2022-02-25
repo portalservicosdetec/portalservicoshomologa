@@ -198,17 +198,19 @@ class Database{
     //MONTA A QUERY
     $query = 'SELECT '.$fields.' '.$from.' '.$where.' '.$order.' '.$limit;
 
-    //EXECUTA A QUERY
-
     //echo "<pre>"; print_r($query); echo "<pre>", exit();
+
+    //EXECUTA A QUERY
     return $this->execute($query);
   }
-
 
   /**
    * Método responsável por executar sql para o calendario dinâmico
    * */
   public function select3($query){
+
+    //echo "<pre>"; print_r($query); echo "<pre>";
+
     return $this->execute($query);
   }
 
