@@ -82,7 +82,7 @@ class Usuario{
 
   /**
 <<<<<<< HEAD
- * Define se o usuário está ativo
+ * Define se o usuário (confirmação do e-mail) está validado
  * @var string(s/n)
  */
   public $validado_fl;
