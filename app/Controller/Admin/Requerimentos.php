@@ -89,6 +89,13 @@ class Requerimentos extends Page{
 
     $status = self::getStatus($request);
 
+    $optionsNivel = '';
+    $optionsStatus = AdminStatus::getStatusItensSelect($request,$id);
+
+    for ($g = 1; $g <= 3; $g++) {
+      $optionsNivel = $optionsNivel."<option value='$g'>Nível $g</option>";
+    }
+
    //CONTEÚDO DA HOME
     $content = View::render('admin/modules/requerimento/index',[
       'icon' => ICON_REQUERIMENTO,
@@ -96,6 +103,8 @@ class Requerimentos extends Page{
       'titlelow' => TITLELOW_REQUERIMENTO,
       'direntity' => ROTA_REQUERIMENTO,
       'itens' => self::getRequerimentoItens($request,$obPagination),
+      'optionsStatus' => $optionsStatus,
+      'optionsNivel' => $optionsNivel,
       'status' => $status
     ]);
 
@@ -108,27 +117,30 @@ class Requerimentos extends Page{
     $itens = '';
 
     //RESONSÁVEL PELA RENDERIZAÇÃO DO MODAL DE EDIÇÃO NA PÁGINA DE LISTAGEM DE LOCALIZAÇÕES
-    $strEditModal = View::render('admin/modules/requerimento/editmodal',[]);
-    $strAddModal = View::render('admin/modules/requerimento/addmodal',[]);
-    $strAtivaModal = View::render('admin/modules/requerimento/ativamodal',[]);
+    $strStatusModal = View::render('admin/modules/requerimento/statusmodal',[]);
     $strDeleteModal = View::render('admin/modules/requerimento/deletemodal',[]);
+    $strNivelModal = View::render('admin/modules/requerimento/nivelmodal',[]);
 
     //RESULTADO DA PAGINA
     $results = EntityRequerimento::getRequerimentos();
 
+    $uri=strstr("$_SERVER[REQUEST_URI]", '?');
+
     //MONTA E RENDERIZA OS ITENS DE Requerimento
     while($obRequerimento = $results->fetchObject(EntityRequerimento::class)){
       $itens .= View::render('admin/modules/requerimento/item',[
-        'id' => $obRequerimento->requerimento_id,
+        'id' => View::crypt('encrypt',$obRequerimento->requerimento_id),
         'descricao' => $obRequerimento->requerimento_desc,
         'nrdgtec' => $obRequerimento->nrdgtec,
-
+        'uri' => $uri,
         'ticket' => EntityChamado::getChamadoPorId($obRequerimento->id_chamado)->nr_solicitacao,
         'servico' => EntityServico::getServicoPorId($obRequerimento->id_servico)->servico_nm,
-        'nivel' => $obRequerimento->requerimento_nivel,
+        'nivel' => 'Nível '.$obRequerimento->requerimento_nivel,
         'criticidade' => $obRequerimento->id_criticidade,
         'urgencia' => $obRequerimento->id_urgencia,
         'status' => EntityStatus::getStatusPorId($obRequerimento->id_status)->status_nm,
+        'status_id' => $obRequerimento->id_status,
+        'nivel_id' => $obRequerimento->requerimento_nivel,
         'atendente' => $obRequerimento->id_atendente,
         'requisitante' => EntityUsuario::getUsuarioPorId($obRequerimento->id_atendido)->usuario_nm,
         'autorizador' => $obRequerimento->id_autorizador,
@@ -147,13 +159,16 @@ class Requerimentos extends Page{
         'ativo_fl' => $obRequerimento->ativo_fl,
         'texto_ativo' => ('s' == $obRequerimento->ativo_fl) ? 'Desativar' : 'Ativar',
         'class_ativo' => ('s' == $obRequerimento->ativo_fl) ? 'btn-warning' : 'btn-success',
-        'style_ativo' => ('s' == $obRequerimento->ativo_fl) ? 'table-active' : 'table-danger'
+        'style_ativo' => ('s' == $obRequerimento->ativo_fl) ? 'table-active' : 'table-danger',
+        'icon' => ICON_REQUERIMENTO,
+        'title' =>TITLE_REQUERIMENTO,
+        'titlelow' => TITLELOW_REQUERIMENTO,
+        'direntity' => ROTA_REQUERIMENTO
       ]);
     }
     $itens .= $strDeleteModal;
-    $itens .= $strAtivaModal;
-    $itens .= $strEditModal;
-    $itens .= $strAddModal;
+    $itens .= $strStatusModal;
+    $itens .= $strNivelModal;
     return $itens;
   }
 
@@ -360,8 +375,26 @@ class Requerimentos extends Page{
         $sucessoInsert = $obRequerimento->cadastrar();
 
         if (!$sucessoInsert) {
-          throw new \Exception(' Erro na gravação do requerimento.');
+          throw new \Exception('Erro na gravação do requerimento.');
         }
+
+        //OBTÉM O USUÁRIO DO BANCO DE DADOS
+        $obChamado = EntityChamado::getChamadoPorId($id_chamado);
+
+
+        if(!$obChamado instanceof EntityChamado){
+          throw new \Exception('Erro na alteração do status do chamado.');
+        }
+
+        //ATUALIZA O STATUS DO CHAMADO PARA: "EM ATENDIMENTO"
+        $obChamado->id_status = 3;
+        $sucessoUpdate = $obChamado->atualizar();
+
+        if (!$sucessoUpdate) {
+          throw new \Exception('Erro na gravação da alteração do status do chamado.');
+        }
+
+
 
           /*
         $idRequerimento = $obRequerimento->requerimento_id;
@@ -437,6 +470,103 @@ class Requerimentos extends Page{
       }
     }
 
+    /**
+     * Método responsável por retornar o formulário de cadastro de um novo item de configuração
+     * @param Request $request
+     * @param integer $id
+     * @return string
+     */
+     public static function setAltNivelRequerimento($request,$id){
+
+       $id_status = View::crypt('decrypt',$id);
+
+       //PÁGINA ATUAL
+       $paginaAtual = '';
+       $uri=strstr("$_SERVER[REQUEST_URI]", '?');
+
+       //OBTÉM O USUÁRIO DO BANCO DE DADOS
+       $obRequerimento = EntityRequerimento::getRequerimentoPorId($id_status);
+
+       if(!$obRequerimento instanceof EntityRequerimento){
+         $request->getRouter()->redirect('/admin/'.ROTA_REQUERIMENTO.'?status=updatefail');
+       }
+
+       date_default_timezone_set('America/Sao_Paulo');
+       $agora = date('Y-m-d H:i:s');
+
+       $posVars = $request->getPostVars();
+       $id_nivel = filter_input(INPUT_POST, 'nivel', FILTER_SANITIZE_NUMBER_INT) ?? '';
+       $obs = filter_input(INPUT_POST, 'descricao', FILTER_SANITIZE_STRING) ?? '';
+       $descricao = $obRequerimento->requerimento_desc .'<br />Alteração do nível da requisição.<br />Nível '.$obRequerimento->requerimento_nivel.' alterado para Nível '.$id_nivel.' por '.$_SESSION['admin']['usuario']['usuario_nm'].' - '.$agora.'<br /><b>Justificativa:</b> '.$obs.'<br />';
+
+       //CONTEÚDO DO FORMULÁRIO
+       $content = View::render('admin/modules/'.ROTA_REQUERIMENTO.'/alterastatus',[
+         'status' => self::getStatus($request),
+         'paginaAtual' => $paginaAtual
+       ]);
+
+       //ATUALIZA A INSTANCIA (RESETA A SENHA DO USUÁRIO)
+       $obRequerimento->requerimento_desc = $descricao;
+       $obRequerimento->requerimento_nivel = $id_nivel;
+       $obRequerimento->atualizar();
+
+       //REDIRECIONA O USUÁRIO
+       $request->getRouter()->redirect('/admin/'.ROTA_REQUERIMENTO.'?status=nivelupdate');
+
+     }
+
+
+    /**
+     * Método responsável por retornar o formulário de cadastro de um novo item de configuração
+     * @param Request $request
+     * @param integer $id
+     * @return string
+     */
+     public static function setAltStatusRequerimento($request,$id){
+
+       $id_status = View::crypt('decrypt',$id);
+
+       //echo "<pre>"; print_r($id); echo "<pre>";
+       //echo "<pre>"; print_r($id_status); echo "<pre>"; exit;
+       $paginaAtual = '';
+
+       //OBTÉM O USUÁRIO DO BANCO DE DADOS
+       $obRequerimento = EntityRequerimento::getRequerimentoPorId($id_status);
+
+       //PÁGINA ATUAL
+       $uri=strstr("$_SERVER[REQUEST_URI]", '?');
+
+       if(!$obRequerimento instanceof EntityRequerimento){
+         $request->getRouter()->redirect('/admin/'.ROTA_REQUERIMENTO.'?status=updatefail');
+       }
+
+       date_default_timezone_set('America/Sao_Paulo');
+       $agora = date('Y-m-d H:i:s');
+
+       $posVars = $request->getPostVars();
+       $id_status = filter_input(INPUT_POST, 'status', FILTER_SANITIZE_NUMBER_INT) ?? '';
+       $obs = filter_input(INPUT_POST, 'descricao', FILTER_SANITIZE_STRING) ?? '';
+       $descricao = $obRequerimento->requerimento_desc .'<br />Alteração do status da requisição.<br />Status '.EntityStatus::getStatusPorId($obRequerimento->id_status)->status_nm.' alterado para o status '.EntityStatus::getStatusPorId($id_status)->status_nm.' por '.$_SESSION['admin']['usuario']['usuario_nm'].' - '.$agora.'<br /><b>Justificativa:</b> '.$obs.'<br />';
+
+       //CONTEÚDO DO FORMULÁRIO
+       $content = View::render('admin/modules/'.ROTA_REQUERIMENTO.'/alterastatus',[
+         'status' => self::getStatus($request),
+         'paginaAtual' => $paginaAtual
+
+       ]);
+
+       //ATUALIZA A INSTANCIA (RESETA A SENHA DO USUÁRIO)
+       $obRequerimento->requerimento_desc = $descricao;
+       $obRequerimento->id_status = $id_status;
+       $obRequerimento->atualizar();
+
+       self::fechaChamado($obRequerimento->id_chamado);
+
+       //REDIRECIONA O USUÁRIO
+       $request->getRouter()->redirect('/admin/'.ROTA_REQUERIMENTO.'?status=statusupdate');
+
+     }
+
 
     /**
      * Método responsável por retornar o formulário de cadastro de um novo item de configuração
@@ -448,6 +578,36 @@ class Requerimentos extends Page{
 
 
      }
+
+     /**
+      * Método responsável por retornar o formulário de cadastro de um novo item de configuração
+      * @param Request $request
+      * @param integer $id
+      * @return string
+      */
+      public static function fechaChamado($id){
+        //RESULTADO DA PAGINA
+        $results = EntityRequerimento::getRequerimentosPorChamado($id);
+        $itens = 0;
+
+        //MONTA E RENDERIZA OS ITENS DE Requerimento
+        while($obRequerimento = $results->fetchObject(EntityRequerimento::class)){
+          $itens .= (6 != $obRequerimento->id_status) ? $itens + 1  : '';
+        }
+
+        //OBTÉM O USUÁRIO DO BANCO DE DADOS
+        $obChamado = EntityChamado::getChamadoPorId($id);
+
+        if ($itens == 0) {
+          //ATUALIZA O STATUS DO CHAMADO PARA: "ATENDIDO"
+          $obChamado->id_status = 6;
+        } else {
+          //ATUALIZA O STATUS DO CHAMADO PARA: "EM ATENDIMENTO"
+          $obChamado->id_status = 3;
+        }
+        $sucessoUpdate = $obChamado->atualizar();
+
+      }
 
      /**
       * Método responsável por montar a renderização do checkbox de Itens de configuração para os formulários
@@ -509,47 +669,6 @@ class Requerimentos extends Page{
         //REDIRECIONA O USUÁRIO
         $request->getRouter()->redirect('/admin/requerimentos/'.$obRequerimento->requerimento_id.'/edit?status=alterado');
       }
-
-      /**
-       * Método responsável por retornar o formulário de alteração de status de um usuário
-       * @param Request $request
-       * @param integer $id
-       * @return string
-       */
-       public static function getAltStatusRequerimentoModal($request,$id){
-
-         //OBTÉM O USUÁRIO DO BANCO DE DADOS
-         $obRequerimento = EntityRequerimento::getRequerimentoPorId($id);
-
-         //PÁGINA ATUAL
-         $uri=strstr("$_SERVER[REQUEST_URI]", '?');
-
-         if(!$obRequerimento instanceof EntityRequerimento){
-           $request->getRouter()->redirect('/admin/requerimentos?status=updatefail');
-         }
-
-         //CONTEÚDO DO FORMULÁRIO
-         $content = View::render('admin/modules/requerimento/alterastatus',[
-           'status' => self::getStatus($request),
-           'paginaAtual' => $paginaAtual
-
-         ]);
-
-         //OBTÉM O USUÁRIO DO BANCO DE DADOS
-         if($obRequerimento->ativo_fl == 's'){
-           $altStatus = 'n';
-         } elseif ($obRequerimento->ativo_fl == 'n') {
-           $altStatus = 's';
-         }
-
-         //ATUALIZA A INSTANCIA (RESETA A SENHA DO USUÁRIO)
-         $obRequerimento->ativo_fl = $altStatus;
-         $obRequerimento->atualizar();
-
-         //REDIRECIONA O USUÁRIO
-         $request->getRouter()->redirect('/admin/requerimentos'.$uri.'&status=statusupdate');
-
-       }
 
 
       /**
@@ -663,6 +782,10 @@ class Requerimentos extends Page{
        break;
      case 'statusupdate':
        return Alert::getSuccess('Status do Requerimento alterado com sucesso!');
+       // code...
+       break;
+     case 'nivelupdate':
+       return Alert::getSuccess('Nível do Requerimento alterado com sucesso!');
        // code...
        break;
    }

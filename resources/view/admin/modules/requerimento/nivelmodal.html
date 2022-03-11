@@ -1,0 +1,79 @@
+<!--Modal para ativar e desativar/ativar uma localização -->
+<div class="modal fade" id="nivelModal"  tabindex="-1" aria-labelledby="nivelModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header alert-warning">
+        <h5 class="modal-title" id="TituloModalCentralizado"><i class="bi-exclamation-diamond" style="font-size: 1.5rem; margin-right: 8px; vertical-align: bootom; padding-bootom: 0px;"></i>Confirmar alteração do nível da Localização</h5>
+        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Fechar">
+          <span aria-hidden="true" class="alert-warning">&times;</span>
+        </button>
+      </div>
+      <form id="urlAltNivelForm" action="" method="post">
+      <div class="modal-body">
+        <div class="form-row">
+          <div class="form-group col-md-12">
+            <label>Nível:</label>
+              <select name="nivel" id="recipient-nivel-edit" class="form-select form-select-sm">
+                <option value=''>Selecione o nível da requisição</option>
+                  {{optionsNivel}}
+              </select>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group col-md-12">
+            <label for="recipient-desc-nivel-edit">Justificativa: </label>
+            <textarea class="form-control" required name="descricao" value="" rows="3" maxlength="5000" id="recipient-desc-nivel-edit"></textarea>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+        <button type="submit" class="btn btn-primary" id="btnAlterarNivel" name="button">Confirmar Alteração</button>
+      </div>
+      </form>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+    var nivelModal = document.getElementById('nivelModal')
+    nivelModal.addEventListener('show.bs.modal', function (event) {
+    // Button that triggered the modal
+    var button = event.relatedTarget
+    // Informação extraída dos atributos do data-bs-* no botão (item.html)
+    var recipientURL = button.getAttribute('data-bs-whatever-url')
+    var recipientURI = button.getAttribute('data-bs-whatever-uri')
+    var recipientId = button.getAttribute('data-bs-whatever-id')
+    var recipientNome = button.getAttribute('data-bs-whatever-nome')
+//    var recipientDescricao = button.getAttribute('data-bs-whatever-descricao')
+    var recipientDIR = button.getAttribute('data-bs-whatever-dir')
+    var recipientTitle = button.getAttribute('data-bs-whatever-title')
+    var recipientTitlelow = button.getAttribute('data-bs-whatever-titlelow')
+    var recipientRequerimento = button.getAttribute('data-bs-whatever-requerimento')
+    var recipientChamado = button.getAttribute('data-bs-whatever-chamado')
+    var recipientNivel = button.getAttribute('data-bs-whatever-nivel')
+
+    // Conteúdo que será injetado no form de alteração no Modal
+    var modalBTN = nivelModal.querySelector('#btnAlterarNivel')
+    var modalFORM = nivelModal.querySelector('#urlAltNivelForm')
+    var modalTituloModalCentralizado = nivelModal.querySelector('#TituloModalCentralizado')
+    //var modalDescricaoInput = nivelModal.querySelector('#texto_alt_nivel')
+    var modalNivelInput = nivelModal.querySelector('#recipient-nivel-edit')
+
+
+    modalTituloModalCentralizado.textContent = 'Alterar o nível da requisição '+recipientRequerimento+' do chamado '+recipientChamado
+//    modalDescricaoInput.textContent = 'Você deseja realmente ' + recipientDescricao + ' '+recipientTitlelow+' ' + recipientNome + '?'
+    //modalBTN.textContent = 'Alterar Nivel'
+    modalNivelInput.value = recipientNivel
+
+    //modalURL.href = recipientURL+'/admin/'+recipientDIR+'/'+recipientId+'/alteranivel'+recipientURI
+
+    modalFORM.action = recipientURL+'/admin/'+recipientDIR+'/'+recipientId+'/alteranivel'+recipientURI
+    modalBTN.textContent = 'Alterar Nível'
+
+    ///************************
+    //SE HOUVER DIVERGÊNCIAS DARÁ ERRO 405 MÉDOTO NÃO ENCONTRADO!!!!!!!!!!!!!!
+    ///************************
+
+  })
+</script>
