@@ -84,7 +84,7 @@ class Usuario{
  * Define se o usuário (confirmação do e-mail) está validado
  * @var string(s/n)
  */
- public $validado_fl;
+  public $validado_fl;
 
 
   /**
