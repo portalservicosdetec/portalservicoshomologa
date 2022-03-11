@@ -62,13 +62,13 @@ $obRouter->get('/admin/requerimentos/{requerimento_id}/delete',[
   }
 ]);
 
-//ROTA DE ALTERAÇÂO DE STATUS DE UM REQUERIMENTO
-$obRouter->get('/admin/requerimentos/{requerimento_id}/alterastatus',[
+//ROTA DE ALTERAÇÂO DO NÍVEL DE UM REQUERIMENTO (POST)
+$obRouter->post('/admin/requerimentos/{requerimento_id}/alteranivel',[
   'middlewares' => [
     'require-admin-login'
   ],
   function($request,$requerimento_id){
-    return new Response(200,Admin\Requerimentos::getAltStatusRequerimentoModal($request,$requerimento_id));
+    return new Response(200,Admin\Requerimentos::setAltNivelRequerimento($request,$requerimento_id));
   }
 ]);
 

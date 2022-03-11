@@ -192,7 +192,8 @@ class Chamado{
                                                   'chamado_nm' => $this->chamado_nm,
                                                   'chamado_des' => $this->chamado_des,
                                                   'id_usuario' => $_SESSION['admin']['usuario']['usuario_id'],
-                                                  'solicitado_por' => $this->solicitado_por
+                                                  'solicitado_por' => $this->solicitado_por,
+                                                  'id_status' => $this->id_status
                                                   ]);
    }
 

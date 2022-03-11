@@ -488,7 +488,7 @@ class Chamados extends Page{
 
         'texto_ativo' => (1 == $obChamado->id_status) ? 'Alterar Status' : 'Ativar',
         'class_ativo' => (2 == $obChamado->id_status) ? 'btn-warning' : 'btn-success',
-        'style_ativo' => (1 == $obChamado->id_status) ? 'table-active' : 'table-danger',
+        'style_ativo' => (8 == $obChamado->id_status) ? 'table-danger' : 'table-active',
         'andamentos' => (1 == $obChamado->id_status) ? 'table-active' : 'table-danger',
     //    'paginaAtual' => $paginaAtual,
     //    'uri' => $uri
